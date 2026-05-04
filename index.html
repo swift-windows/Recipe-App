@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Box</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand" data-route="#/">Recipe Box</h1>
+    <nav>
+      <a href="#/" class="navlink">Recipes</a>
+      <a href="#/new" class="navlink">Upload</a>
+      <a href="#/basket" class="navlink basket-link">
+        Basket <span id="basketCount" class="badge">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <main id="app"></main>
+
+  <!-- View templates -->
+  <template id="view-list">
+    <section class="view">
+      <div class="view-header">
+        <h2>Your recipes</h2>
+        <a href="#/new" class="btn btn-primary">+ Upload recipe</a>
+      </div>
+      <div id="recipeGrid" class="grid"></div>
+      <p id="emptyState" class="empty hidden">
+        No recipes yet. <a href="#/new">Upload your first one</a>.
+      </p>
+    </section>
+  </template>
+
+  <template id="view-form">
+    <section class="view">
+      <h2 id="formTitle">Upload a recipe</h2>
+      <form id="recipeForm" class="form">
+        <label>
+          <span>Title</span>
+          <input name="title" required maxlength="120" />
+        </label>
+
+        <div class="row">
+          <label>
+            <span>Servings</span>
+            <input name="servings" type="number" min="1" value="2" />
+          </label>
+          <label>
+            <span>Prep (min)</span>
+            <input name="prepTime" type="number" min="0" value="10" />
+          </label>
+          <label>
+            <span>Cook (min)</span>
+            <input name="cookTime" type="number" min="0" value="20" />
+          </label>
+        </div>
+
+        <label>
+          <span>Image (optional)</span>
+          <input name="image" type="file" accept="image/*" />
+        </label>
+        <img id="imagePreview" class="image-preview hidden" alt="" />
+
+        <label>
+          <span>Ingredients <small>(one per line, e.g. "200 g flour")</small></span>
+          <textarea name="ingredients" rows="8" placeholder="2 eggs&#10;200 g flour&#10;1 tsp salt" required></textarea>
+        </label>
+
+        <label>
+          <span>Steps <small>(one per line)</small></span>
+          <textarea name="steps" rows="8" placeholder="Whisk eggs.&#10;Add flour gradually.&#10;Cook for 5 minutes." required></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Save recipe</button>
+          <a href="#/" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </section>
+  </template>
+
+  <template id="view-detail">
+    <section class="view detail">
+      <a href="#/" class="back">← Back to recipes</a>
+      <div class="detail-header">
+        <img id="detailImage" class="detail-image hidden" alt="" />
+        <div>
+          <h2 id="detailTitle"></h2>
+          <p class="meta">
+            <span id="detailServings"></span> ·
+            <span id="detailTime"></span>
+          </p>
+          <div class="actions">
+            <button id="cookBtn" class="btn btn-primary">Start cooking mode</button>
+            <button id="basketBtn" class="btn"></button>
+            <a id="editBtn" class="btn btn-ghost">Edit</a>
+            <button id="deleteBtn" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <div>
+          <h3>Ingredients</h3>
+          <ul id="detailIngredients" class="ingredients"></ul>
+        </div>
+        <div>
+          <h3>Steps</h3>
+          <ol id="detailSteps" class="steps"></ol>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template id="view-basket">
+    <section class="view">
+      <h2>Shopping basket</h2>
+      <div id="basketRecipes" class="basket-recipes"></div>
+      <div id="shoppingList">
+        <h3>Shopping list</h3>
+        <ul id="shoppingItems" class="shopping"></ul>
+        <div class="actions">
+          <button id="copyListBtn" class="btn">Copy list</button>
+          <button id="clearBasketBtn" class="btn btn-danger">Clear basket</button>
+        </div>
+      </div>
+      <p id="basketEmpty" class="empty hidden">
+        Your basket is empty. Add recipes from the <a href="#/">recipes page</a>.
+      </p>
+    </section>
+  </template>
+
+  <!-- Cooking mode overlay -->
+  <div id="cookingMode" class="cooking-mode hidden">
+    <button id="cookExitBtn" class="cook-exit" aria-label="Exit cooking mode">×</button>
+    <div class="cook-content">
+      <p class="cook-progress"><span id="cookStepNum">1</span> / <span id="cookStepTotal">1</span></p>
+      <h2 id="cookTitle"></h2>
+      <p id="cookStepText" class="cook-step"></p>
+
+      <div class="cook-timer">
+        <input id="timerMinutes" type="number" min="0" value="5" />
+        <span>min</span>
+        <button id="timerStartBtn" class="btn">Start timer</button>
+        <span id="timerDisplay" class="timer-display"></span>
+      </div>
+
+      <div class="cook-controls">
+        <button id="cookPrevBtn" class="btn">← Prev</button>
+        <button id="cookNextBtn" class="btn btn-primary">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
