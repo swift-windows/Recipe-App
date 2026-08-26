@@ -82,6 +82,9 @@ step that glazing bars need in order to actually draw.
 Where the pane naming is not predictable — three or more sections stacked in one column —
 it says so rather than inventing a name.
 
+See [`docs/example-report.md`](docs/example-report.md) for a full worked example —
+that is exactly what Claude receives.
+
 ---
 
 ## Installing it on the phone
@@ -145,6 +148,7 @@ directly.
 | `js/share.js` | Share / copy / download / email / post. |
 | `build.js` | Bundles everything into one HTML file. |
 | `tools/selftest.mjs` | Test suite. Runs under plain node. |
+| `tools/example.mjs` | Regenerates `docs/example-report.md`. |
 
 `model.js` and `report.js` are deliberately free of browser APIs so the logic that
 decides what gets ordered is testable without a browser.
