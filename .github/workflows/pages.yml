@@ -19,9 +19,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
 
@@ -41,11 +41,24 @@ jobs:
           cp dist/survey.html _site/dist/survey.html
           ls -R _site
 
-      - uses: actions/configure-pages@v5
+      # Enabling Pages itself needs administration:write, which the Actions
+      # token does not have and `permissions:` cannot grant - so this step
+      # cannot switch Pages on by itself. It is a no-op once Pages is on.
+      - id: pages
+        uses: actions/configure-pages@v5
+        continue-on-error: true
         with:
-          # Turns Pages on for the repo the first time this runs, so no manual
-          # trip to Settings is needed.
           enablement: true
+
+      - name: Explain a Pages-not-enabled failure
+        if: steps.pages.outcome == 'failure'
+        run: |
+          echo "::error::Pages is not enabled for this repository."
+          echo "Fix it once, by hand: Settings -> Pages -> Build and deployment ->"
+          echo "Source: GitHub Actions. Then re-run this workflow."
+          echo "This step cannot do it: creating a Pages site requires"
+          echo "administration:write, which GITHUB_TOKEN does not carry."
+          exit 1
 
       - uses: actions/upload-pages-artifact@v3
         with:
