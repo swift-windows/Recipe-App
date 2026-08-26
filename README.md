@@ -103,14 +103,23 @@ backup before changing phone or clearing browser data.
 Any static host will do — the app has no backend.
 
 - **GitHub Pages:** enable Pages on this repo and point it at the branch root.
-- **Swift Hub:** `npm run build` produces `dist/survey.html`, a single self-contained
-  file. Write it to KV as a tool and it serves at `/tools/<slug>`:
+- **Swift Hub (Cloudflare):** one command —
 
   ```bash
-  curl -s -X PUT ".../storage/kv/namespaces/$NS/values/tool:survey" \
-    -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: text/plain" \
-    --data-binary @dist/survey.html
+  CF_TOKEN=xxxx ./tools/deploy-hub.sh
   ```
+
+  It builds `dist/survey.html`, writes it to KV as `tool:window-survey`, and reads it
+  back to prove *this* build is live — `success: true` from the API is not proof, since
+  another session can overwrite the key seconds later. Serves at
+  `/tools/window-survey`.
+
+  The token needs **Workers KV Storage: Edit**. This is a KV write, not a worker
+  deploy, so it cannot be clobbered by a session pushing the worker script.
+
+  The hub serves `/tools/<slug>` behind a hub login unless the slug is listed in
+  `TOOL_SLUGS` in the worker. Logged-in-only is the safer default; making it public is
+  a worker change, not a KV change.
 
 - **No host at all:** open `dist/survey.html` from the phone's files. It works from
   `file://`.
@@ -149,6 +158,7 @@ directly.
 | `build.js` | Bundles everything into one HTML file. |
 | `tools/selftest.mjs` | Test suite. Runs under plain node. |
 | `tools/example.mjs` | Regenerates `docs/example-report.md`. |
+| `tools/deploy-hub.sh` | Deploys the bundle to the Swift Hub as a KV tool. |
 
 `model.js` and `report.js` are deliberately free of browser APIs so the logic that
 decides what gets ordered is testable without a browser.
