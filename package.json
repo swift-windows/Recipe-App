@@ -1,0 +1,12 @@
+{
+  "name": "swift-survey",
+  "version": "1.0.0",
+  "description": "On-site window survey app for Swift Windows - draw windows, capture sizes, generate a Tommy Trinder-ready report.",
+  "type": "module",
+  "scripts": {
+    "test": "node tools/selftest.mjs",
+    "build": "node build.js",
+    "serve": "python3 -m http.server 8080"
+  },
+  "private": true
+}

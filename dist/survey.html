@@ -1,0 +1,2847 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2b46">
+<title>Swift Survey</title>
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAACW0lEQVR42u3cwQ3CMAxA0W7QQdijV0bqimwEC3CAJE5a+1l/ABQ9CWiSbvvjkJrbLIEAEkACSABJAAkgASSAJIAEkAASQBJAAkgACSAJIAEkgASQAJIAEkACSABJAAkgASSAJIAEkAASQBJAAkgACSABJAEkgATQn71N9wBkAAIIIIAAAggggAxAAAEEEEAAAVQZ0DVNWyiAAAIIIIAAAggggAACCCCAAAIIIIAAsi4AAQQQQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQSQhQIIIPfCDEAGIIAAAggggAACyAAEEEAAAQQQQAAZgGxl2MoACCCAAAIIIIAAAgggCwUQQAABBNCUdXm+zq8BBFC7HoAAaqcDEEC9egACqEsPQAB16QEIoC49AAHUpQcggEL0AFQR0EA9AJUDNFYPQLUADdcDUCFAEXoAqgIoSA9AJQDF6QEoP6BQPQAlBxRKB6DkgCboASgtoDl6AALojPtIAOUH5FA9QO2A3MoAqB2Qaz0A+QoDyI9ogPyNB6g6IA8SAep9Em0rA6BjiSGA7MbbjQfIeSCAnEgEyJlogNzKcCsDIPfCAHIzFSB34wHKCmjgfhlAdQHtXjAFkFfcAbR+XQACyGt+AVq9LgABFGgIIIBmfySAAAIIIIAAAggggAC6NiDz4wBkAAIIIIAAAggggAxAAAEEEEAAAZQekO4eQAJIAAkgASQBJIAEkACSABJAAkgASQAJIAEkgCSABJAAEkACSAJIAAkgASQBJIAEkACSABJAAkgASQAJIAEkgASQBJAA0g37AP6T6abLVMUpAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAACW0lEQVR42u3cwQ3CMAxA0W7QQdijV0bqimwEC3CAJE5a+1l/ABQ9CWiSbvvjkJrbLIEAEkACSABJAAkgASSAJIAEkAASQBJAAkgACSAJIAEkgASQAJIAEkACSABJAAkgASSAJIAEkAASQBJAAkgACSABJAEkgATQn71N9wBkAAIIIIAAAggggAxAAAEEEEAAAVQZ0DVNWyiAAAIIIIAAAggggAACCCCAAAIIIIAAsi4AAQQQQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQSQhQIIIPfCDEAGIIAAAggggAACyAAEEEAAAQQQQAAZgGxl2MoACCCAAAIIIIAAAgggCwUQQAABBNCUdXm+zq8BBFC7HoAAaqcDEEC9egACqEsPQAB16QEIoC49AAHUpQcggEL0AFQR0EA9AJUDNFYPQLUADdcDUCFAEXoAqgIoSA9AJQDF6QEoP6BQPQAlBxRKB6DkgCboASgtoDl6AALojPtIAOUH5FA9QO2A3MoAqB2Qaz0A+QoDyI9ogPyNB6g6IA8SAep9Em0rA6BjiSGA7MbbjQfIeSCAnEgEyJlogNzKcCsDIPfCAHIzFSB34wHKCmjgfhlAdQHtXjAFkFfcAbR+XQACyGt+AVq9LgABFGgIIIBmfySAAAIIIIAAAggggAC6NiDz4wBkAAIIIIAAAggggAxAAAEEEEAAAZQekO4eQAJIAAkgASQBJIAEkACSABJAAkgASQAJIAEkgCSABJAAEkACSAJIAAkgASQBJIAEkACSABJAAkgASQAJIAEkgASQBJAA0g37AP6T6abLVMUpAAAAAElFTkSuQmCC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+/*
+ * Built for a phone held in one hand in someone's hallway:
+ * large targets, high contrast, nothing that needs a precise tap.
+ */
+
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --ink: #14202b;
+  --ink-soft: #5b6b7a;
+  --line: #d8e0e7;
+  --brand: #0f2b46;
+  --brand-ink: #ffffff;
+  --accent: #1a7fc1;
+  --warn-bg: #fff6e5;
+  --warn-line: #f0c26b;
+  --danger: #b3261e;
+  --glass: #dceaf4;
+  --glass-obs: #cbdde9;
+  --radius: 12px;
+  --tap: 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #10161c;
+    --card: #18212a;
+    --ink: #e8eef4;
+    --ink-soft: #9bacbb;
+    --line: #2b3946;
+    --brand: #0b2137;
+    --glass: #22394b;
+    --glass-obs: #2b4356;
+    --warn-bg: #3a2f16;
+    --warn-line: #7a5f22;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- layout ---------- */
+
+.screen { min-height: 100vh; }
+
+.screen__body {
+  padding: 12px 12px calc(24px + env(safe-area-inset-bottom));
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+  background: var(--brand);
+  color: var(--brand-ink);
+}
+
+.topbar__title { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+.topbar__title strong { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topbar__sub { font-size: 12px; opacity: .78; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.topbar .btn { background: rgba(255,255,255,.14); color: var(--brand-ink); border-color: transparent; }
+.topbar .btn--primary { background: var(--accent); }
+.topbar__danger { background: rgba(255,255,255,.14) !important; color: #ffd7d4 !important; }
+
+.spacer { height: 40px; }
+.section-title { margin: 6px 2px -4px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.empty { color: var(--ink-soft); text-align: center; padding: 28px 12px; }
+
+/* ---------- cards ---------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card--warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.card--draw { align-items: stretch; }
+.card__title { margin: 0; font-size: 15px; }
+.card__subtitle { margin: 4px 0 0; font-size: 13px; color: var(--ink-soft); }
+.hint { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+.list { margin: 0; padding-left: 18px; font-size: 14px; }
+.list li { margin-bottom: 4px; }
+
+/* ---------- form ---------- */
+
+.row { display: flex; gap: 10px; }
+.row--2 > * { flex: 1 1 0; min-width: 0; }
+.row--wrap { flex-wrap: wrap; align-items: center; }
+
+.field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; min-width: 0; }
+.field__label { font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+.field__hint { font-size: 12px; color: var(--ink-soft); }
+
+.input {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 11px 12px;
+  min-height: var(--tap);
+  width: 100%;
+}
+textarea.input { min-height: 72px; resize: vertical; }
+.input:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--tap);
+  padding: 0 4px;
+  font-size: 14px;
+}
+.toggle input { width: 22px; height: 22px; accent-color: var(--accent); }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--tap);
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.btn:active { transform: translateY(1px); }
+.btn--primary { background: var(--accent); color: #fff; border-color: transparent; }
+.btn--tool { background: var(--bg); }
+.btn--danger { color: #fff; background: var(--danger); border-color: transparent; }
+.btn--block { width: 100%; }
+.btn[disabled] { opacity: .6; }
+
+/* ---------- home list ---------- */
+
+.rowcard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  min-height: 64px;
+  cursor: pointer;
+}
+.rowcard__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.rowcard__sub { font-size: 12.5px; color: var(--ink-soft); }
+
+.pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.pill--warn { background: var(--warn-bg); color: #8a5b00; border: 1px solid var(--warn-line); }
+
+/* ---------- item cards ---------- */
+
+.itemcard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.itemcard__hit {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 12px;
+  cursor: pointer;
+}
+.itemcard__thumb { width: 92px; flex: 0 0 92px; }
+.itemcard__thumb .ev { width: 100%; height: auto; }
+.itemcard__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.itemcard__meta .pill { align-self: flex-start; margin-top: 4px; }
+.itemcard__actions { display: flex; gap: 8px; padding: 0 12px 12px; }
+
+/* ---------- the drawing ---------- */
+
+.canvas { display: flex; justify-content: center; padding: 4px 0; }
+.ev { width: 100%; max-width: 420px; height: auto; touch-action: manipulation; }
+
+.ev-frame { fill: none; stroke: var(--ink); stroke-width: 9; }
+.ev-bar { fill: var(--ink); }
+.ev-bar--french { fill: var(--accent); }
+.ev-glass { fill: var(--glass); }
+.ev-glass--obscure { fill: var(--glass-obs); }
+.ev-hatch { stroke: var(--ink-soft); stroke-width: .7; opacity: .5; }
+.ev-lead { stroke: var(--ink-soft); stroke-width: .9; opacity: .65; }
+.ev-sash { fill: none; stroke: var(--ink); stroke-width: 6; }
+.ev-sash--dummy { stroke-dasharray: 7 5; }
+.ev-open { fill: none; stroke: #0a8a3c; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.ev-leaf { stroke: var(--ink); stroke-width: 5; }
+.ev-glazbar { stroke: var(--ink); stroke-width: 2; opacity: .75; }
+.ev-knob { fill: #0a8a3c; }
+.ev-vent { fill: var(--ink-soft); }
+.ev-mark { font-size: 11px; font-weight: 700; fill: var(--ink-soft); }
+.ev-dim { stroke: var(--ink-soft); stroke-width: 1.2; }
+.ev-dimtxt { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.ev-subdim { font-size: 11px; fill: var(--ink-soft); }
+
+.ev-hit { fill: transparent; cursor: pointer; }
+.ev-hit:hover { fill: rgba(26,127,193,.12); }
+.ev-hit:focus { outline: none; fill: rgba(26,127,193,.2); }
+.ev-hit.is-selected { fill: rgba(26,127,193,.24); }
+
+.counts { margin: 0; text-align: center; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.tools .btn { flex: 1 1 44%; }
+
+/* ---------- photos ---------- */
+
+.photos { display: flex; gap: 8px; flex-wrap: wrap; }
+.photos__cell { position: relative; }
+.photos__img { width: 92px; height: 92px; object-fit: cover; border-radius: 9px; border: 1px solid var(--line); }
+.photos__del {
+  position: absolute; top: -6px; right: -6px;
+  min-height: 30px; width: 30px; padding: 0;
+  border-radius: 999px; background: var(--danger); color: #fff; border: 0;
+  font-size: 15px; line-height: 1;
+}
+
+/* ---------- bottom sheet ---------- */
+
+.sheet {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(4, 12, 20, .45);
+  display: flex; align-items: flex-end;
+  opacity: 0; transition: opacity .18s ease;
+}
+.sheet.is-open { opacity: 1; }
+.sheet__panel {
+  width: 100%;
+  max-height: 88vh;
+  background: var(--card);
+  border-radius: 16px 16px 0 0;
+  display: flex; flex-direction: column;
+  transform: translateY(14px);
+  transition: transform .18s ease;
+}
+.sheet.is-open .sheet__panel { transform: none; }
+.sheet__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px; border-bottom: 1px solid var(--line);
+}
+.sheet__title { margin: 0; font-size: 15px; flex: 1; }
+.sheet__body {
+  padding: 12px calc(12px) calc(24px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.sheet__sub { margin: 6px 0 0; font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
+
+/* ---------- opener picker ---------- */
+
+.openers { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.opener {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px;
+  font: inherit; font-size: 11.5px; font-weight: 600; text-align: center;
+  color: var(--ink);
+  background: var(--bg);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 92px;
+}
+.opener.is-on { border-color: var(--accent); background: rgba(26,127,193,.12); }
+.opener__sym { display: block; width: 54px; color: var(--ink); }
+.sym { width: 100%; height: auto; }
+
+/* ---------- product picker ---------- */
+
+.picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.picker__btn {
+  display: flex; flex-direction: column; gap: 2px;
+  text-align: left; font: inherit;
+  color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px; min-height: 62px; cursor: pointer;
+}
+.picker__sub { font-size: 11.5px; color: var(--ink-soft); }
+
+/* ---------- report ---------- */
+
+.preview {
+  margin: 0;
+  max-height: 50vh;
+  overflow: auto;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%; bottom: calc(20px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 16px);
+  z-index: 90;
+  background: var(--ink); color: var(--bg);
+  padding: 12px 16px; border-radius: 10px;
+  font-size: 14px; max-width: 90vw; text-align: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+</style>
+</head>
+<body>
+<main id="app"></main>
+<noscript>This app needs JavaScript switched on.</noscript>
+<script>
+(function () {
+  'use strict';
+  var __mods = {}, __cache = {};
+  function require(name) {
+    if (__cache[name]) return __cache[name].exports;
+    var m = { exports: {} };
+    __cache[name] = m;
+    __mods[name](m, m.exports, require);
+    return m.exports;
+  }
+
+__mods['./model.js'] = function (module, exports, require) {
+/*
+ * model.js - pure, DOM-free data model for a Swift Windows site survey.
+ *
+ * Everything in here is deliberately free of browser APIs so it can be unit
+ * tested under node (tools/selftest.mjs) and reused by any exporter.
+ *
+ * The structure mirrors how Tommy Trinder's VS2 configurator actually builds a
+ * frame, so a survey converts into build steps with no interpretation:
+ *
+ *   item.columns[]        -> the vertical mullions you draw on the VS2 canvas
+ *   column.rows[]         -> the transoms within that column (partial transoms
+ *                            are the normal case, so transoms are per column)
+ *   pane.opener           -> the tile you pick in the "Opener at Pane X" dialog
+ */
+
+const SCHEMA = 'swift-survey/v1';
+
+/* ------------------------------------------------------------------ *
+ * Catalogue - keys match the product tiles in Tommy Trinder
+ * ------------------------------------------------------------------ */
+
+const PRODUCTS = [
+  // family 'casement' uses the freehand grid builder (VS2 step 5a)
+  { key: 'upvc-casement',        label: 'uPVC Casement',              family: 'casement',  tt: '*uPVC Casement',                       tab: 'PVCu' },
+  { key: 'upvc-flush',           label: 'uPVC Flush Casement',        family: 'casement',  tt: '*uPVC Flush Casement',                 tab: 'PVCu' },
+  { key: 'alu-casement',         label: 'Sheerline Classic Casement', family: 'casement',  tt: '*Sheerline Classic Beaded Casement',   tab: 'Aluminium' },
+  { key: 'alu-flush',            label: 'Sheerline Classic Flush',    family: 'casement',  tt: '*Sheerline Classic Flush Beaded Casement', tab: 'Aluminium' },
+  { key: 'tilt-turn',            label: 'Tilt & Turn Window',         family: 'casement',  tt: 'Tilt Turn Window',                     tab: 'PVCu' },
+  { key: 'timber-casement',      label: 'Timber Stormproof Casement', family: 'casement',  tt: '3. Stormproof Casement',               tab: 'Timber' },
+
+  // doors
+  { key: 'comp-door',            label: 'Composite Door',             family: 'composite', tt: '*Comp Door Composite Door',            tab: 'PVCu' },
+  { key: 'upvc-entrance',        label: 'uPVC Entrance Door',         family: 'door',      tt: '*uPVC Entrance Door',                  tab: 'PVCu' },
+  { key: 'upvc-french',          label: 'uPVC French Door',           family: 'door',      tt: '*uPVC French Door',                    tab: 'PVCu' },
+  { key: 'alu-french',           label: 'Aluminium French Door',      family: 'door',      tt: 'Sheerline Prestige French Door',       tab: 'Aluminium' },
+
+  // pickers rather than freehand
+  { key: 'bifold',               label: 'Bi-fold Door',               family: 'bifold',    tt: '*Alunet Bifold',                       tab: 'Aluminium' },
+  { key: 'patio-slider',         label: 'Patio / Sliding Door',       family: 'slider',    tt: 'Smart Visoglide Slider',               tab: 'Aluminium' },
+  { key: 'upvc-patio',           label: 'uPVC Patio Door',            family: 'slider',    tt: '*uPVC Patio Door',                     tab: 'PVCu' },
+  { key: 'sash-roseview',        label: 'Sliding Sash (Roseview)',    family: 'sash',      tt: 'Heritage Rose',                        tab: 'Roseview' },
+  { key: 'sash-bereco',          label: 'Sliding Sash (Bereco)',      family: 'sash',      tt: 'Bereco Traditional Sliding Sash',      tab: 'Bereco' },
+  { key: 'sash-timberlook',      label: 'Timberlook Flush Sash',      family: 'sash',      tt: 'Timberlook Flush Sash Window',         tab: 'Timberlook' },
+
+  // coupled / bay - a bay IS a coupled item set to Angled
+  { key: 'bay',                  label: 'Bay / Bow (coupled)',        family: 'bay',       tt: 'PVC Coupled Item',                     tab: 'PVCu' },
+  { key: 'coupled-flat',         label: 'Coupled Item (flat)',        family: 'bay',       tt: 'PVC Coupled Item',                     tab: 'PVCu' },
+
+  // ancillaries - these skip VS2 entirely (Parts Shop)
+  { key: 'parts',                label: 'Extra / Parts Shop item',    family: 'parts',     tt: 'Parts Shop',                           tab: 'Parts Shop' }
+];
+
+function product(key) {
+  return PRODUCTS.find(p => p.key === key) || PRODUCTS[0];
+}
+
+/* ------------------------------------------------------------------ *
+ * Openers - the four tiles in VS2's "Opener at Pane X" dialog, plus
+ * the states you get before you touch it.
+ * ------------------------------------------------------------------ */
+
+const OPENERS = {
+  fixed:      { label: 'Fixed',                      short: 'F',   symbol: 'none',   vs2: 'Leave pane untouched (no sash)' },
+  sideLeft:   { label: 'Side-hung, hinge left',      short: 'SHL', symbol: 'left',   vs2: 'Opener dialog: TOP-RIGHT tile (side-hung hinge-left)' },
+  sideRight:  { label: 'Side-hung, hinge right',     short: 'SHR', symbol: 'right',  vs2: 'Opener dialog: TOP-LEFT tile (side-hung hinge-right)' },
+  topHung:    { label: 'Top-hung',                   short: 'TH',  symbol: 'up',     vs2: 'Opener dialog: BOTTOM-LEFT tile (top-hung)' },
+  bottomHung: { label: 'Bottom-hung',                short: 'BH',  symbol: 'down',   vs2: 'Opener dialog: bottom-hung (check availability on profile)' },
+  tiltTurn:   { label: 'Tilt & turn',                short: 'T&T', symbol: 'tilt',   vs2: 'Tilt & Turn product only' },
+  dummy:      { label: 'Dummy sash (fixed, sashed)', short: 'D',   symbol: 'dummy',  vs2: 'Opener dialog: BOTTOM-RIGHT tile (Dummy)' }
+};
+
+const OPENER_KEYS = Object.keys(OPENERS);
+
+/** Openers that actually open - used for the shootbolt / hinge count cross-check. */
+function isOpening(key) {
+  return key !== 'fixed' && key !== 'dummy';
+}
+
+/* ------------------------------------------------------------------ *
+ * Glass
+ * ------------------------------------------------------------------ */
+
+const OBSCURE_PATTERNS = ['None (clear)', 'Satin', 'Stippolyte', 'Cotswold', 'Everglade', 'Minster', 'Pelerine', 'Contora'];
+const BAR_TYPES = ['None', 'Georgian', 'Astragal', 'Leaded', 'Diamonds'];
+
+function newGlass() {
+  return {
+    obscure: 'None (clear)',
+    toughened: false,
+    leaded: false,
+    bars: 'None',
+    barRows: 0,
+    barCols: 0,
+    trickleVent: false,
+    notes: ''
+  };
+}
+
+/* ------------------------------------------------------------------ *
+ * Constructors
+ * ------------------------------------------------------------------ */
+
+let seq = 0;
+/** Deterministic-ish id. Not security relevant. */
+function uid(prefix = 'id') {
+  seq += 1;
+  return `${prefix}-${Date.now().toString(36)}-${seq.toString(36)}`;
+}
+
+function newPane() {
+  return { id: uid('pane'), opener: 'fixed', glass: newGlass(), assumed: false, notes: '' };
+}
+
+function newColumn(rows = 1) {
+  return {
+    id: uid('col'),
+    width: null,                       // mm, optional - only when sections are unequal
+    rows: Array.from({ length: rows }, () => ({ id: uid('row'), height: null, pane: newPane() }))
+  };
+}
+
+function newItem(patch = {}) {
+  const item = {
+    id: uid('item'),
+    ref: '',
+    location: '',
+    productKey: 'upvc-casement',
+    jobType: 'Supply & Fit - Remove & replace',
+    quantity: 1,
+    width: null,                       // mm - Basic Frame Size, NOT overall incl. cill
+    height: null,
+    sillHeightFromFloor: null,         // mm - drives the critical-location check
+    columns: [newColumn(1)],
+    frenchMullion: false,
+    finish: { frame: '', sash: '', cill: '' },
+    cill: '',
+    handle: '',
+    hardwareNotes: '',
+    // family specific
+    door: { style: '', hand: '', opensInOut: '', threshold: '', letterplate: false, knocker: false, cylinder: '' },
+    bifold: { leaves: 3, foldDirection: '', trafficDoor: '' },
+    slider: { panes: 2, slideDirection: '', dummyPanel: '' },
+    sash: { style: 'Double', horns: '', sectionWidths: '' },
+    bay: { type: 'Angled', facets: 3, angle: 135, facetWidths: '', poleRequired: false },
+    parts: { unit: '', qty: 1, price: null },
+    photos: [],                        // ids into the photo store
+    notes: '',
+    queries: '',
+    createdAt: new Date().toISOString()
+  };
+  return Object.assign(item, patch);
+}
+
+function newSurvey(patch = {}) {
+  return Object.assign({
+    id: uid('survey'),
+    schema: SCHEMA,
+    ref: '',
+    customer: { name: '', address: '', phone: '', email: '' },
+    surveyor: '',
+    surveyedAt: new Date().toISOString().slice(0, 10),
+    defaults: { finishFrame: '', finishSash: '', glass: '', cill: '', handle: '' },
+    notes: '',
+    items: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }, patch);
+}
+
+/* ------------------------------------------------------------------ *
+ * Grid operations - "drawing" the frame
+ * ------------------------------------------------------------------ */
+
+/** Total number of panes (lights) in the frame. */
+function paneCount(item) {
+  return item.columns.reduce((n, c) => n + c.rows.length, 0);
+}
+
+/** Add a mullion: a new column, inheriting the row split of its neighbour. */
+function addColumn(item, afterIndex = item.columns.length - 1) {
+  const template = item.columns[afterIndex] || item.columns[0];
+  const col = newColumn(template ? template.rows.length : 1);
+  item.columns.splice(afterIndex + 1, 0, col);
+  return col;
+}
+
+function removeColumn(item, index) {
+  if (item.columns.length <= 1) return false;
+  item.columns.splice(index, 1);
+  return true;
+}
+
+/** Add a transom to ONE column (partial transoms are the common case). */
+function addRow(item, colIndex) {
+  const col = item.columns[colIndex];
+  if (!col) return null;
+  const row = { id: uid('row'), height: null, pane: newPane() };
+  col.rows.push(row);
+  return row;
+}
+
+/**
+ * Split a light by adding a transom above it. The new section goes on TOP and
+ * the existing light keeps its configuration below, because a surveyor adding
+ * a transom is adding a fanlight over an existing light - not turning that
+ * light into the fanlight.
+ */
+function splitLight(item, colIndex) {
+  const col = item.columns[colIndex];
+  if (!col) return null;
+  const row = { id: uid('row'), height: null, pane: newPane() };
+  col.rows.unshift(row);
+  return row;
+}
+
+function removeRow(item, colIndex, rowIndex) {
+  const col = item.columns[colIndex];
+  if (!col || col.rows.length <= 1) return false;
+  col.rows.splice(rowIndex, 1);
+  return true;
+}
+
+/**
+ * Apply a transom across every column at once (a full-width transom).
+ * Uses the same fanlight-on-top rule as splitLight, so an opener already set
+ * on a light stays with that light rather than becoming the fanlight.
+ */
+function addFullTransom(item) {
+  item.columns.forEach((col, i) => {
+    if (col.rows.length === 1) splitLight(item, i);
+  });
+}
+
+/** Walk every pane with its position. Rows are ordered top -> bottom. */
+function eachPane(item, fn) {
+  item.columns.forEach((col, c) => {
+    col.rows.forEach((row, r) => fn(row.pane, c, r, col, row));
+  });
+}
+
+function panes(item) {
+  const out = [];
+  eachPane(item, (pane, c, r, col, row) => out.push({ pane, c, r, col, row }));
+  return out;
+}
+
+/* ------------------------------------------------------------------ *
+ * VS2 pane naming
+ *
+ * From the tommy-trinder skill: panes are named fullMullionPane0/1/...,
+ * or upperTransomPane0/1/2 and lowerTransomPane0/1/2, numbered left to
+ * right. We reproduce that where the frame matches a shape VS2 names
+ * predictably, and flag anything more exotic rather than guessing.
+ * ------------------------------------------------------------------ */
+
+function vs2PaneName(item, c, r) {
+  const col = item.columns[c];
+  const anyTransom = item.columns.some(x => x.rows.length > 1);
+  if (!anyTransom) {
+    return item.columns.length === 1 ? { name: 'pane0', confident: true }
+                                     : { name: `fullMullionPane${c}`, confident: true };
+  }
+  if (col.rows.length === 1) return { name: `fullMullionPane${c}`, confident: true };
+  if (col.rows.length === 2) {
+    return { name: r === 0 ? `upperTransomPane${c}` : `lowerTransomPane${c}`, confident: true };
+  }
+  // three or more sections in one column - VS2's naming here is not documented,
+  // so say so instead of inventing one.
+  return { name: `column${c}Section${r}`, confident: false };
+}
+
+/* ------------------------------------------------------------------ *
+ * Surveyor assumptions (from the read-window-drawings skill)
+ * ------------------------------------------------------------------ */
+
+/**
+ * Fill in opening configuration the way an experienced UK surveyor would when
+ * the drawing does not say. Only touches panes still flagged `assumed` or
+ * untouched-and-fixed, and records what it did so the report can declare it.
+ */
+function applyStandardAssumptions(item) {
+  const applied = [];
+  const cols = item.columns;
+  const anyTransom = cols.some(c => c.rows.length > 1);
+
+  // Cruciform (2 x 2): fanlights fixed, lower sections opening.
+  if (cols.length === 2 && cols.every(c => c.rows.length === 2)) {
+    cols.forEach((col, c) => {
+      set(col.rows[0].pane, 'fixed');
+      set(col.rows[1].pane, c === 0 ? 'sideLeft' : 'sideRight');
+    });
+    applied.push('Cruciform window: fanlights assumed fixed, lower sections assumed opening (side-hung, hinges to the outside).');
+    return applied;
+  }
+
+  // Three sections across: left opener, centre fixed, right opener.
+  if (cols.length === 3 && !anyTransom) {
+    set(cols[0].rows[0].pane, 'sideLeft');
+    set(cols[1].rows[0].pane, 'fixed');
+    set(cols[2].rows[0].pane, 'sideRight');
+    applied.push('Three-section window: assumed left opener, centre fixed, right opener.');
+    return applied;
+  }
+
+  // Two sections across: both opening, hinges to the outside.
+  if (cols.length === 2 && !anyTransom) {
+    set(cols[0].rows[0].pane, 'sideLeft');
+    set(cols[1].rows[0].pane, 'sideRight');
+    applied.push('Two-section window: assumed both sections opening, hinges to the outside.');
+    return applied;
+  }
+
+  // Fanlights over some or all lights: fanlights top-hung, main lights below opening.
+  if (anyTransom) {
+    cols.forEach((col, c) => {
+      if (col.rows.length === 2) {
+        set(col.rows[0].pane, 'topHung');
+        set(col.rows[1].pane, c === 0 ? 'sideLeft' : 'sideRight');
+      }
+    });
+    applied.push('Fanlights assumed top-hung over side-hung main lights.');
+  }
+  return applied;
+
+  function set(pane, opener) {
+    if (pane.opener === 'fixed' || pane.assumed) {
+      pane.opener = opener;
+      pane.assumed = true;
+      return true;
+    }
+    return false;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Derived description
+ * ------------------------------------------------------------------ */
+
+/** Human label for a light's position, surveyor style. */
+function paneLabel(item, c, r) {
+  const col = item.columns[c];
+  const across = item.columns.length;
+  const acrossName = across === 1 ? '' :
+    (c === 0 ? 'Left' : c === across - 1 ? 'Right' : (across === 3 ? 'Centre' : `Light ${c + 1}`));
+  if (col.rows.length === 1) return acrossName || 'Single light';
+  const downName = col.rows.length === 2 ? (r === 0 ? 'top' : 'bottom') : `section ${r + 1}`;
+  return acrossName ? `${acrossName} ${downName}` : downName[0].toUpperCase() + downName.slice(1);
+}
+
+/** Compact configuration code, e.g. "SHL | F | SHR". */
+function configCode(item) {
+  return item.columns.map(col =>
+    col.rows.map(row => OPENERS[row.pane.opener].short).join('/')
+  ).join(' | ');
+}
+
+/** Describe glass in one line; empty string when it is plain clear glass. */
+function glassLine(glass) {
+  const bits = [];
+  if (glass.obscure && glass.obscure !== 'None (clear)') bits.push(`${glass.obscure} obscure`);
+  if (glass.toughened) bits.push('toughened');
+  if (glass.leaded) bits.push('leaded');
+  if (glass.bars && glass.bars !== 'None') {
+    const grid = glass.barRows && glass.barCols ? ` ${glass.barRows}x${glass.barCols}` : '';
+    bits.push(`${glass.bars.toLowerCase()} bars${grid}`);
+  }
+  if (glass.trickleVent) bits.push('trickle vent');
+  if (glass.notes) bits.push(glass.notes);
+  return bits.join(', ');
+}
+
+/** Count of genuinely opening sashes - cross-check against shootbolt qty. */
+function openingCount(item) {
+  return panes(item).filter(p => isOpening(p.pane.opener)).length;
+}
+
+/* ------------------------------------------------------------------ *
+ * Building Regulations helpers
+ * ------------------------------------------------------------------ */
+
+/**
+ * Critical locations under Approved Document K: glazing in doors and side
+ * panels, and glazing below 800mm from floor level (1500mm beside a door).
+ * Returns the panes that should be toughened but are not marked as such.
+ */
+function criticalLocationWarnings(item) {
+  const fam = product(item.productKey).family;
+  const out = [];
+  const doorFamily = fam === 'door' || fam === 'composite';
+  panes(item).forEach(({ pane, c, r }) => {
+    if (pane.glass.toughened) return;
+    if (doorFamily) {
+      out.push({ c, r, why: 'glazing in a door or its side panel' });
+      return;
+    }
+    const sill = item.sillHeightFromFloor;
+    if (sill !== null && sill !== undefined && sill !== '' && Number(sill) < 800) {
+      const isLowest = r === item.columns[c].rows.length - 1;
+      if (isLowest) out.push({ c, r, why: `cill ${sill}mm from floor, below the 800mm critical-location threshold` });
+    }
+  });
+  return out;
+}
+
+/**
+ * Egress / means of escape: habitable rooms above ground level generally need
+ * an openable escape window. We cannot know the room use, so this only fires
+ * as a prompt when nothing in the frame opens.
+ */
+function hasNoOpener(item) {
+  const fam = product(item.productKey).family;
+  if (fam !== 'casement') return false;
+  return openingCount(item) === 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Validation - what is missing before this can be quoted
+ * ------------------------------------------------------------------ */
+
+function itemIssues(item) {
+  const issues = [];
+  const fam = product(item.productKey).family;
+  if (!item.location) issues.push('No location/room recorded - VS2 requires a Location of at least 2 characters.');
+  if (fam !== 'parts') {
+    if (!item.width) issues.push('Width missing.');
+    if (!item.height) issues.push('Height missing.');
+  }
+  if (fam === 'door' || fam === 'composite') {
+    if (!item.door.hand) issues.push('Door handing not recorded.');
+    if (!item.door.opensInOut) issues.push('Door opens in/out not recorded.');
+  }
+  if (fam === 'bifold' && !item.bifold.foldDirection) issues.push('Bi-fold fold/stack direction not recorded.');
+  if (fam === 'slider' && !item.slider.slideDirection) issues.push('Sliding direction not recorded.');
+  if (fam === 'bay') {
+    if (!item.bay.facets) issues.push('Number of bay facets not recorded.');
+    if (!item.bay.facetWidths) issues.push('Facet widths not recorded - a bay cannot be ordered without them.');
+  }
+  if (hasNoOpener(item)) issues.push('No opening sash in this frame - confirm this is intended (escape/ventilation).');
+  criticalLocationWarnings(item).forEach(w => {
+    issues.push(`${paneLabel(item, w.c, w.r)}: toughened glass not specified but this is a critical location (${w.why}).`);
+  });
+  return issues;
+}
+
+function surveyIssues(survey) {
+  const out = [];
+  if (!survey.customer.name) out.push('Customer name missing.');
+  if (!survey.items.length) out.push('No items surveyed.');
+  const refs = new Map();
+  survey.items.forEach(it => {
+    if (!it.ref) return;
+    refs.set(it.ref, (refs.get(it.ref) || 0) + 1);
+  });
+  [...refs.entries()].filter(([, n]) => n > 1).forEach(([ref]) => out.push(`Duplicate item reference "${ref}".`));
+  return out;
+}
+
+/* ------------------------------------------------------------------ *
+ * Build families - the "build once, then duplicate" speed win
+ * ------------------------------------------------------------------ */
+
+/**
+ * Signature of everything VS2 carries over when you hit the duplicate icon.
+ * Two items with the same signature = build one, duplicate, rename.
+ */
+function buildSignature(item) {
+  const shape = item.columns.map(col =>
+    col.rows.map(row => `${row.pane.opener}:${glassLine(row.pane.glass) || 'clear'}`).join('/')
+  ).join('|');
+  return [
+    item.productKey,
+    item.width, item.height,
+    shape,
+    item.finish.frame, item.finish.sash, item.cill, item.handle,
+    item.frenchMullion ? 'FM' : ''
+  ].join('~');
+}
+
+/** Group items into build-once families, largest first. */
+function buildFamilies(survey) {
+  const map = new Map();
+  survey.items.forEach(item => {
+    if (product(item.productKey).family === 'parts') return;
+    const sig = buildSignature(item);
+    if (!map.has(sig)) map.set(sig, []);
+    map.get(sig).push(item);
+  });
+  return [...map.values()]
+    .map(members => ({ build: members[0], duplicates: members.slice(1) }))
+    .sort((a, b) => b.duplicates.length - a.duplicates.length);
+}
+
+/** Auto reference like W1, W2, D1 based on what is already used. */
+function suggestRef(survey, productKey) {
+  const fam = product(productKey).family;
+  const prefix = fam === 'door' || fam === 'composite' ? 'D'
+    : fam === 'bifold' ? 'BF'
+    : fam === 'slider' ? 'PD'
+    : fam === 'bay' ? 'BAY'
+    : fam === 'parts' ? 'X'
+    : 'W';
+  let n = 1;
+  const used = new Set(survey.items.map(i => i.ref));
+  while (used.has(`${prefix}${n}`)) n += 1;
+  return `${prefix}${n}`;
+}
+
+
+Object.assign(exports, { SCHEMA, PRODUCTS, product, OPENERS, OPENER_KEYS, isOpening, OBSCURE_PATTERNS, BAR_TYPES, newGlass, uid, newPane, newColumn, newItem, newSurvey, paneCount, addColumn, removeColumn, addRow, splitLight, removeRow, addFullTransom, eachPane, panes, vs2PaneName, applyStandardAssumptions, paneLabel, configCode, glassLine, openingCount, criticalLocationWarnings, hasNoOpener, itemIssues, surveyIssues, buildSignature, buildFamilies, suggestRef });
+};
+
+__mods['./elevation.js'] = function (module, exports, require) {
+/*
+ * elevation.js - draws a frame as a surveyor's elevation, in SVG.
+ *
+ * Conventions follow the Swift Windows survey sheet: an opening sash is a
+ * triangle whose APEX SITS ON THE HINGE EDGE. That is the same convention as
+ * Whiteline's drawings, so what Sean draws here matches what comes back on the
+ * supplier estimate.
+ *
+ * Every pane carries data-c / data-r so the editor can hit-test taps.
+ */
+
+const { OPENERS, product } = require('./model.js');
+
+const PAD = 34;          // room for dimension text
+const FRAME = 9;         // outer frame thickness, in svg units
+const BAR = 7;           // mullion / transom thickness
+const SASH = 7;          // sash frame inset for an opening light
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, ch =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+
+/** Split a span into weighted parts; falls back to equal parts. */
+function split(total, weights) {
+  const known = weights.filter(w => w > 0);
+  if (!known.length || known.length !== weights.length) {
+    const each = total / weights.length;
+    return weights.map(() => each);
+  }
+  const sum = known.reduce((a, b) => a + b, 0);
+  return weights.map(w => (w / sum) * total);
+}
+
+/**
+ * Render an item to an SVG string.
+ * opts: { selected: {c,r} | null, showDims: bool, width: px }
+ */
+function renderElevation(item, opts = {}) {
+  const fam = product(item.productKey).family;
+  const showDims = opts.showDims !== false;
+
+  // Aspect: use real mm when we have them, otherwise a sensible default so the
+  // sketch still looks like a window rather than a square.
+  const wMm = Number(item.width) || 1200;
+  const hMm = Number(item.height) || (fam === 'composite' || fam === 'door' ? 2050 : 1050);
+  const maxSide = 320;
+  const scale = maxSide / Math.max(wMm, hMm);
+  const W = Math.max(140, Math.round(wMm * scale));
+  const H = Math.max(140, Math.round(hMm * scale));
+
+  const vbW = W + PAD * 2;
+  const vbH = H + PAD * 2;
+  const x0 = PAD, y0 = PAD;
+
+  const parts = [];
+  parts.push(defs());
+
+  // outer frame
+  parts.push(`<rect class="ev-frame" x="${x0}" y="${y0}" width="${W}" height="${H}" rx="2"/>`);
+
+  const inX = x0 + FRAME, inY = y0 + FRAME;
+  const inW = W - FRAME * 2, inH = H - FRAME * 2;
+
+  const colWidths = split(inW, item.columns.map(c => Number(c.width) || 0));
+
+  let cx = inX;
+  item.columns.forEach((col, c) => {
+    const cw = colWidths[c];
+    const rowHeights = split(inH, col.rows.map(r => Number(r.height) || 0));
+    let cy = inY;
+    col.rows.forEach((row, r) => {
+      const rh = rowHeights[r];
+      parts.push(pane(item, row.pane, c, r, cx, cy, cw, rh, opts));
+      cy += rh;
+      if (r < col.rows.length - 1) {
+        // transom
+        parts.push(`<rect class="ev-bar" x="${cx}" y="${cy - BAR / 2}" width="${cw}" height="${BAR}"/>`);
+      }
+    });
+    cx += cw;
+    if (c < item.columns.length - 1) {
+      // mullion
+      const cls = item.frenchMullion ? 'ev-bar ev-bar--french' : 'ev-bar';
+      parts.push(`<rect class="${cls}" x="${cx - BAR / 2}" y="${inY}" width="${BAR}" height="${inH}"/>`);
+    }
+  });
+
+  // family specific overlays
+  if (fam === 'bifold') parts.push(bifoldOverlay(item, inX, inY, inW, inH));
+  if (fam === 'slider') parts.push(sliderOverlay(item, inX, inY, inW, inH));
+  if (fam === 'sash') parts.push(sashOverlay(item, inX, inY, inW, inH));
+  if (fam === 'composite') parts.push(doorOverlay(item, inX, inY, inW, inH));
+
+  if (showDims) {
+    parts.push(dims(item, x0, y0, W, H, colWidths));
+  }
+
+  return `<svg class="ev" viewBox="0 0 ${vbW} ${vbH}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(item.ref || 'window')} elevation">${parts.join('')}</svg>`;
+}
+
+function defs() {
+  return `<defs>
+    <pattern id="obs" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 6 L6 0" class="ev-hatch"/>
+    </pattern>
+    <pattern id="lead" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 7 L7 0 M7 14 L14 7" class="ev-lead"/>
+    </pattern>
+  </defs>`;
+}
+
+function pane(item, p, c, r, x, y, w, h, opts) {
+  const out = [];
+  const sel = opts.selected && opts.selected.c === c && opts.selected.r === r;
+  const g = p.glass;
+
+  // glass
+  let fill = 'ev-glass';
+  if (g.obscure && g.obscure !== 'None (clear)') fill += ' ev-glass--obscure';
+  out.push(`<rect class="${fill}" x="${x}" y="${y}" width="${w}" height="${h}"/>`);
+  if (g.obscure && g.obscure !== 'None (clear)') {
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#obs)"/>`);
+  }
+  if (g.leaded) {
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#lead)"/>`);
+  }
+
+  // sash frame for anything that is not a bare fixed light
+  const opener = p.opener;
+  if (opener !== 'fixed') {
+    out.push(`<rect class="ev-sash${opener === 'dummy' ? ' ev-sash--dummy' : ''}" x="${x + SASH / 2}" y="${y + SASH / 2}" width="${Math.max(0, w - SASH)}" height="${Math.max(0, h - SASH)}"/>`);
+  }
+
+  // opener symbol - apex on the hinge edge
+  const sym = OPENERS[opener].symbol;
+  const m = SASH + 4;
+  const L = x + m, R = x + w - m, T = y + m, B = y + h - m;
+  const line = pts => `<polyline class="ev-open" points="${pts}"/>`;
+  if (sym === 'left')  out.push(line(`${R},${T} ${L},${(T + B) / 2} ${R},${B}`));
+  if (sym === 'right') out.push(line(`${L},${T} ${R},${(T + B) / 2} ${L},${B}`));
+  if (sym === 'up')    out.push(line(`${L},${B} ${(L + R) / 2},${T} ${R},${B}`));
+  if (sym === 'down')  out.push(line(`${L},${T} ${(L + R) / 2},${B} ${R},${T}`));
+  if (sym === 'tilt') {
+    out.push(line(`${R},${T} ${L},${(T + B) / 2} ${R},${B}`));
+    out.push(line(`${L},${T} ${(L + R) / 2},${B} ${R},${T}`));
+  }
+
+  // glazing bars
+  if (g.bars && g.bars !== 'None' && (g.barRows > 1 || g.barCols > 1)) {
+    const rows = Math.max(1, g.barRows || 1), cols = Math.max(1, g.barCols || 1);
+    for (let i = 1; i < cols; i += 1) {
+      const bx = x + (w / cols) * i;
+      out.push(`<line class="ev-glazbar" x1="${bx}" y1="${y}" x2="${bx}" y2="${y + h}"/>`);
+    }
+    for (let i = 1; i < rows; i += 1) {
+      const by = y + (h / rows) * i;
+      out.push(`<line class="ev-glazbar" x1="${x}" y1="${by}" x2="${x + w}" y2="${by}"/>`);
+    }
+  }
+
+  // markers
+  const marks = [];
+  if (g.toughened) marks.push('T');
+  if (g.obscure && g.obscure !== 'None (clear)') marks.push('Obs');
+  if (marks.length) {
+    out.push(`<text class="ev-mark" x="${x + 5}" y="${y + h - 5}">${esc(marks.join(' '))}</text>`);
+  }
+  if (g.trickleVent) {
+    out.push(`<rect class="ev-vent" x="${x + w / 2 - 12}" y="${y + 2}" width="24" height="5" rx="2"/>`);
+  }
+
+  // hit target - last so it sits on top
+  out.push(`<rect class="ev-hit${sel ? ' is-selected' : ''}" data-c="${c}" data-r="${r}" x="${x}" y="${y}" width="${w}" height="${h}" tabindex="0" role="button" aria-label="${esc(OPENERS[opener].label)}"/>`);
+  return out.join('');
+}
+
+function bifoldOverlay(item, x, y, w, h) {
+  const n = Math.max(2, Number(item.bifold.leaves) || 2);
+  const out = [];
+  for (let i = 1; i < n; i += 1) {
+    const lx = x + (w / n) * i;
+    out.push(`<line class="ev-leaf" x1="${lx}" y1="${y}" x2="${lx}" y2="${y + h}"/>`);
+  }
+  for (let i = 0; i < n; i += 1) {
+    const cx = x + (w / n) * (i + 0.5);
+    const up = i % 2 === 0;
+    out.push(`<polyline class="ev-open" points="${cx - 10},${up ? y + h - 14 : y + 14} ${cx},${up ? y + 14 : y + h - 14} ${cx + 10},${up ? y + h - 14 : y + 14}"/>`);
+  }
+  return out.join('');
+}
+
+function sliderOverlay(item, x, y, w, h) {
+  const n = Math.max(2, Number(item.slider.panes) || 2);
+  const out = [];
+  for (let i = 1; i < n; i += 1) {
+    const lx = x + (w / n) * i;
+    out.push(`<line class="ev-leaf" x1="${lx}" y1="${y}" x2="${lx}" y2="${y + h}"/>`);
+  }
+  const dir = String(item.slider.slideDirection || '').toLowerCase();
+  const midY = y + h / 2;
+  const arrow = dir.includes('left')
+    ? `<polyline class="ev-open" points="${x + w * 0.45},${midY - 9} ${x + w * 0.28},${midY} ${x + w * 0.45},${midY + 9}"/><line class="ev-open" x1="${x + w * 0.28}" y1="${midY}" x2="${x + w * 0.55}" y2="${midY}"/>`
+    : `<polyline class="ev-open" points="${x + w * 0.55},${midY - 9} ${x + w * 0.72},${midY} ${x + w * 0.55},${midY + 9}"/><line class="ev-open" x1="${x + w * 0.45}" y1="${midY}" x2="${x + w * 0.72}" y2="${midY}"/>`;
+  out.push(arrow);
+  return out.join('');
+}
+
+function sashOverlay(item, x, y, w, h) {
+  const style = String(item.sash.style || 'Double').toLowerCase();
+  const n = style.startsWith('tri') ? 3 : style.startsWith('sing') ? 1 : 2;
+  const out = [];
+  for (let i = 1; i < n; i += 1) {
+    const ly = y + (h / n) * i;
+    out.push(`<rect class="ev-bar" x="${x}" y="${ly - BAR / 2}" width="${w}" height="${BAR}"/>`);
+  }
+  // vertical slide arrows
+  const cx = x + w / 2;
+  out.push(`<line class="ev-open" x1="${cx}" y1="${y + h * 0.32}" x2="${cx}" y2="${y + h * 0.62}"/>`);
+  out.push(`<polyline class="ev-open" points="${cx - 8},${y + h * 0.40} ${cx},${y + h * 0.30} ${cx + 8},${y + h * 0.40}"/>`);
+  out.push(`<polyline class="ev-open" points="${cx - 8},${y + h * 0.54} ${cx},${y + h * 0.64} ${cx + 8},${y + h * 0.54}"/>`);
+  return out.join('');
+}
+
+function doorOverlay(item, x, y, w, h) {
+  const hand = String(item.door.hand || '').toLowerCase();
+  const hingeLeft = hand.includes('left');
+  const T = y + 14, B = y + h - 14, L = x + 14, R = x + w - 14;
+  const tri = hingeLeft
+    ? `${R},${T} ${L},${(T + B) / 2} ${R},${B}`
+    : `${L},${T} ${R},${(T + B) / 2} ${L},${B}`;
+  const knobX = hingeLeft ? x + w - 22 : x + 22;
+  return `${hand ? `<polyline class="ev-open" points="${tri}"/>` : ''}<circle class="ev-knob" cx="${knobX}" cy="${y + h * 0.55}" r="4"/>`;
+}
+
+function dims(item, x0, y0, W, H, colWidths) {
+  const out = [];
+  const wTxt = item.width ? `${item.width}` : '?';
+  const hTxt = item.height ? `${item.height}` : '?';
+
+  // width arrow under the frame
+  const yy = y0 + H + 16;
+  out.push(`<line class="ev-dim" x1="${x0}" y1="${yy}" x2="${x0 + W}" y2="${yy}"/>`);
+  out.push(`<line class="ev-dim" x1="${x0}" y1="${yy - 5}" x2="${x0}" y2="${yy + 5}"/>`);
+  out.push(`<line class="ev-dim" x1="${x0 + W}" y1="${yy - 5}" x2="${x0 + W}" y2="${yy + 5}"/>`);
+  out.push(`<text class="ev-dimtxt" x="${x0 + W / 2}" y="${yy + 15}" text-anchor="middle">${esc(wTxt)}</text>`);
+
+  // height arrow to the left
+  const xx = x0 - 16;
+  out.push(`<line class="ev-dim" x1="${xx}" y1="${y0}" x2="${xx}" y2="${y0 + H}"/>`);
+  out.push(`<line class="ev-dim" x1="${xx - 5}" y1="${y0}" x2="${xx + 5}" y2="${y0}"/>`);
+  out.push(`<line class="ev-dim" x1="${xx - 5}" y1="${y0 + H}" x2="${xx + 5}" y2="${y0 + H}"/>`);
+  out.push(`<text class="ev-dimtxt" x="${xx - 6}" y="${y0 + H / 2}" text-anchor="middle" transform="rotate(-90 ${xx - 6} ${y0 + H / 2})">${esc(hTxt)}</text>`);
+
+  // per-section widths, only when measured
+  if (item.columns.length > 1 && item.columns.some(c => c.width)) {
+    let cx = x0 + FRAME;
+    item.columns.forEach((col, i) => {
+      const cw = colWidths[i];
+      if (col.width) {
+        out.push(`<text class="ev-subdim" x="${cx + cw / 2}" y="${y0 - 8}" text-anchor="middle">${esc(col.width)}</text>`);
+      }
+      cx += cw;
+    });
+  }
+  return out.join('');
+}
+
+
+Object.assign(exports, { renderElevation });
+};
+
+__mods['./ui.js'] = function (module, exports, require) {
+/*
+ * ui.js - the small amount of DOM plumbing this app needs.
+ * No framework: the whole app is a few screens and a lot of buttons.
+ */
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => {
+    if (v === null || v === undefined || v === false) return;
+    if (k === 'class') node.className = v;
+    else if (k === 'html') node.innerHTML = v;
+    else if (k === 'text') node.textContent = v;
+    else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k, v === true ? '' : v);
+  });
+  (Array.isArray(children) ? children : [children]).forEach(c => {
+    if (c === null || c === undefined || c === false) return;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return node;
+}
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+/** A labelled field. `onInput` gets the raw string value. */
+function field(label, value, onInput, opts = {}) {
+  const id = `f-${Math.random().toString(36).slice(2, 8)}`;
+  const input = el(opts.multiline ? 'textarea' : 'input', {
+    id,
+    class: 'input',
+    value: value == null ? '' : value,
+    type: opts.type || 'text',
+    inputmode: opts.inputmode || null,
+    placeholder: opts.placeholder || '',
+    rows: opts.rows || null,
+    oninput: e => onInput(e.target.value)
+  });
+  if (opts.multiline) input.value = value == null ? '' : value;
+  return el('label', { class: `field ${opts.className || ''}` }, [
+    el('span', { class: 'field__label', text: label }),
+    input,
+    opts.hint ? el('span', { class: 'field__hint', text: opts.hint }) : null
+  ]);
+}
+
+function select(label, value, options, onChange, opts = {}) {
+  const sel = el('select', { class: 'input', onchange: e => onChange(e.target.value) });
+  options.forEach(o => {
+    const [val, text] = Array.isArray(o) ? o : [o, o];
+    sel.appendChild(el('option', { value: val, selected: String(val) === String(value) }, String(text)));
+  });
+  return el('label', { class: `field ${opts.className || ''}` }, [
+    el('span', { class: 'field__label', text: label }),
+    sel,
+    opts.hint ? el('span', { class: 'field__hint', text: opts.hint }) : null
+  ]);
+}
+
+function toggle(label, checked, onChange) {
+  return el('label', { class: 'toggle' }, [
+    el('input', { type: 'checkbox', checked: !!checked, onchange: e => onChange(e.target.checked) }),
+    el('span', { text: label })
+  ]);
+}
+
+function button(text, onClick, opts = {}) {
+  return el('button', {
+    class: `btn ${opts.variant ? `btn--${opts.variant}` : ''} ${opts.class || ''}`,
+    type: 'button',
+    onclick: onClick,
+    'aria-label': opts.ariaLabel || null
+  }, text);
+}
+
+/* ---------------- bottom sheet ---------------- */
+
+let openSheet = null;
+
+function sheet(title, contentNode, opts = {}) {
+  closeSheet();
+  const body = el('div', { class: 'sheet__body' }, [contentNode]);
+  const panel = el('div', { class: 'sheet__panel', role: 'dialog', 'aria-modal': 'true', 'aria-label': title }, [
+    el('div', { class: 'sheet__head' }, [
+      el('h2', { class: 'sheet__title', text: title }),
+      button('Done', () => closeSheet(), { variant: 'primary', class: 'sheet__done' })
+    ]),
+    body
+  ]);
+  const back = el('div', { class: 'sheet', onclick: e => { if (e.target === back) closeSheet(); } }, [panel]);
+  document.body.appendChild(back);
+  requestAnimationFrame(() => back.classList.add('is-open'));
+  openSheet = { back, onClose: opts.onClose };
+  return { close: closeSheet, body };
+}
+
+function closeSheet() {
+  if (!openSheet) return;
+  const { back, onClose } = openSheet;
+  openSheet = null;
+  back.classList.remove('is-open');
+  setTimeout(() => back.remove(), 180);
+  if (onClose) onClose();
+}
+
+/* ---------------- toast ---------------- */
+
+let toastTimer = null;
+function toast(message, ms = 2600) {
+  let node = document.getElementById('toast');
+  if (!node) {
+    node = el('div', { id: 'toast', class: 'toast', role: 'status', 'aria-live': 'polite' });
+    document.body.appendChild(node);
+  }
+  node.textContent = message;
+  node.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => node.classList.remove('is-on'), ms);
+}
+
+function confirmAction(message) {
+  return window.confirm(message);
+}
+
+
+Object.assign(exports, { el, $, $$, field, select, toggle, button, sheet, closeSheet, toast, confirmAction });
+};
+
+__mods['./store.js'] = function (module, exports, require) {
+/*
+ * store.js - offline persistence.
+ *
+ * Surveys are small JSON and live in localStorage, which is synchronous and
+ * therefore safe to write on every keystroke. Photos are large, so they live in
+ * IndexedDB and surveys only hold their ids.
+ *
+ * Everything here degrades rather than throws: a survey in a customer's hallway
+ * with no signal must never lose data because a quota check failed.
+ */
+
+const KEY = 'swift-survey:surveys:v1';
+const SETTINGS = 'swift-survey:settings:v1';
+const DB_NAME = 'swift-survey-photos';
+const DB_STORE = 'photos';
+
+/* ---------------- surveys ---------------- */
+
+function loadAll() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? list : [];
+  } catch (e) {
+    console.error('Could not read saved surveys', e);
+    return [];
+  }
+}
+
+function saveAll(list) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(list));
+    return true;
+  } catch (e) {
+    console.error('Could not save surveys', e);
+    return false;
+  }
+}
+
+function load(id) {
+  return loadAll().find(s => s.id === id) || null;
+}
+
+function save(survey) {
+  survey.updatedAt = new Date().toISOString();
+  const list = loadAll();
+  const i = list.findIndex(s => s.id === survey.id);
+  if (i >= 0) list[i] = survey; else list.unshift(survey);
+  return saveAll(list);
+}
+
+function remove(id) {
+  saveAll(loadAll().filter(s => s.id !== id));
+}
+
+/* ---------------- settings ---------------- */
+
+const DEFAULT_SETTINGS = {
+  surveyor: '',
+  defaultFinish: 'Smooth White',
+  defaultCill: '150mm',
+  defaultHandle: '',
+  sendEmail: '',
+  postUrl: '',
+  postToken: ''
+};
+
+function settings() {
+  try {
+    return Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS) || '{}'));
+  } catch {
+    return Object.assign({}, DEFAULT_SETTINGS);
+  }
+}
+
+function saveSettings(patch) {
+  const next = Object.assign(settings(), patch);
+  try { localStorage.setItem(SETTINGS, JSON.stringify(next)); } catch (e) { console.error(e); }
+  return next;
+}
+
+/* ---------------- photos (IndexedDB) ---------------- */
+
+let dbPromise = null;
+function db() {
+  if (dbPromise) return dbPromise;
+  dbPromise = new Promise((resolve, reject) => {
+    if (!('indexedDB' in window)) { reject(new Error('no indexedDB')); return; }
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      if (!req.result.objectStoreNames.contains(DB_STORE)) req.result.createObjectStore(DB_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  return dbPromise;
+}
+
+async function putPhoto(id, dataUrl) {
+  try {
+    const d = await db();
+    await new Promise((res, rej) => {
+      const tx = d.transaction(DB_STORE, 'readwrite');
+      tx.objectStore(DB_STORE).put(dataUrl, id);
+      tx.oncomplete = res;
+      tx.onerror = () => rej(tx.error);
+    });
+    return true;
+  } catch (e) {
+    console.error('photo save failed', e);
+    return false;
+  }
+}
+
+async function getPhoto(id) {
+  try {
+    const d = await db();
+    return await new Promise((res, rej) => {
+      const tx = d.transaction(DB_STORE, 'readonly');
+      const r = tx.objectStore(DB_STORE).get(id);
+      r.onsuccess = () => res(r.result || null);
+      r.onerror = () => rej(r.error);
+    });
+  } catch {
+    return null;
+  }
+}
+
+async function deletePhoto(id) {
+  try {
+    const d = await db();
+    await new Promise(res => {
+      const tx = d.transaction(DB_STORE, 'readwrite');
+      tx.objectStore(DB_STORE).delete(id);
+      tx.oncomplete = res;
+      tx.onerror = res;
+    });
+  } catch { /* nothing to do */ }
+}
+
+/**
+ * Shrink a camera photo before storing it. Phone cameras produce 4-12MB files
+ * and a survey can carry dozens; 1400px on the long edge is plenty to read a
+ * reveal or a lintel and keeps the whole survey shareable.
+ */
+function compressImage(file, maxSide = 1400, quality = 0.72) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('bad image'));
+      img.onload = () => {
+        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const cv = document.createElement('canvas');
+        cv.width = Math.round(img.width * scale);
+        cv.height = Math.round(img.height * scale);
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+        resolve(cv.toDataURL('image/jpeg', quality));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+
+Object.assign(exports, { loadAll, saveAll, load, save, remove, settings, saveSettings, putPhoto, getPhoto, deletePhoto, compressImage });
+};
+
+__mods['./share.js'] = function (module, exports, require) {
+/*
+ * share.js - getting the report off the phone and to Claude.
+ *
+ * Four routes, because signal in a customer's house is not guaranteed:
+ *   Share     - the OS share sheet (Claude app, WhatsApp, Mail, Drive...)
+ *   Copy      - clipboard, for pasting straight into a Claude chat
+ *   Download  - a .md file, works with no signal at all
+ *   Send      - POST to an endpoint (e.g. the Swift Hub) when one is configured
+ */
+
+const { toast } = require('./ui.js');
+
+function fileName(survey, ext = 'md') {
+  const who = (survey.customer.name || 'survey').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
+  const when = (survey.surveyedAt || new Date().toISOString().slice(0, 10));
+  return `survey-${who}-${when}.${ext}`.toLowerCase();
+}
+
+function download(text, name, mime = 'text/markdown') {
+  const blob = new Blob([text], { type: `${mime};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function copy(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast('Report copied — paste it into Claude');
+    return true;
+  } catch {
+    // Clipboard API needs a secure context; fall back to a selection copy.
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    ta.remove();
+    toast(ok ? 'Report copied — paste it into Claude' : 'Could not copy — use Download instead');
+    return ok;
+  }
+}
+
+async function share(survey, text, summary) {
+  const name = fileName(survey);
+  const title = `Window survey — ${survey.customer.name || 'customer'}`;
+  // Sharing as a file keeps the whole report intact; some targets only take text.
+  try {
+    if (navigator.canShare) {
+      const file = new File([text], name, { type: 'text/markdown' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title, text: summary });
+        return true;
+      }
+    }
+    if (navigator.share) {
+      await navigator.share({ title, text });
+      return true;
+    }
+  } catch (e) {
+    if (e && e.name === 'AbortError') return false;
+    console.error('share failed', e);
+  }
+  toast('Sharing not available here — use Copy or Download');
+  return false;
+}
+
+function mailto(survey, to, summary) {
+  const subject = encodeURIComponent(`Window survey — ${survey.customer.name || 'customer'}`);
+  const body = encodeURIComponent(
+    `${summary}\n\nThe full survey report is attached — or paste it into Claude and say "quote this up in Tommy Trinder".\n`
+  );
+  window.location.href = `mailto:${encodeURIComponent(to || '')}?subject=${subject}&body=${body}`;
+}
+
+/**
+ * POST the report to a configured endpoint. Left unset by default: nothing
+ * leaves the phone unless Sean has entered a URL in Settings.
+ */
+async function post(url, token, payload) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: Object.assign(
+      { 'Content-Type': 'application/json' },
+      token ? { Authorization: `Bearer ${token}` } : {}
+    ),
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return res.text();
+}
+
+
+Object.assign(exports, { fileName, download, copy, share, mailto, post });
+};
+
+__mods['./report.js'] = function (module, exports, require) {
+/*
+ * report.js - turns a survey into the deliverable.
+ *
+ * Output is one Markdown document with three layers, in this order:
+ *
+ *   1. A survey report a human can read and check on site.
+ *   2. A build plan (build-once families, VS2 step order) so the quote gets
+ *      built the fast way rather than frame by frame.
+ *   3. A fenced JSON payload carrying the exact structure, so Claude enters
+ *      the quote from data rather than from prose.
+ *
+ * Layer 1 follows the block format required by the read-window-drawings skill.
+ * Pure and DOM-free so it is testable under node.
+ */
+
+const { SCHEMA, PRODUCTS, product, OPENERS, panes, paneLabel, configCode, glassLine, openingCount, vs2PaneName, itemIssues, surveyIssues, buildFamilies, paneCount, isOpening } = require('./model.js');
+
+/* ------------------------------------------------------------------ *
+ * Descriptions
+ * ------------------------------------------------------------------ */
+
+function windowTypeLine(item) {
+  const p = product(item.productKey);
+  const cols = item.columns.length;
+  const anyTransom = item.columns.some(c => c.rows.length > 1);
+  const bits = [p.label];
+
+  if (p.family === 'casement') {
+    if (cols === 2 && item.columns.every(c => c.rows.length === 2)) bits.push('cruciform');
+    else if (cols > 1 && anyTransom) bits.push(`${cols} lights with transom${cols > 1 ? 's' : ''}`);
+    else if (cols > 1) bits.push(`${cols} lights`);
+    else if (anyTransom) bits.push('with transom');
+    else bits.push('single light');
+    if (item.frenchMullion) bits.push('French mullion');
+  } else if (p.family === 'bifold') {
+    bits.push(`${item.bifold.leaves} leaf`);
+  } else if (p.family === 'slider') {
+    bits.push(`${item.slider.panes} pane`);
+  } else if (p.family === 'sash') {
+    bits.push(item.sash.style);
+  } else if (p.family === 'bay') {
+    bits.push(`${item.bay.type.toLowerCase()}, ${item.bay.facets} facets${item.bay.type === 'Angled' ? ` at ${item.bay.angle}°` : ''}`);
+  }
+  return bits.join(' - ');
+}
+
+/**
+ * Light-by-light configuration. Deliberately a list rather than prose: an
+ * ambiguous sentence about hinge hands is what causes a remake.
+ */
+function configurationLines(item) {
+  const p = product(item.productKey);
+  const lines = [];
+
+  if (p.family === 'casement' || p.family === 'door') {
+    lines.push(`Code (left to right): ${configCode(item)}`);
+    panes(item).forEach(({ pane, c, r }) => {
+      const o = OPENERS[pane.opener];
+      const flag = pane.assumed ? ' [assumed]' : '';
+      const note = pane.notes ? ` - ${pane.notes}` : '';
+      lines.push(`  - ${paneLabel(item, c, r)}: ${o.label}${flag}${note}`);
+    });
+    const opening = openingCount(item);
+    lines.push(`Opening sashes: ${opening} (cross-check against shootbolt quantity on the supplier estimate)`);
+  }
+
+  if (p.family === 'composite' || p.family === 'door') {
+    const d = item.door;
+    if (d.style) lines.push(`Door style: ${d.style}`);
+    if (d.hand) lines.push(`Handing: ${d.hand}`);
+    if (d.opensInOut) lines.push(`Opens: ${d.opensInOut}`);
+    if (d.threshold) lines.push(`Threshold: ${d.threshold}`);
+    const iron = [d.letterplate && 'letterplate', d.knocker && 'knocker', d.cylinder].filter(Boolean);
+    if (iron.length) lines.push(`Furniture: ${iron.join(', ')}`);
+  }
+  if (p.family === 'bifold') {
+    lines.push(`Leaves: ${item.bifold.leaves}`);
+    if (item.bifold.foldDirection) lines.push(`Fold / stack: ${item.bifold.foldDirection}`);
+    if (item.bifold.trafficDoor) lines.push(`Traffic door: ${item.bifold.trafficDoor}`);
+  }
+  if (p.family === 'slider') {
+    lines.push(`Panes: ${item.slider.panes}`);
+    if (item.slider.slideDirection) lines.push(`Slides: ${item.slider.slideDirection}`);
+    if (item.slider.dummyPanel) lines.push(`Fixed / dummy panel: ${item.slider.dummyPanel}`);
+  }
+  if (p.family === 'sash') {
+    lines.push(`Style: ${item.sash.style}`);
+    if (item.sash.horns) lines.push(`Sash horns: ${item.sash.horns}`);
+    if (item.sash.sectionWidths) lines.push(`Section widths: ${item.sash.sectionWidths}`);
+  }
+  if (p.family === 'bay') {
+    lines.push(`Coupled type: ${item.bay.type}${item.bay.type === 'Angled' ? ` at ${item.bay.angle}°` : ''}`);
+    lines.push(`Facets: ${item.bay.facets}`);
+    if (item.bay.facetWidths) lines.push(`Facet widths: ${item.bay.facetWidths}`);
+    if (item.bay.poleRequired) lines.push('Load-bearing bay pole required (Parts Shop item).');
+  }
+  if (p.family === 'parts') {
+    if (item.parts.unit) lines.push(`Unit: ${item.parts.unit}`);
+    lines.push(`Quantity: ${item.parts.qty}`);
+    if (item.parts.price) lines.push(`Selling price ex-VAT: £${item.parts.price}`);
+  }
+  return lines;
+}
+
+function glassLines(item) {
+  const lines = [];
+  const seen = new Map();
+  panes(item).forEach(({ pane, c, r }) => {
+    const spec = glassLine(pane.glass) || 'Clear, standard double glazed';
+    if (!seen.has(spec)) seen.set(spec, []);
+    seen.get(spec).push(paneLabel(item, c, r));
+  });
+  if (seen.size === 1) {
+    lines.push(`All lights: ${[...seen.keys()][0]}`);
+  } else {
+    seen.forEach((where, spec) => lines.push(`  - ${where.join(', ')}: ${spec}`));
+  }
+  return lines;
+}
+
+function specialFeatures(item) {
+  const out = [];
+  if (item.frenchMullion) out.push('French mullion - both sashes open, no fixed central mullion when open.');
+  if (item.finish.frame) out.push(`Frame finish: ${item.finish.frame}`);
+  if (item.finish.sash && item.finish.sash !== item.finish.frame) out.push(`Sash finish: ${item.finish.sash}`);
+  if (item.finish.cill) out.push(`Cill finish: ${item.finish.cill}`);
+  if (item.cill) out.push(`Cill: ${item.cill}`);
+  if (item.handle) out.push(`Handles: ${item.handle}`);
+  if (item.hardwareNotes) out.push(`Hardware: ${item.hardwareNotes}`);
+  const vents = panes(item).filter(p => p.pane.glass.trickleVent).length;
+  if (vents) out.push(`Trickle vents: ${vents}`);
+  if (item.sillHeightFromFloor) out.push(`Cill height from floor: ${item.sillHeightFromFloor}mm`);
+  if (item.notes) out.push(item.notes);
+  if (item.photos && item.photos.length) out.push(`${item.photos.length} site photo(s) attached.`);
+  return out;
+}
+
+function assumptionLines(item) {
+  const out = [];
+  const assumed = panes(item).filter(p => p.pane.assumed);
+  if (assumed.length) {
+    out.push(`Opening configuration assumed for: ${assumed.map(p => paneLabel(item, p.c, p.r)).join(', ')} - confirm before ordering.`);
+  }
+  if (!item.columns.some(c => c.width)) {
+    if (item.columns.length > 1) out.push('Individual section widths not measured - assumed equal sections.');
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ *
+ * VS2 build steps
+ * ------------------------------------------------------------------ */
+
+function vs2Steps(item) {
+  const p = product(item.productKey);
+  const steps = [];
+  steps.push(`New Item -> ${p.tab} tab -> click the image for "${p.tt}".`);
+  steps.push(`Set Job Type "${item.jobType}" and Location "${item.location || '(NOT RECORDED)'}", then Save.`);
+
+  if (p.family === 'casement') {
+    const cols = item.columns.length;
+    const transomCols = item.columns.map((c, i) => (c.rows.length > 1 ? i : -1)).filter(i => i >= 0);
+    steps.push(`Draw the outer frame, then ${cols - 1} full mullion${cols - 1 === 1 ? '' : 's'}` +
+      (transomCols.length
+        ? `, then ${transomCols.length} transom${transomCols.length === 1 ? '' : 's'} in column${transomCols.length === 1 ? '' : 's'} ${transomCols.map(i => i + 1).join(', ')} only (draw partial transoms edge-to-mullion, after all mullions).`
+        : '.'));
+    steps.push(`Expected pane count after drawing: ${paneCount(item)}. Verify before confirming with the green tick - bars cannot be added afterwards.`);
+    steps.push(`Set overall dimensions ${item.width || '?'} x ${item.height || '?'} mm (Basic Frame Size).`);
+    const openers = panes(item).filter(x => x.pane.opener !== 'fixed');
+    if (openers.length) {
+      steps.push('Openers tab - click each pane twice to reach the "Opener at Pane X" dialog:');
+      openers.forEach(({ pane, c, r }) => {
+        const nm = vs2PaneName(item, c, r);
+        const o = OPENERS[pane.opener];
+        steps.push(`  - ${nm.name}${nm.confident ? '' : ' (name unverified, identify visually)'} = ${paneLabel(item, c, r)}: ${o.vs2}`);
+      });
+      steps.push(`Verify ${openingCount(item)} handle object(s) exist before moving on - a sash without a handle is a dummy.`);
+    } else {
+      steps.push('Openers tab - no openers, leave every pane fixed.');
+    }
+  } else if (p.family === 'sash') {
+    steps.push(`"Select Sash Window Style" -> ${item.sash.style}.`);
+    steps.push(`Set overall dimensions ${item.width || '?'} x ${item.height || '?'} mm.`);
+    if (item.sash.sectionWidths) steps.push(`Change Internal Widths -> ${item.sash.sectionWidths} (set the outer sections, let the middle take the balance).`);
+    if (item.sash.horns) steps.push(`Profile tab -> Sash Horns: ${item.sash.horns}.`);
+  } else if (p.family === 'bifold') {
+    steps.push(`"Select Bi-Fold Door Style" -> ${item.bifold.leaves} leaf, fold/stack ${item.bifold.foldDirection || '(NOT RECORDED)'}, traffic door ${item.bifold.trafficDoor || '(NOT RECORDED)'}.`);
+    steps.push(`Set overall dimensions ${item.width || '?'} x ${item.height || '?'} mm.`);
+  } else if (p.family === 'slider') {
+    steps.push(`"Select Patio Door Style" -> ${item.slider.panes} pane, sliding ${item.slider.slideDirection || '(NOT RECORDED)'}${item.slider.dummyPanel ? `, fixed panel ${item.slider.dummyPanel}` : ''}.`);
+    steps.push(`Set overall dimensions ${item.width || '?'} x ${item.height || '?'} mm.`);
+  } else if (p.family === 'composite') {
+    steps.push(`"Select Door Style" -> ${item.door.style || '(layout NOT RECORDED)'}, hand ${item.door.hand || '(NOT RECORDED)'}.`);
+    steps.push(`Set overall dimensions ${item.width || '?'} x ${item.height || '?'} mm.`);
+    steps.push('Slab itself is priced in the CompDoor portal - the TT item is the quote line.');
+  } else if (p.family === 'door') {
+    steps.push(`Draw the frame${item.columns.length > 1 ? ` with ${item.columns.length - 1} mullion(s)` : ''}, then set ${item.width || '?'} x ${item.height || '?'} mm.`);
+    steps.push(`Handing ${item.door.hand || '(NOT RECORDED)'}, opens ${item.door.opensInOut || '(NOT RECORDED)'}.`);
+  } else if (p.family === 'bay') {
+    steps.push(`Setup dialog: Coupled Items Type = ${item.bay.type}, Number of Facets = ${item.bay.facets}.`);
+    steps.push(`Elevation view: overall ${item.width || '?'} x ${item.height || '?'} mm; facet widths ${item.bay.facetWidths || '(NOT RECORDED)'}.`);
+    steps.push('Populate each facet via its "+" button - the item shows Incomplete until every facet is built. Use Duplicate Facet where facets repeat.');
+    if (item.bay.type === 'Angled') steps.push(`Plan view (hexagon icon) -> set each facet joint angle to ${item.bay.angle}°.`);
+    if (item.bay.poleRequired) steps.push('Add a load-bearing bay pole from the Parts Shop as a separate line.');
+  } else if (p.family === 'parts') {
+    steps.push(`Parts Shop item - plain form, no VS2. Quantity ${item.parts.qty}${item.parts.unit ? ` ${item.parts.unit}` : ''}${item.parts.price ? `, selling price ex-VAT £${item.parts.price}` : ''}.`);
+    return steps;
+  }
+
+  // Finish / glass / hardware apply to every configured product
+  if (item.finish.frame) {
+    steps.push(`Finish tab -> click the outer frame -> Manage Frame Finish -> ${item.finish.frame} -> Apply to Item.`);
+  }
+  const glassSpecs = new Set(panes(item).map(x => glassLine(x.pane.glass) || 'clear'));
+  if (glassSpecs.size === 1) {
+    const only = [...glassSpecs][0];
+    steps.push(`Glass tab -> ${only === 'clear' ? 'standard clear' : only} -> Apply to All.`);
+  } else {
+    panes(item).forEach(({ pane, c, r }) => {
+      const spec = glassLine(pane.glass);
+      if (spec) steps.push(`Glass tab -> ${vs2PaneName(item, c, r).name} (${paneLabel(item, c, r)}): ${spec} -> Apply to Pane.`);
+    });
+  }
+  panes(item).forEach(({ pane, c, r }) => {
+    const g = pane.glass;
+    if (g.bars && g.bars !== 'None') {
+      steps.push(`Glazing tab -> ${vs2PaneName(item, c, r).name}: bar type ${g.bars}, then use the Auto Grid tool to set ${g.barRows || '?'} rows x ${g.barCols || '?'} columns (selecting a bar type alone draws nothing).`);
+    }
+  });
+  if (item.handle) steps.push(`Hardware tab -> click a sash -> Manage Hardware -> handles: ${item.handle}.`);
+  const vents = panes(item).filter(x => x.pane.glass.trickleVent);
+  if (vents.length) steps.push(`Hardware tab -> Ventilation -> trickle vents on: ${vents.map(x => paneLabel(item, x.c, x.r)).join(', ')}.`);
+  if (item.cill) steps.push(`Profile tab -> cill: ${item.cill}.`);
+  return steps;
+}
+
+/* ------------------------------------------------------------------ *
+ * JSON payload
+ * ------------------------------------------------------------------ */
+
+function toPayload(survey) {
+  return {
+    schema: SCHEMA,
+    generatedAt: new Date().toISOString(),
+    survey: {
+      ref: survey.ref,
+      surveyedAt: survey.surveyedAt,
+      surveyor: survey.surveyor,
+      customer: survey.customer,
+      notes: survey.notes,
+      defaults: survey.defaults
+    },
+    items: survey.items.map(item => {
+      const p = product(item.productKey);
+      return {
+        ref: item.ref,
+        location: item.location,
+        quantity: item.quantity,
+        product: { key: item.productKey, label: p.label, family: p.family, tommyTrinder: p.tt, tab: p.tab },
+        jobType: item.jobType,
+        sizeMm: { width: item.width, height: item.height, note: 'Basic Frame Size - excludes cill' },
+        sillHeightFromFloorMm: item.sillHeightFromFloor,
+        grid: {
+          columns: item.columns.length,
+          paneCount: paneCount(item),
+          openingSashes: openingCount(item),
+          layout: item.columns.map((col, c) => ({
+            index: c,
+            widthMm: col.width,
+            rows: col.rows.map((row, r) => ({
+              index: r,
+              heightMm: row.height,
+              label: paneLabel(item, c, r),
+              vs2PaneName: vs2PaneName(item, c, r).name,
+              vs2PaneNameConfident: vs2PaneName(item, c, r).confident,
+              opener: row.pane.opener,
+              openerLabel: OPENERS[row.pane.opener].label,
+              opens: isOpening(row.pane.opener),
+              vs2OpenerAction: OPENERS[row.pane.opener].vs2,
+              assumed: row.pane.assumed,
+              glass: row.pane.glass,
+              notes: row.pane.notes
+            }))
+          }))
+        },
+        frenchMullion: item.frenchMullion,
+        finish: item.finish,
+        cill: item.cill,
+        handle: item.handle,
+        hardwareNotes: item.hardwareNotes,
+        door: p.family === 'door' || p.family === 'composite' ? item.door : undefined,
+        bifold: p.family === 'bifold' ? item.bifold : undefined,
+        slider: p.family === 'slider' ? item.slider : undefined,
+        sash: p.family === 'sash' ? item.sash : undefined,
+        bay: p.family === 'bay' ? item.bay : undefined,
+        parts: p.family === 'parts' ? item.parts : undefined,
+        notes: item.notes,
+        queries: item.queries,
+        assumptions: assumptionLines(item),
+        issues: itemIssues(item),
+        vs2Steps: vs2Steps(item),
+        photoCount: (item.photos || []).length
+      };
+    }),
+    buildPlan: buildFamilies(survey).map(f => ({
+      buildRef: f.build.ref,
+      buildLocation: f.build.location,
+      duplicateInto: f.duplicates.map(d => ({ ref: d.ref, location: d.location }))
+    })),
+    openIssues: surveyIssues(survey)
+  };
+}
+
+/* ------------------------------------------------------------------ *
+ * Markdown report
+ * ------------------------------------------------------------------ */
+
+function block(title, lines) {
+  if (!lines || !lines.length) return `**${title}:** none\n`;
+  if (lines.length === 1 && !lines[0].startsWith('  ')) return `**${title}:** ${lines[0]}\n`;
+  return `**${title}:**\n${lines.map(l => (l.startsWith('  ') ? l : `  - ${l}`)).join('\n')}\n`;
+}
+
+function toMarkdown(survey) {
+  const L = [];
+  const c = survey.customer;
+
+  L.push(`# Window Survey - ${c.name || 'Customer not recorded'}`);
+  L.push('');
+  L.push(`> Generated by the Swift Windows survey app. Hand this whole file to Claude and say`);
+  L.push(`> **"quote this up in Tommy Trinder"** - the tommy-trinder skill reads the build steps`);
+  L.push(`> and the JSON payload at the end and enters the quote.`);
+  L.push('');
+  L.push(`| | |`);
+  L.push(`|---|---|`);
+  L.push(`| Survey ref | ${survey.ref || '-'} |`);
+  L.push(`| Customer | ${c.name || '-'} |`);
+  L.push(`| Address | ${(c.address || '-').replace(/\n/g, ', ')} |`);
+  L.push(`| Phone | ${c.phone || '-'} |`);
+  L.push(`| Email | ${c.email || '-'} |`);
+  L.push(`| Surveyed | ${survey.surveyedAt || '-'} |`);
+  L.push(`| Surveyor | ${survey.surveyor || '-'} |`);
+  L.push(`| Items | ${survey.items.length} |`);
+  L.push('');
+
+  if (survey.notes) {
+    L.push('## Job notes');
+    L.push('');
+    L.push(survey.notes);
+    L.push('');
+  }
+
+  const d = survey.defaults;
+  const defaultBits = [
+    d.finishFrame && `Frame finish: ${d.finishFrame}`,
+    d.finishSash && `Sash finish: ${d.finishSash}`,
+    d.glass && `Glass: ${d.glass}`,
+    d.cill && `Cill: ${d.cill}`,
+    d.handle && `Handles: ${d.handle}`
+  ].filter(Boolean);
+  if (defaultBits.length) {
+    L.push('## Job-wide specification');
+    L.push('');
+    defaultBits.forEach(b => L.push(`- ${b}`));
+    L.push('');
+    L.push('Apply these to every item unless an item says otherwise.');
+    L.push('');
+  }
+
+  /* ---- build plan ---- */
+  const families = buildFamilies(survey);
+  const repeats = families.filter(f => f.duplicates.length);
+  L.push('## Build plan for Tommy Trinder');
+  L.push('');
+  if (repeats.length) {
+    L.push('Build these frames once, then use the **duplicate icon** on the Items list and rename - the whole configuration carries over. Finish the source frame completely before duplicating; a copy does not inherit later edits.');
+    L.push('');
+    repeats.forEach(f => {
+      L.push(`- Build **${f.build.ref} (${f.build.location})**, then duplicate into: ${f.duplicates.map(x => `**${x.ref}** (${x.location})`).join(', ')}`);
+    });
+    L.push('');
+    const saved = repeats.reduce((n, f) => n + f.duplicates.length, 0);
+    L.push(`That is ${families.length} frame${families.length === 1 ? '' : 's'} to build for ${survey.items.length} item${survey.items.length === 1 ? '' : 's'} - ${saved} saved by duplicating.`);
+  } else {
+    L.push('No repeated frames - every item needs building individually.');
+  }
+  L.push('');
+
+  /* ---- items ---- */
+  L.push('## Items');
+  L.push('');
+  survey.items.forEach((item, i) => {
+    const p = product(item.productKey);
+    L.push(`### ${item.ref || `Item ${i + 1}`} - ${item.location || 'location not recorded'}`);
+    L.push('');
+    L.push('```');
+    L.push(`Ref:                 ${item.ref || '-'}`);
+    L.push(`Room:                ${item.location || '-'}`);
+    L.push(`Width:               ${item.width ? `${item.width} mm` : 'NOT MEASURED'}`);
+    L.push(`Height:              ${item.height ? `${item.height} mm` : 'NOT MEASURED'}`);
+    L.push(`Window Type:         ${windowTypeLine(item)}`);
+    L.push('```');
+    L.push('');
+    if (item.quantity > 1) L.push(`**Quantity:** ${item.quantity}\n`);
+    L.push(block('Configuration', configurationLines(item)));
+    L.push(block('Glass Specification', glassLines(item)));
+    L.push(block('Special Features', specialFeatures(item)));
+    L.push(block('Assumptions Made', assumptionLines(item)));
+    const q = [];
+    if (item.queries) q.push(item.queries);
+    itemIssues(item).forEach(x => q.push(x));
+    L.push(block('Queries', q));
+    L.push('');
+    L.push(`<details><summary>Tommy Trinder build steps - ${item.ref || `item ${i + 1}`}</summary>`);
+    L.push('');
+    let stepNo = 0;
+    vs2Steps(item).forEach(s => {
+      // sub-lines (openers, per-pane glass) hang off the step above them and
+      // must not consume a number, or the list reads 6, 11, 12...
+      if (s.startsWith('  ')) { L.push(s); return; }
+      stepNo += 1;
+      L.push(`${stepNo}. ${s}`);
+    });
+    L.push('');
+    L.push('</details>');
+    L.push('');
+  });
+
+  /* ---- open issues ---- */
+  const issues = surveyIssues(survey);
+  const itemQ = survey.items.flatMap(it => itemIssues(it).map(x => `${it.ref || it.location}: ${x}`));
+  if (issues.length || itemQ.length) {
+    L.push('## Everything needing an answer before ordering');
+    L.push('');
+    [...issues, ...itemQ].forEach(x => L.push(`- ${x}`));
+    L.push('');
+  }
+
+  /* ---- payload ---- */
+  L.push('## Structured data');
+  L.push('');
+  L.push('Machine-readable copy of the whole survey. Prefer this over the prose above when entering the quote.');
+  L.push('');
+  L.push('```json');
+  L.push(JSON.stringify(toPayload(survey), null, 2));
+  L.push('```');
+  L.push('');
+
+  return L.join('\n');
+}
+
+/** Short plain-text summary, for a covering message. */
+function toSummary(survey) {
+  const fams = buildFamilies(survey);
+  const opening = survey.items.reduce((n, i) => n + openingCount(i), 0);
+  return [
+    `${survey.customer.name || 'Survey'} - ${survey.items.length} item(s), ${fams.length} unique frame(s) to build, ${opening} opening sash(es).`,
+    survey.customer.address ? survey.customer.address.replace(/\n/g, ', ') : '',
+    `Surveyed ${survey.surveyedAt}${survey.surveyor ? ` by ${survey.surveyor}` : ''}.`
+  ].filter(Boolean).join('\n');
+}
+
+
+Object.assign(exports, { windowTypeLine, configurationLines, glassLines, specialFeatures, assumptionLines, vs2Steps, toPayload, toMarkdown, toSummary });
+};
+
+__mods['./editor.js'] = function (module, exports, require) {
+/*
+ * editor.js - the screen Sean actually uses in a customer's house.
+ *
+ * Design rules for on-site use:
+ *  - the drawing is the data. Tapping a light sets what it is; nothing has to
+ *    be interpreted afterwards.
+ *  - big targets, numeric keypads, no scrolling to reach the common actions.
+ *  - every change saves immediately. There is no save button to forget.
+ */
+
+const { PRODUCTS, OPENERS, OPENER_KEYS, OBSCURE_PATTERNS, BAR_TYPES, product, addColumn, removeColumn, removeRow, addFullTransom, splitLight, applyStandardAssumptions, paneCount, openingCount, itemIssues, paneLabel } = require('./model.js');
+const { renderElevation } = require('./elevation.js');
+const { el, $, field, select, toggle, button, sheet, closeSheet, toast, confirmAction } = require('./ui.js');
+const { putPhoto, getPhoto, deletePhoto, compressImage } = require('./store.js');
+
+/** Small SVG of an opener symbol, for the picker buttons. */
+function symbolSvg(key) {
+  const s = OPENERS[key].symbol;
+  const p = { left: '46,10 12,26 46,42', right: '12,10 46,26 12,42', up: '12,42 29,10 46,42', down: '12,10 29,42 46,10' };
+  let inner = '';
+  if (p[s]) inner = `<polyline points="${p[s]}" fill="none" stroke="currentColor" stroke-width="3"/>`;
+  else if (s === 'tilt') inner = `<polyline points="46,10 12,26 46,42" fill="none" stroke="currentColor" stroke-width="3"/><polyline points="12,10 29,42 46,10" fill="none" stroke="currentColor" stroke-width="3"/>`;
+  else if (s === 'dummy') inner = `<rect x="12" y="10" width="34" height="32" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="5 4"/>`;
+  return `<svg viewBox="0 0 58 52" class="sym" aria-hidden="true"><rect x="4" y="4" width="50" height="44" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>${inner}</svg>`;
+}
+
+function renderItemScreen(ctx, item) {
+  const wrap = el('div', { class: 'screen' });
+  const redraw = () => {
+    const next = renderItemScreen(ctx, item);
+    wrap.replaceWith(next);
+  };
+  const touch = () => { ctx.save(); };
+
+  const fam = product(item.productKey).family;
+
+  /* ---------- header ---------- */
+  wrap.appendChild(el('header', { class: 'topbar' }, [
+    button('‹ Back', () => ctx.go(`survey/${ctx.survey.id}`), { class: 'topbar__back' }),
+    el('div', { class: 'topbar__title' }, [
+      el('strong', { text: item.ref || 'Item' }),
+      el('span', { class: 'topbar__sub', text: item.location || 'no location yet' })
+    ]),
+    button('Delete', () => {
+      if (!confirmAction(`Delete ${item.ref || 'this item'}?`)) return;
+      ctx.survey.items = ctx.survey.items.filter(i => i.id !== item.id);
+      ctx.save();
+      ctx.go(`survey/${ctx.survey.id}`);
+    }, { class: 'topbar__danger' })
+  ]));
+
+  const main = el('div', { class: 'screen__body' });
+  wrap.appendChild(main);
+
+  /* ---------- identity ---------- */
+  main.appendChild(el('section', { class: 'card' }, [
+    el('div', { class: 'row row--2' }, [
+      field('Ref', item.ref, v => { item.ref = v; touch(); }, { placeholder: 'W1' }),
+      field('Room / location', item.location, v => { item.location = v; touch(); updateTitle(); }, { placeholder: 'Lounge front' })
+    ]),
+    select('Product', item.productKey, PRODUCTS.map(p => [p.key, p.label]), v => {
+      item.productKey = v; touch(); redraw();
+    }, { hint: `Tommy Trinder: ${product(item.productKey).tt} (${product(item.productKey).tab} tab)` })
+  ]));
+
+  function updateTitle() {
+    const sub = $('.topbar__sub', wrap);
+    if (sub) sub.textContent = item.location || 'no location yet';
+  }
+
+  /* ---------- the drawing ---------- */
+  const drawCard = el('section', { class: 'card card--draw' });
+  main.appendChild(drawCard);
+
+  const canvas = el('div', { class: 'canvas', html: renderElevation(item, { showDims: true }) });
+  canvas.addEventListener('click', e => {
+    const hit = e.target.closest('.ev-hit');
+    if (!hit) return;
+    openPaneSheet(Number(hit.dataset.c), Number(hit.dataset.r));
+  });
+  canvas.addEventListener('keydown', e => {
+    const hit = e.target.closest('.ev-hit');
+    if (!hit || (e.key !== 'Enter' && e.key !== ' ')) return;
+    e.preventDefault();
+    openPaneSheet(Number(hit.dataset.c), Number(hit.dataset.r));
+  });
+  drawCard.appendChild(canvas);
+
+  const counts = el('p', { class: 'counts' });
+  const refreshCounts = () => {
+    counts.textContent = `${paneCount(item)} light${paneCount(item) === 1 ? '' : 's'} · ${openingCount(item)} opening · ${item.columns.length} section${item.columns.length === 1 ? '' : 's'} across`;
+  };
+  refreshCounts();
+  drawCard.appendChild(counts);
+
+  if (fam === 'casement' || fam === 'door') {
+    drawCard.appendChild(el('div', { class: 'tools' }, [
+      button('＋ Mullion', () => { addColumn(item); touch(); redraw(); }, { variant: 'tool' }),
+      button('＋ Transom', () => { addFullTransom(item); touch(); redraw(); }, { variant: 'tool' }),
+      button('－ Mullion', () => {
+        if (!removeColumn(item, item.columns.length - 1)) { toast('Only one section left'); return; }
+        touch(); redraw();
+      }, { variant: 'tool' }),
+      button('Auto-configure', () => {
+        const applied = applyStandardAssumptions(item);
+        touch(); redraw();
+        toast(applied.length ? applied[0] : 'No standard assumption fits this shape');
+      }, { variant: 'tool' })
+    ]));
+    drawCard.appendChild(el('p', { class: 'hint', text: 'Tap a light to set how it opens and its glass. “＋ Transom” adds a fanlight across every section; to add one over a single light, tap that light and choose “Add fanlight above”.' }));
+  }
+
+  /* ---------- sizes ---------- */
+  main.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Sizes (mm)' }),
+    el('div', { class: 'row row--2' }, [
+      field('Width', item.width, v => { item.width = num(v); touch(); refreshDrawing(); }, { type: 'number', inputmode: 'numeric', placeholder: '1800' }),
+      field('Height', item.height, v => { item.height = num(v); touch(); refreshDrawing(); }, { type: 'number', inputmode: 'numeric', placeholder: '1200' })
+    ]),
+    el('p', { class: 'hint', text: 'Basic Frame Size — the frame only. A 150mm cill adds about 30mm to the overall height; do not include it here.' }),
+    field('Cill height from floor', item.sillHeightFromFloor, v => { item.sillHeightFromFloor = num(v); touch(); }, {
+      type: 'number', inputmode: 'numeric', placeholder: 'e.g. 900',
+      hint: 'Below 800mm makes this a critical location — the report will ask for toughened glass.'
+    }),
+    item.columns.length > 1
+      ? el('div', {}, [
+        el('h4', { class: 'card__subtitle', text: 'Section widths (optional)' }),
+        el('div', { class: 'row row--wrap' }, item.columns.map((col, i) =>
+          field(`Section ${i + 1}`, col.width, v => { col.width = num(v); touch(); refreshDrawing(); }, { type: 'number', inputmode: 'numeric', placeholder: 'equal' })
+        )),
+        el('p', { class: 'hint', text: 'Leave blank for equal sections. Fill these in when the lights are deliberately unequal.' })
+      ])
+      : null
+  ]));
+
+  function refreshDrawing() {
+    canvas.innerHTML = renderElevation(item, { showDims: true });
+    refreshCounts();
+  }
+
+  /* ---------- family specific ---------- */
+  const spec = el('section', { class: 'card' });
+  spec.appendChild(el('h3', { class: 'card__title', text: 'Specification' }));
+
+  if (fam === 'composite' || fam === 'door') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Door style', item.door.style, ['', 'Single', 'Door + side panel left', 'Door + side panel right', 'Door + 2 side panels', 'Door + toplight', 'French pair'], v => { item.door.style = v; touch(); }),
+      select('Handing', item.door.hand, ['', 'Left hand', 'Right hand'], v => { item.door.hand = v; touch(); refreshDrawing(); })
+    ]));
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Opens', item.door.opensInOut, ['', 'Inward', 'Outward'], v => { item.door.opensInOut = v; touch(); }),
+      select('Threshold', item.door.threshold, ['', 'Standard', 'Low threshold', 'Part M compliant'], v => { item.door.threshold = v; touch(); })
+    ]));
+    spec.appendChild(el('div', { class: 'row row--wrap' }, [
+      toggle('Letterplate', item.door.letterplate, v => { item.door.letterplate = v; touch(); }),
+      toggle('Knocker', item.door.knocker, v => { item.door.knocker = v; touch(); })
+    ]));
+    spec.appendChild(field('Cylinder / security', item.door.cylinder, v => { item.door.cylinder = v; touch(); }, { placeholder: '3 star' }));
+  }
+  if (fam === 'bifold') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Leaves', item.bifold.leaves, [2, 3, 4, 5, 6, 7], v => { item.bifold.leaves = Number(v); touch(); refreshDrawing(); }),
+      select('Fold / stack', item.bifold.foldDirection, ['', 'All left', 'All right', 'Split 2 left / 1 right', 'Split 1 left / 2 right', 'Split even'], v => { item.bifold.foldDirection = v; touch(); })
+    ]));
+    spec.appendChild(select('Traffic door', item.bifold.trafficDoor, ['', 'None', 'Left leaf', 'Right leaf'], v => { item.bifold.trafficDoor = v; touch(); }));
+  }
+  if (fam === 'slider') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Panes', item.slider.panes, [2, 3, 4], v => { item.slider.panes = Number(v); touch(); refreshDrawing(); }),
+      select('Slides', item.slider.slideDirection, ['', 'Left', 'Right', 'Both (centre opening)'], v => { item.slider.slideDirection = v; touch(); refreshDrawing(); })
+    ]));
+    spec.appendChild(field('Fixed / dummy panel', item.slider.dummyPanel, v => { item.slider.dummyPanel = v; touch(); }, { placeholder: 'e.g. right hand panel fixed' }));
+  }
+  if (fam === 'sash') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Style', item.sash.style, ['Single', 'Double', 'Triple'], v => { item.sash.style = v; touch(); refreshDrawing(); }),
+      select('Sash horns', item.sash.horns, ['', 'None', 'Belsay', 'Belsay top only', 'Victorian'], v => { item.sash.horns = v; touch(); })
+    ]));
+    spec.appendChild(field('Section widths', item.sash.sectionWidths, v => { item.sash.sectionWidths = v; touch(); }, { placeholder: '750 / 1200 / 750', hint: 'Set the outer sections and let the middle take the balance.' }));
+  }
+  if (fam === 'bay') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      select('Type', item.bay.type, ['Angled', 'Flat'], v => { item.bay.type = v; touch(); redraw(); }),
+      select('Facets', item.bay.facets, [1, 2, 3, 4, 5, 6, 7, 8], v => { item.bay.facets = Number(v); touch(); })
+    ]));
+    if (item.bay.type === 'Angled') {
+      spec.appendChild(select('Bay angle', item.bay.angle, [135, 90, 150, 160], v => { item.bay.angle = Number(v); touch(); }, { hint: 'VS2 defaults to 135°.' }));
+    }
+    spec.appendChild(field('Facet widths', item.bay.facetWidths, v => { item.bay.facetWidths = v; touch(); }, { placeholder: '600 / 1200 / 600', hint: 'Front and returns, in order. A bay cannot be ordered without these.' }));
+    spec.appendChild(toggle('Load-bearing bay pole required', item.bay.poleRequired, v => { item.bay.poleRequired = v; touch(); }));
+  }
+  if (fam === 'parts') {
+    spec.appendChild(el('div', { class: 'row row--2' }, [
+      field('Unit', item.parts.unit, v => { item.parts.unit = v; touch(); }, { placeholder: 'm² / each' }),
+      field('Quantity', item.parts.qty, v => { item.parts.qty = num(v) ?? 1; touch(); }, { type: 'number', inputmode: 'decimal' })
+    ]));
+    spec.appendChild(field('Selling price ex-VAT', item.parts.price, v => { item.parts.price = num(v); touch(); }, { type: 'number', inputmode: 'decimal' }));
+  }
+
+  if (fam === 'casement') {
+    spec.appendChild(toggle('French mullion (both sashes open, no fixed centre)', item.frenchMullion, v => { item.frenchMullion = v; touch(); refreshDrawing(); }));
+  }
+
+  spec.appendChild(el('div', { class: 'row row--2' }, [
+    field('Frame finish', item.finish.frame, v => { item.finish.frame = v; touch(); }, { placeholder: ctx.survey.defaults.finishFrame || 'Smooth White' }),
+    field('Sash finish', item.finish.sash, v => { item.finish.sash = v; touch(); }, { placeholder: 'same as frame' })
+  ]));
+  spec.appendChild(el('div', { class: 'row row--2' }, [
+    field('Cill', item.cill, v => { item.cill = v; touch(); }, { placeholder: ctx.survey.defaults.cill || '150mm' }),
+    field('Handles', item.handle, v => { item.handle = v; touch(); }, { placeholder: ctx.survey.defaults.handle || 'Connoisseur Chrome' })
+  ]));
+  spec.appendChild(el('div', { class: 'row row--2' }, [
+    field('Quantity', item.quantity, v => { item.quantity = Number(v) || 1; touch(); }, { type: 'number', inputmode: 'numeric' }),
+    select('Job type', item.jobType, [
+      'Supply & Fit - Remove & replace', 'Supply & Fit - New opening', 'Supply Only'
+    ], v => { item.jobType = v; touch(); })
+  ]));
+  spec.appendChild(field('Hardware notes', item.hardwareNotes, v => { item.hardwareNotes = v; touch(); }, { placeholder: 'restrictors, keyed alike…' }));
+  main.appendChild(spec);
+
+  /* ---------- photos ---------- */
+  const photoCard = el('section', { class: 'card' }, [el('h3', { class: 'card__title', text: 'Photos' })]);
+  const strip = el('div', { class: 'photos' });
+  photoCard.appendChild(strip);
+  const fileInput = el('input', {
+    type: 'file', accept: 'image/*', capture: 'environment', class: 'visually-hidden',
+    onchange: async e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        const dataUrl = await compressImage(file);
+        const id = `photo-${item.id}-${Date.now()}`;
+        const ok = await putPhoto(id, dataUrl);
+        if (!ok) { toast('Could not save that photo'); return; }
+        item.photos.push(id);
+        touch();
+        drawPhotos();
+      } catch (err) {
+        console.error(err);
+        toast('Could not read that photo');
+      }
+      e.target.value = '';
+    }
+  });
+  photoCard.appendChild(fileInput);
+  photoCard.appendChild(button('📷 Add photo', () => fileInput.click(), { variant: 'tool' }));
+  main.appendChild(photoCard);
+
+  async function drawPhotos() {
+    strip.innerHTML = '';
+    for (const id of item.photos) {
+      const src = await getPhoto(id);
+      if (!src) continue;
+      const img = el('img', { class: 'photos__img', src, alt: 'site photo' });
+      const del = button('✕', async () => {
+        if (!confirmAction('Remove this photo?')) return;
+        await deletePhoto(id);
+        item.photos = item.photos.filter(p => p !== id);
+        touch();
+        drawPhotos();
+      }, { class: 'photos__del', ariaLabel: 'Remove photo' });
+      strip.appendChild(el('div', { class: 'photos__cell' }, [img, del]));
+    }
+  }
+  drawPhotos();
+
+  /* ---------- notes and queries ---------- */
+  main.appendChild(el('section', { class: 'card' }, [
+    field('Notes', item.notes, v => { item.notes = v; touch(); }, { multiline: true, rows: 3, placeholder: 'access, scaffold, lintel, anything the fitter needs' }),
+    field('Queries for the customer', item.queries, v => { item.queries = v; touch(); }, { multiline: true, rows: 2, placeholder: 'anything left undecided' })
+  ]));
+
+  /* ---------- issues ---------- */
+  const issues = itemIssues(item);
+  if (issues.length) {
+    main.appendChild(el('section', { class: 'card card--warn' }, [
+      el('h3', { class: 'card__title', text: 'Still needed' }),
+      el('ul', { class: 'list' }, issues.map(i => el('li', { text: i })))
+    ]));
+  }
+
+  main.appendChild(el('div', { class: 'spacer' }));
+
+  /* ---------- pane sheet ---------- */
+  function openPaneSheet(c, r) {
+    const col = item.columns[c];
+    if (!col) return;
+    const row = col.rows[r];
+    if (!row) return;
+    const pane = row.pane;
+    const body = el('div');
+
+    const rerenderSheet = () => {
+      const s = openPaneSheet(c, r);
+      return s;
+    };
+
+    body.appendChild(el('h4', { class: 'sheet__sub', text: 'How does it open?' }));
+    const grid = el('div', { class: 'openers' });
+    OPENER_KEYS.forEach(key => {
+      const active = pane.opener === key;
+      grid.appendChild(el('button', {
+        type: 'button',
+        class: `opener ${active ? 'is-on' : ''}`,
+        onclick: () => {
+          pane.opener = key;
+          pane.assumed = false;       // a deliberate choice is no longer an assumption
+          touch();
+          refreshDrawing();
+          closeSheet();
+          openPaneSheet(c, r);
+        }
+      }, [
+        el('span', { class: 'opener__sym', html: symbolSvg(key) }),
+        el('span', { class: 'opener__label', text: OPENERS[key].label })
+      ]));
+    });
+    body.appendChild(grid);
+
+    body.appendChild(el('h4', { class: 'sheet__sub', text: 'Glass' }));
+    body.appendChild(select('Obscure', pane.glass.obscure, OBSCURE_PATTERNS, v => {
+      pane.glass.obscure = v; touch(); refreshDrawing();
+    }));
+    body.appendChild(el('div', { class: 'row row--wrap' }, [
+      toggle('Toughened', pane.glass.toughened, v => { pane.glass.toughened = v; touch(); refreshDrawing(); }),
+      toggle('Leaded', pane.glass.leaded, v => { pane.glass.leaded = v; touch(); refreshDrawing(); }),
+      toggle('Trickle vent', pane.glass.trickleVent, v => { pane.glass.trickleVent = v; touch(); refreshDrawing(); })
+    ]));
+    body.appendChild(select('Glazing bars', pane.glass.bars, BAR_TYPES, v => {
+      pane.glass.bars = v; touch(); refreshDrawing();
+    }));
+    body.appendChild(el('div', { class: 'row row--2' }, [
+      field('Bar rows', pane.glass.barRows, v => { pane.glass.barRows = Number(v) || 0; touch(); refreshDrawing(); }, { type: 'number', inputmode: 'numeric' }),
+      field('Bar columns', pane.glass.barCols, v => { pane.glass.barCols = Number(v) || 0; touch(); refreshDrawing(); }, { type: 'number', inputmode: 'numeric' })
+    ]));
+    body.appendChild(field('Note for this light', pane.notes, v => { pane.notes = v; touch(); }, { placeholder: 'e.g. escape window' }));
+
+    body.appendChild(el('h4', { class: 'sheet__sub', text: 'This light' }));
+    body.appendChild(el('div', { class: 'row row--wrap' }, [
+      button('Add fanlight above (transom)', () => {
+        splitLight(item, c); touch(); refreshDrawing(); closeSheet();
+      }, { variant: 'tool' }),
+      col.rows.length > 1 ? button('Remove this section', () => {
+        removeRow(item, c, r); touch(); refreshDrawing(); closeSheet();
+      }, { variant: 'tool' }) : null,
+      item.columns.length > 1 ? button('Remove this section across', () => {
+        removeColumn(item, c); touch(); refreshDrawing(); closeSheet();
+      }, { variant: 'tool' }) : null
+    ]));
+    if (col.rows.length > 1) {
+      body.appendChild(field('Section height (mm)', row.height, v => { row.height = num(v); touch(); refreshDrawing(); }, {
+        type: 'number', inputmode: 'numeric', placeholder: 'equal', hint: 'e.g. the fanlight height'
+      }));
+    }
+
+    return sheet(`${paneLabel(item, c, r)} — light ${r + 1} of section ${c + 1}`, body);
+  }
+
+  return wrap;
+}
+
+function num(v) {
+  if (v === '' || v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+
+Object.assign(exports, { renderItemScreen });
+};
+
+__mods['./app.js'] = function (module, exports, require) {
+/*
+ * app.js - screens and routing.
+ *
+ * Routes are hash based so the app works from a file:// copy, a static host or
+ * the Swift Hub, with no server involved.
+ */
+
+const { newSurvey, newItem, suggestRef, product, surveyIssues, itemIssues, buildFamilies, openingCount, paneCount, PRODUCTS } = require('./model.js');
+const { toMarkdown, toPayload, toSummary, windowTypeLine } = require('./report.js');
+const { renderElevation } = require('./elevation.js');
+const { renderItemScreen } = require('./editor.js');
+const store = require('./store.js');
+const out = require('./share.js');
+const { el, $, field, select, button, toast, confirmAction, sheet, closeSheet } = require('./ui.js');
+
+const root = document.getElementById('app');
+let ctx = null;
+
+/* ------------------------------------------------------------------ *
+ * Routing
+ * ------------------------------------------------------------------ */
+
+function go(route) {
+  window.location.hash = `#/${route}`;
+}
+
+function currentRoute() {
+  const h = window.location.hash.replace(/^#\/?/, '');
+  return h || 'home';
+}
+
+function render() {
+  // Sheets are appended to <body>, so they outlive a screen swap. Close any
+  // open sheet on navigation or the product picker sits over the new screen.
+  closeSheet();
+  const route = currentRoute();
+  const [head, a] = route.split('/');
+  root.innerHTML = '';
+  let screen;
+
+  if (head === 'survey' && a) {
+    const survey = store.load(a);
+    if (!survey) { go('home'); return; }
+    ctx = makeCtx(survey);
+    screen = surveyScreen(ctx);
+  } else if (head === 'item' && a) {
+    const [surveyId, itemId] = a.split('~');
+    const survey = store.load(surveyId);
+    const item = survey && survey.items.find(i => i.id === itemId);
+    if (!item) { go('home'); return; }
+    ctx = makeCtx(survey);
+    screen = renderItemScreen(ctx, item);
+  } else if (head === 'report' && a) {
+    const survey = store.load(a);
+    if (!survey) { go('home'); return; }
+    ctx = makeCtx(survey);
+    screen = reportScreen(ctx);
+  } else if (head === 'settings') {
+    screen = settingsScreen();
+  } else {
+    screen = homeScreen();
+  }
+  root.appendChild(screen);
+  window.scrollTo(0, 0);
+}
+
+function makeCtx(survey) {
+  return {
+    survey,
+    save: () => { store.save(survey); },
+    go
+  };
+}
+
+window.addEventListener('hashchange', render);
+
+/* ------------------------------------------------------------------ *
+ * Home - list of surveys
+ * ------------------------------------------------------------------ */
+
+function homeScreen() {
+  const wrap = el('div', { class: 'screen' });
+  wrap.appendChild(el('header', { class: 'topbar topbar--home' }, [
+    el('div', { class: 'topbar__title' }, [
+      el('strong', { text: 'Swift Survey' }),
+      el('span', { class: 'topbar__sub', text: 'draw it, size it, send it to Claude' })
+    ]),
+    button('Settings', () => go('settings'), { class: 'topbar__back' })
+  ]));
+
+  const body = el('div', { class: 'screen__body' });
+  wrap.appendChild(body);
+
+  body.appendChild(button('＋ New survey', () => {
+    const s = store.settings();
+    const survey = newSurvey({
+      surveyor: s.surveyor,
+      defaults: { finishFrame: s.defaultFinish, finishSash: '', glass: '', cill: s.defaultCill, handle: s.defaultHandle }
+    });
+    store.save(survey);
+    go(`survey/${survey.id}`);
+  }, { variant: 'primary', class: 'btn--block' }));
+
+  const list = store.loadAll().sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+  if (!list.length) {
+    body.appendChild(el('p', { class: 'empty', text: 'No surveys yet. Start one before you knock on the door.' }));
+  }
+  list.forEach(s => {
+    const issues = surveyIssues(s).length + s.items.reduce((n, i) => n + itemIssues(i).length, 0);
+    body.appendChild(el('button', {
+      type: 'button', class: 'rowcard', onclick: () => go(`survey/${s.id}`)
+    }, [
+      el('div', { class: 'rowcard__main' }, [
+        el('strong', { text: s.customer.name || 'Untitled survey' }),
+        el('span', { class: 'rowcard__sub', text: `${(s.customer.address || '').split('\n')[0] || 'no address'} · ${s.items.length} item${s.items.length === 1 ? '' : 's'}` })
+      ]),
+      issues ? el('span', { class: 'pill pill--warn', text: `${issues} to check` }) : el('span', { class: 'pill', text: 'ready' })
+    ]));
+  });
+
+  body.appendChild(el('div', { class: 'spacer' }));
+  return wrap;
+}
+
+/* ------------------------------------------------------------------ *
+ * Survey - customer details + item list
+ * ------------------------------------------------------------------ */
+
+function surveyScreen(c) {
+  const { survey } = c;
+  const wrap = el('div', { class: 'screen' });
+  const touch = () => c.save();
+
+  wrap.appendChild(el('header', { class: 'topbar' }, [
+    button('‹ Surveys', () => go('home'), { class: 'topbar__back' }),
+    el('div', { class: 'topbar__title' }, [
+      el('strong', { text: survey.customer.name || 'New survey' }),
+      el('span', { class: 'topbar__sub', text: `${survey.items.length} item${survey.items.length === 1 ? '' : 's'}` })
+    ]),
+    button('Report', () => go(`report/${survey.id}`), { variant: 'primary', class: 'topbar__cta' })
+  ]));
+
+  const body = el('div', { class: 'screen__body' });
+  wrap.appendChild(body);
+
+  /* customer */
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Customer' }),
+    field('Name', survey.customer.name, v => { survey.customer.name = v; touch(); }, { placeholder: 'Mrs Patel' }),
+    field('Address', survey.customer.address, v => { survey.customer.address = v; touch(); }, { multiline: true, rows: 2 }),
+    el('div', { class: 'row row--2' }, [
+      field('Phone', survey.customer.phone, v => { survey.customer.phone = v; touch(); }, { type: 'tel', inputmode: 'tel' }),
+      field('Email', survey.customer.email, v => { survey.customer.email = v; touch(); }, { type: 'email', inputmode: 'email' })
+    ]),
+    el('div', { class: 'row row--2' }, [
+      field('Survey ref', survey.ref, v => { survey.ref = v; touch(); }, { placeholder: 'optional' }),
+      field('Date', survey.surveyedAt, v => { survey.surveyedAt = v; touch(); }, { type: 'date' })
+    ]),
+    field('Surveyor', survey.surveyor, v => { survey.surveyor = v; touch(); })
+  ]));
+
+  /* job-wide spec */
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Job-wide specification' }),
+    el('p', { class: 'hint', text: 'Set once here and it applies to every item unless an item overrides it.' }),
+    el('div', { class: 'row row--2' }, [
+      field('Frame finish', survey.defaults.finishFrame, v => { survey.defaults.finishFrame = v; touch(); }, { placeholder: 'Smooth White' }),
+      field('Cill', survey.defaults.cill, v => { survey.defaults.cill = v; touch(); }, { placeholder: '150mm' })
+    ]),
+    el('div', { class: 'row row--2' }, [
+      field('Glass', survey.defaults.glass, v => { survey.defaults.glass = v; touch(); }, { placeholder: 'Standard double glazed' }),
+      field('Handles', survey.defaults.handle, v => { survey.defaults.handle = v; touch(); }, { placeholder: 'Connoisseur Chrome' })
+    ]),
+    field('Job notes', survey.notes, v => { survey.notes = v; touch(); }, { multiline: true, rows: 3, placeholder: 'access, parking, scaffold, timescales' })
+  ]));
+
+  /* items */
+  body.appendChild(el('h3', { class: 'section-title', text: 'Items' }));
+
+  survey.items.forEach(item => {
+    const issues = itemIssues(item).length;
+    const card = el('div', { class: 'itemcard' }, [
+      el('button', {
+        type: 'button', class: 'itemcard__hit', onclick: () => go(`item/${survey.id}~${item.id}`)
+      }, [
+        el('div', { class: 'itemcard__thumb', html: renderElevation(item, { showDims: false }) }),
+        el('div', { class: 'itemcard__meta' }, [
+          el('strong', { text: `${item.ref || '—'} · ${item.location || 'no location'}` }),
+          el('span', { class: 'rowcard__sub', text: windowTypeLine(item) }),
+          el('span', { class: 'rowcard__sub', text: `${item.width || '?'} × ${item.height || '?'} mm · ${paneCount(item)} light${paneCount(item) === 1 ? '' : 's'} · ${openingCount(item)} opening` }),
+          issues ? el('span', { class: 'pill pill--warn', text: `${issues} to check` }) : el('span', { class: 'pill', text: 'complete' })
+        ])
+      ]),
+      el('div', { class: 'itemcard__actions' }, [
+        button('Duplicate', () => {
+          const copy = JSON.parse(JSON.stringify(item));
+          copy.id = `item-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+          copy.ref = suggestRef(survey, copy.productKey);
+          copy.location = `${item.location} (copy)`;
+          copy.photos = [];
+          survey.items.push(copy);
+          touch();
+          render();
+        }, { variant: 'tool' })
+      ])
+    ]);
+    body.appendChild(card);
+  });
+
+  body.appendChild(button('＋ Add window or door', () => openAddSheet(c), { variant: 'primary', class: 'btn--block' }));
+
+  const issues = surveyIssues(survey);
+  if (issues.length) {
+    body.appendChild(el('section', { class: 'card card--warn' }, [
+      el('h3', { class: 'card__title', text: 'Still needed' }),
+      el('ul', { class: 'list' }, issues.map(i => el('li', { text: i })))
+    ]));
+  }
+
+  body.appendChild(el('div', { class: 'row row--wrap' }, [
+    button('Delete survey', () => {
+      if (!confirmAction(`Delete the survey for ${survey.customer.name || 'this customer'}? This cannot be undone.`)) return;
+      store.remove(survey.id);
+      go('home');
+    }, { variant: 'danger' })
+  ]));
+
+  body.appendChild(el('div', { class: 'spacer' }));
+  return wrap;
+}
+
+function openAddSheet(c) {
+  const { survey } = c;
+  const body = el('div');
+  body.appendChild(el('p', { class: 'hint', text: 'Pick what you are standing in front of.' }));
+  const grid = el('div', { class: 'picker' });
+  PRODUCTS.forEach(p => {
+    grid.appendChild(el('button', {
+      type: 'button', class: 'picker__btn', onclick: () => {
+        const item = newItem({
+          productKey: p.key,
+          ref: suggestRef(survey, p.key),
+          jobType: 'Supply & Fit - Remove & replace'
+        });
+        item.finish.frame = survey.defaults.finishFrame || '';
+        item.cill = survey.defaults.cill || '';
+        item.handle = survey.defaults.handle || '';
+        survey.items.push(item);
+        c.save();
+        go(`item/${survey.id}~${item.id}`);
+      }
+    }, [
+      el('strong', { text: p.label }),
+      el('span', { class: 'picker__sub', text: p.tab })
+    ]));
+  });
+  body.appendChild(grid);
+  sheet('Add an item', body);
+}
+
+/* ------------------------------------------------------------------ *
+ * Report
+ * ------------------------------------------------------------------ */
+
+function reportScreen(c) {
+  const { survey } = c;
+  const wrap = el('div', { class: 'screen' });
+  const md = toMarkdown(survey);
+  const summary = toSummary(survey);
+
+  wrap.appendChild(el('header', { class: 'topbar' }, [
+    button('‹ Back', () => go(`survey/${survey.id}`), { class: 'topbar__back' }),
+    el('div', { class: 'topbar__title' }, [
+      el('strong', { text: 'Report' }),
+      el('span', { class: 'topbar__sub', text: survey.customer.name || '' })
+    ])
+  ]));
+
+  const body = el('div', { class: 'screen__body' });
+  wrap.appendChild(body);
+
+  const issues = [...surveyIssues(survey), ...survey.items.flatMap(i => itemIssues(i).map(x => `${i.ref || i.location}: ${x}`))];
+  if (issues.length) {
+    body.appendChild(el('section', { class: 'card card--warn' }, [
+      el('h3', { class: 'card__title', text: `${issues.length} thing${issues.length === 1 ? '' : 's'} to check before you leave` }),
+      el('ul', { class: 'list' }, issues.map(i => el('li', { text: i }))),
+      el('p', { class: 'hint', text: 'You can still send the report — these are carried through as queries so nothing gets quoted on a guess.' })
+    ]));
+  }
+
+  const families = buildFamilies(survey);
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Summary' }),
+    el('ul', { class: 'list' }, [
+      el('li', { text: `${survey.items.length} item${survey.items.length === 1 ? '' : 's'}` }),
+      el('li', { text: `${families.length} frame${families.length === 1 ? '' : 's'} to build, the rest duplicated` }),
+      el('li', { text: `${survey.items.reduce((n, i) => n + openingCount(i), 0)} opening sashes in total` })
+    ])
+  ]));
+
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Send it' }),
+    el('p', { class: 'hint', text: 'Send this to Claude and say “quote this up in Tommy Trinder”. The report carries the build steps and a structured payload, so nothing has to be re-typed.' }),
+    el('div', { class: 'row row--wrap' }, [
+      button('Share', () => out.share(survey, md, summary), { variant: 'primary' }),
+      button('Copy report', () => out.copy(md), { variant: 'primary' }),
+      button('Download .md', () => out.download(md, out.fileName(survey, 'md')), { variant: 'tool' }),
+      button('Download .json', () => out.download(JSON.stringify(toPayload(survey), null, 2), out.fileName(survey, 'json'), 'application/json'), { variant: 'tool' }),
+      button('Email', () => out.mailto(survey, store.settings().sendEmail, summary), { variant: 'tool' })
+    ]),
+    store.settings().postUrl
+      ? button('Send to Swift Hub', async e => {
+        const s = store.settings();
+        const btn = e.target;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        try {
+          await out.post(s.postUrl, s.postToken, { markdown: md, payload: toPayload(survey) });
+          toast('Sent');
+        } catch (err) {
+          console.error(err);
+          toast(`Send failed: ${err.message}`);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Send to Swift Hub';
+        }
+      }, { variant: 'primary' })
+      : null
+  ]));
+
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Preview' }),
+    el('pre', { class: 'preview', text: md })
+  ]));
+
+  body.appendChild(el('div', { class: 'spacer' }));
+  return wrap;
+}
+
+/* ------------------------------------------------------------------ *
+ * Settings
+ * ------------------------------------------------------------------ */
+
+function settingsScreen() {
+  const wrap = el('div', { class: 'screen' });
+  const s = store.settings();
+  wrap.appendChild(el('header', { class: 'topbar' }, [
+    button('‹ Back', () => go('home'), { class: 'topbar__back' }),
+    el('div', { class: 'topbar__title' }, [el('strong', { text: 'Settings' })])
+  ]));
+  const body = el('div', { class: 'screen__body' });
+  wrap.appendChild(body);
+
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Defaults for new surveys' }),
+    field('Surveyor name', s.surveyor, v => store.saveSettings({ surveyor: v })),
+    field('Frame finish', s.defaultFinish, v => store.saveSettings({ defaultFinish: v })),
+    field('Cill', s.defaultCill, v => store.saveSettings({ defaultCill: v })),
+    field('Handles', s.defaultHandle, v => store.saveSettings({ defaultHandle: v }))
+  ]));
+
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Sending' }),
+    field('Email reports to', s.sendEmail, v => store.saveSettings({ sendEmail: v }), { type: 'email', inputmode: 'email' }),
+    field('Post endpoint (optional)', s.postUrl, v => store.saveSettings({ postUrl: v }), {
+      placeholder: 'https://…/api/survey',
+      hint: 'Leave blank and nothing ever leaves the phone automatically. Set it to post the report straight to the Swift Hub.'
+    }),
+    field('Endpoint token', s.postToken, v => store.saveSettings({ postToken: v }), { type: 'password' })
+  ]));
+
+  body.appendChild(el('section', { class: 'card' }, [
+    el('h3', { class: 'card__title', text: 'Data' }),
+    el('p', { class: 'hint', text: 'Surveys live on this device only. Export a backup before clearing browser data or changing phone.' }),
+    el('div', { class: 'row row--wrap' }, [
+      button('Export all surveys', () => {
+        out.download(JSON.stringify(store.loadAll(), null, 2), 'swift-surveys-backup.json', 'application/json');
+      }, { variant: 'tool' }),
+      button('Import backup', () => importBackup(), { variant: 'tool' })
+    ])
+  ]));
+
+  body.appendChild(el('div', { class: 'spacer' }));
+  return wrap;
+}
+
+function importBackup() {
+  const input = el('input', {
+    type: 'file', accept: 'application/json', class: 'visually-hidden',
+    onchange: e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const list = JSON.parse(reader.result);
+          if (!Array.isArray(list)) throw new Error('not a survey backup');
+          const existing = store.loadAll();
+          const byId = new Map(existing.map(s => [s.id, s]));
+          list.forEach(s => byId.set(s.id, s));
+          store.saveAll([...byId.values()]);
+          toast(`Imported ${list.length} survey(s)`);
+          render();
+        } catch (err) {
+          toast(`Could not import: ${err.message}`);
+        }
+      };
+      reader.readAsText(file);
+    }
+  });
+  document.body.appendChild(input);
+  input.click();
+  setTimeout(() => input.remove(), 60000);
+}
+
+/* ------------------------------------------------------------------ *
+ * Boot
+ * ------------------------------------------------------------------ */
+
+render();
+
+
+};
+
+  require('./app.js');
+})();
+</script>
+</body>
+</html>
