@@ -1117,6 +1117,57 @@ function select(id,centre){
   renderAll();
 }
 
+// ---------- every café, bar, restaurant and sight on OpenStreetMap ----------
+const OSM_KEY='rethymno-osm-v1', OSM_BBOX='35.3641,24.4666,35.3754,24.4829';
+const OSM_Q=`[out:json][timeout:25];(nwr["amenity"~"^(restaurant|cafe|bar|pub|fast_food|ice_cream|biergarten|food_court)$"]["name"](${OSM_BBOX});nwr["tourism"~"^(attraction|museum|gallery|viewpoint|artwork)$"]["name"](${OSM_BBOX});nwr["historic"]["name"](${OSM_BBOX});nwr["amenity"="place_of_worship"]["name"](${OSM_BBOX});nwr["leisure"="park"]["name"](${OSM_BBOX}););out center tags;`;
+const OSM_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+const fold=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9Ͱ-Ͽ ]/g,' ').replace(/\b(the|restaurant|restaurants|taverna|tavern|cafe|caffe|bar|rethymno|rethymnon|rethimno|kafeneio|psistaria|mezedopoleio|ouzeri|και|ταβερνα|εστιατοριο)\b/g,' ').replace(/\s+/g,' ').trim();
+const OSM_T={restaurant:'Restaurant',cafe:'Café',bar:'Bar',pub:'Pub',fast_food:'Fast food',ice_cream:'Gelato',biergarten:'Beer garden',food_court:'Food court',attraction:'Attraction',museum:'Museum',gallery:'Gallery',viewpoint:'Viewpoint',artwork:'Artwork',place_of_worship:'Church',park:'Park'};
+function osmToPlace(e){
+  const g=e.tags||{}, lat=e.lat??(e.center&&e.center.lat), lng=e.lon??(e.center&&e.center.lon);
+  if(lat==null||lng==null) return null;
+  const a=g.amenity, food=['restaurant','fast_food','food_court'].includes(a), drink=['cafe','bar','pub','ice_cream','biergarten'].includes(a);
+  const c=food?'food':drink?'drink':'sight';
+  let t=OSM_T[a]||OSM_T[g.tourism]||OSM_T[g.leisure]||(g.historic?'Historic '+g.historic.replace(/_/g,' '):'Place');
+  if(g.cuisine) t+=' · '+g.cuisine.split(';').slice(0,2).map(x=>x.replace(/_/g,' ')).join(', ');
+  const nm=g['name:en']||g.name;
+  return {id:'osm-'+e.type[0]+e.id,n:nm,alt:g.name,c,lat,lng,t,oh:g.opening_hours||'',web:g.website||g['contact:website']||'',osm:true};
+}
+function mergeOSM(list){
+  let added=0;
+  for(const o of list){
+    if(!o||!o.n) continue;
+    const f1=fold(o.n), f2=fold(o.alt);
+    const dup=PLACES.find(p=>{
+      if(metres(p,o)>60) return false;
+      const fp=fold(p.n); if(!fp) return false;
+      return fp===f1||fp===f2||(f1&&(fp.includes(f1)||f1.includes(fp)))||(f2&&(fp.includes(f2)||f2.includes(fp)))||(fp.split(' ')[0]&&fp.split(' ')[0].length>3&&(fp.split(' ')[0]===f1.split(' ')[0]||fp.split(' ')[0]===f2.split(' ')[0]));
+    });
+    if(dup){ if(!dup.oh&&o.oh) dup.oh=o.oh; if(!dup.web&&o.web) dup.web=o.web; continue }
+    if(PLACES.some(p=>p.id===o.id)) continue;
+    PLACES.push(o); added++;
+  }
+  return added;
+}
+async function loadOSM(){
+  let cached=null; try{cached=JSON.parse(localStorage.getItem(OSM_KEY)||'null')}catch(e){}
+  if(cached&&cached.items){const n=mergeOSM(cached.items);renderAll();if(Date.now()-cached.at<86400000){return}}
+  for(const u of OSM_URLS){
+    try{
+      const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),30000);
+      const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(OSM_Q),headers:{'Content-Type':'application/x-www-form-urlencoded'},signal:ctl.signal});
+      clearTimeout(tm); if(!r.ok) continue;
+      const j=await r.json(); const items=(j.elements||[]).map(osmToPlace).filter(Boolean);
+      if(!items.length) continue;
+      try{localStorage.setItem(OSM_KEY,JSON.stringify({at:Date.now(),items}))}catch(e){}
+      const n=mergeOSM(items); renderAll();
+      if(n) toast('Added '+n+' more places from OpenStreetMap');
+      return;
+    }catch(e){}
+  }
+  if(!cached) toast('Could not load the extra places. Check your signal and reopen the page.');
+}
+
 // ---------- live GPS ----------
 const G={pos:null,acc:0,watch:null,follow:true,track:[],marker:null,circle:null,trackLayer:L.layerGroup().addTo(map)};
 try{G.track=JSON.parse(localStorage.getItem('rethymno-track')||'[]')}catch(e){G.track=[]}
@@ -1161,7 +1212,7 @@ function renderFilters(){
 $('filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;S.filter=b.dataset.f;renderAll()});
 
 // sheet
-const dirURL=p=>'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+p.lat.toFixed(6)+','+p.lng.toFixed(6)+(p.c!=='custom'?'&destination_place_id='+encodeURIComponent(p.id):'');
+const dirURL=p=>'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+p.lat.toFixed(6)+','+p.lng.toFixed(6)+(p.c!=='custom'&&!p.osm?'&destination_place_id='+encodeURIComponent(p.id):'');
 let rmArmed=false;
 function renderSheet(){
   const el=$('sheet');
@@ -1186,7 +1237,8 @@ function renderSheet(){
   el.innerHTML=`<button class="close" data-a="close" aria-label="Close">×</button>
     <span class="eyebrow">${esc(p.t||CAT[p.c])}${p.pl?' · '+'€'.repeat(p.pl):''}</span>
     <h2>${esc(p.n)}</h2>
-    <div class="meta">${p.r?`<span>★ ${p.r} <span style="opacity:.75">(${p.rc.toLocaleString('en-GB')})</span></span>`:''}${hoursPill(p)}</div>
+    <div class="meta">${p.r?`<span>★ ${p.r} <span style="opacity:.75">(${(p.rc||0).toLocaleString('en-GB')})</span></span>`:''}${hoursPill(p)}${!p.h&&p.oh?`<span>Hours: ${esc(p.oh)}</span>`:''}</div>
+    ${p.web?`<a class="linkbtn" href="${esc(p.web)}" target="_blank" rel="noopener" style="color:var(--you);text-decoration:none">Website ↗</a>`:''}
     ${p.b?`<p class="blurb">${esc(p.b)}</p>`:''}
     ${dist?`<div class="dist">${esc(dist)}</div>`:''}
     <div class="actions">
@@ -1238,7 +1290,7 @@ function renderList(){
       const sub=[CAT[p.c], p.r?'★ '+p.r:'', hi&&hi.state!=='open'?({shut:'closed now','closed-today':'closed today'}[hi.state]):'', note?'“'+note+'”':''].filter(Boolean).join(' · ');
       return `<button class="row" data-go="${esc(p.id)}"><span class="dot ${st}"></span><span class="nm"><strong>${esc(p.n)}</strong><small>${esc(sub)}</small></span><span class="d">${distTxt(p,true)}</span></button>`}).join('')+'</div>';
   }
-  html+=`<p class="foot">Ratings and opening hours from Google, pulled 27/09/2026; check before you walk over. Map © OpenStreetMap contributors.</p>`;
+  html+=`<p class="foot">Ratings and opening hours from Google, pulled 27/09/2026; check before you walk over. Map and extra places © OpenStreetMap contributors.</p>`;
   $('list').innerHTML=html;
 }
 $('list').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)select(b.dataset.go,true)});
@@ -1291,6 +1343,7 @@ function renderAll(){
 }
 initStore();
 startGPS();
+loadOSM();
 })();
 </script>
 </body></html>
