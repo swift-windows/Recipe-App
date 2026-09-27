@@ -1,0 +1,1296 @@
+<!doctype html><html lang="en-GB"><head><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta charset="utf-8"><title>Rethymno Old Town</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+[hidden]{display:none!important}
+
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+:root{
+  --ink:#1B2830; --ink-2:#51616B; --paper:#FFFFFF; --line:#DCE3E5;
+  --want:#B8246A; --been:#56752A; --you:#0E8FC7; --chip:#EEF3F4; --sight:#8A6A2E;
+  --shadow:0 6px 24px rgba(20,40,55,.2);
+  --display:"Marcellus","Palatino Linotype",Georgia,serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ink:#E8EEF0; --ink-2:#9FB0B8; --paper:#151C1F; --line:#2C383E;
+    --want:#E0578F; --been:#8DB255; --you:#4CC3F2; --chip:#222C30; --sight:#D9B26A;
+    --shadow:0 6px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#E8EEF0; --ink-2:#9FB0B8; --paper:#151C1F; --line:#2C383E;
+  --want:#E0578F; --been:#8DB255; --you:#4CC3F2; --chip:#222C30; --sight:#D9B26A;
+  --shadow:0 6px 24px rgba(0,0,0,.55);
+}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;margin:0}
+.app{display:flex;flex-direction:column;height:100%}
+header{padding:10px 16px 8px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);background:var(--paper)}
+.toprow{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h1{font-family:var(--display);font-weight:400;font-size:23px;margin:0}
+h1 small{font-family:var(--body);font-size:12px;color:var(--ink-2);letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
+.sync{font-size:12px;color:var(--ink-2);white-space:nowrap}
+.tabs{display:flex;gap:4px;background:var(--chip);border-radius:10px;padding:3px}
+.tabs button{flex:1;border:0;background:none;color:var(--ink-2);font:600 14px var(--body);padding:7px 0;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--you);outline-offset:2px}
+main{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;overflow:auto}
+#mapView{overflow:hidden}
+#map{position:absolute;inset:0;background:#AAD3DF}
+.leaflet-container{font-family:var(--body)}
+.leaflet-control-attribution{font-size:10px}
+#map.adding{cursor:crosshair}
+.filters{position:absolute;z-index:500;top:10px;left:16px;right:16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.filters::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--body);padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.here{position:absolute;z-index:500;top:50px;left:16px;max-width:calc(100% - 32px);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 8px;font-size:13px;display:flex;align-items:center;gap:7px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.here i{width:10px;height:10px;border-radius:50%;background:var(--you);flex:none}
+.here span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zoom{position:absolute;z-index:500;right:16px;bottom:26px;display:flex;flex-direction:column;gap:6px}
+.fab{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 20px var(--body);cursor:pointer;box-shadow:var(--shadow);display:grid;place-items:center;padding:0}
+.fab.on{background:var(--want);color:#fff;border-color:var(--want)}
+.addhint{position:absolute;z-index:600;left:16px;right:76px;bottom:26px;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:12px;font-size:14px;box-shadow:var(--shadow)}
+.sheet{position:absolute;z-index:700;left:10px;right:10px;bottom:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px 16px;max-height:60%;overflow:auto;display:flex;flex-direction:column;gap:9px}
+.sheet .close{position:absolute;top:8px;right:8px;width:34px;height:34px;border:0;background:var(--chip);color:var(--ink);border-radius:50%;font-size:18px;cursor:pointer}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.sheet h2{font-family:var(--display);font-weight:400;font-size:23px;margin:0;padding-right:36px;line-height:1.15}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13.5px;color:var(--ink-2)}
+.pill{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--ink-2)}
+.pill.open{background:color-mix(in srgb,var(--been) 18%,transparent);color:var(--been)}
+.pill.shut{background:color-mix(in srgb,var(--want) 14%,transparent);color:var(--want)}
+.blurb{margin:0;line-height:1.45;max-width:62ch}
+.dist{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.act{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:8px 4px;font:600 12.5px var(--body);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;text-align:center;min-height:52px;justify-content:center}
+.act b{font-size:17px;line-height:1}
+.act.dir{background:var(--you);border-color:var(--you);color:#fff}
+.act.want[aria-pressed="true"]{background:var(--want);border-color:var(--want);color:#fff}
+.act.been[aria-pressed="true"]{background:var(--been);border-color:var(--been);color:#fff}
+textarea,input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:15px var(--body);padding:8px 10px}
+textarea{resize:vertical;min-height:40px}
+.linkbtn{border:0;background:none;color:var(--want);font:600 13px var(--body);padding:4px 0;cursor:pointer;align-self:flex-start}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--body);padding:7px 12px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.primary{border:0;background:var(--ink);color:var(--paper);font:700 15px var(--body);padding:11px;border-radius:10px;cursor:pointer}
+.list{padding:8px 16px 32px;display:flex;flex-direction:column;gap:18px;max-width:760px;margin:0 auto}
+.group h3{font-family:var(--display);font-weight:400;font-size:19px;margin:6px 0 4px;display:flex;justify-content:space-between;align-items:baseline}
+.group h3 span{font-family:var(--body);font-size:12px;color:var(--ink-2)}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border:0;border-bottom:1px solid var(--line);cursor:pointer;background:none;width:100%;text-align:left;color:var(--ink);font:inherit}
+.row .nm{flex:1;min-width:0}
+.row .nm strong{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .nm small{color:var(--ink-2);font-size:12.5px}
+.row .d{font-family:var(--mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;background:var(--ink-2)}
+.dot.want{background:var(--want)} .dot.been{background:var(--been)}
+.visit{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.visit time{font-family:var(--mono);font-size:13px;color:var(--ink-2);width:44px;flex:none}
+.visit .n{flex:1;min-width:0;cursor:pointer}
+.visit .num{width:22px;height:22px;border-radius:50%;background:var(--want);color:#fff;font:700 11px var(--body);display:grid;place-items:center;flex:none}
+.visit button.rm{border:1px solid var(--line);background:none;color:var(--ink-2);border-radius:8px;font:600 12px var(--body);padding:5px 8px;cursor:pointer}
+.visit button.rm.confirm{color:#fff;background:var(--want);border-color:var(--want)}
+.empty{color:var(--ink-2);line-height:1.5;max-width:52ch}
+.foot{font-size:12px;color:var(--ink-2);line-height:1.5}
+.toast{position:fixed;z-index:900;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-size:14px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+/* markers */
+.mk{background:none;border:0}
+.mk i{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);display:grid;place-items:center;font:700 12px var(--body);color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.45);box-sizing:border-box}
+.mk.sight i{background:var(--sight);border-radius:5px;transform:translate(-50%,-50%) rotate(45deg)}
+.mk.sight i span{transform:rotate(-45deg)}
+.mk.food i{background:#C8541C;border-radius:50%}
+.mk.drink i{background:#3A6F9E;border-radius:7px}
+.mk.custom i{background:#5B6770;border-radius:50% 50% 50% 0;transform:translate(-50%,-80%) rotate(-45deg)}
+.mk.custom i span{transform:rotate(45deg)}
+.mk.want i{background:var(--want)}
+.mk.been i{background:var(--been)}
+.mk.sel i{width:30px;height:30px;font-size:15px;border-width:3px;box-shadow:0 0 0 5px color-mix(in srgb,var(--you) 40%,transparent),0 2px 6px rgba(0,0,0,.5)}
+.mk b{position:absolute;left:50%;top:calc(50% + 15px);transform:translateX(-50%);white-space:nowrap;font:700 12px var(--body);color:#1B2830;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+.youdot{background:none;border:0}
+.youdot i{position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:var(--you);border:3px solid #fff;box-shadow:0 0 0 6px color-mix(in srgb,var(--you) 30%,transparent)}
+.routebar{position:absolute;z-index:650;top:50px;left:16px;right:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 10px 14px;display:flex;align-items:center;gap:8px}
+.rb-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rb-to{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-num{font-family:var(--mono);font-size:14px;color:var(--you)}
+.rb-from{font-size:12px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--body);padding:8px 10px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.rb-btn.end{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.routebar:not([hidden]) ~ .here{display:none}
+.youdot.live i{animation:none}
+.youdot.live::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--you);opacity:.5;animation:ping 1.8s ease-out infinite}
+@keyframes ping{to{transform:scale(3.2);opacity:0}}
+#gpsBtn.on{background:var(--you);color:#fff;border-color:var(--you)}
+#gpsBtn.follow{box-shadow:0 0 0 3px color-mix(in srgb,var(--you) 45%,transparent),var(--shadow)}
+.legend{position:absolute;z-index:500;left:16px;bottom:26px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px;display:flex;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.15);color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend em{width:10px;height:10px;display:inline-block}
+@media (min-width:700px){ .sheet{left:auto;width:380px;right:76px;bottom:16px;top:60px;max-height:none} }
+</style>
+
+</head><body>
+<div class="app">
+  <header>
+    <div class="toprow">
+      <h1>Rethymno <small>Old Town</small></h1>
+      <span class="sync" id="sync">Loading your pins…</span>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-map" aria-selected="true" data-tab="map">Map</button>
+      <button role="tab" id="tab-list" aria-selected="false" data-tab="list">Places</button>
+      <button role="tab" id="tab-trail" aria-selected="false" data-tab="trail">My trail</button>
+    </div>
+  </header>
+  <main>
+    <section class="view" id="mapView">
+      <div id="map" aria-label="Street map of Rethymno old town"></div>
+      <div class="filters" id="filters"></div>
+      <div class="routebar" id="routeBar" hidden></div>
+      <div class="here" id="herePill" hidden><i></i><span id="hereTxt"></span></div>
+      <div class="legend" id="legend"><span><em style="background:var(--sight);transform:rotate(45deg)"></em>Sight</span><span><em style="background:#C8541C;border-radius:50%"></em>Eat</span><span><em style="background:#3A6F9E;border-radius:3px"></em>Drink</span></div>
+      <div class="zoom">
+        <button class="fab" id="gpsBtn" title="Show my location" aria-label="Show my location">◎</button>
+        <button class="fab" id="addBtn" title="Drop your own pin" aria-label="Drop your own pin">📍</button>
+        <button class="fab" id="zin" aria-label="Zoom in">+</button>
+        <button class="fab" id="zout" aria-label="Zoom out">−</button>
+        <button class="fab" id="zfit" aria-label="Show whole old town" title="Whole old town">⤢</button>
+      </div>
+      <div class="addhint" id="addHint" hidden>Tap the map where you want the pin.</div>
+      <div class="sheet" id="sheet" hidden></div>
+    </section>
+    <section class="view" id="listView" hidden><div class="list" id="list"></div></section>
+    <section class="view" id="trailView" hidden><div class="list" id="trail"></div></section>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="leaflet.js"></script>
+<script>
+(function(){
+const H24='24h';
+const D=s=>[s,s,s,s,s,s,s];
+const PLACES=[
+ {id:'ChIJZ6OE0aN1mxQRjP0hr3KFa3E',n:'Fortezza of Rethymnon',c:'sight',lat:35.3719817,lng:24.4711202,r:4.4,rc:19004,h:D('08:00–17:45'),b:'The Venetian fortress on the headland. Walls, the old mosque inside and the best views over town and harbour. Ticket needed; allow an hour or so.'},
+ {id:'ChIJp6oNxaB1mxQR0rgOv7K-AC8',n:'Rimondi Fountain',c:'sight',lat:35.3699649,lng:24.4746396,r:4.4,rc:11562,h:H24,b:'17th century Venetian fountain in the heart of the old town, tucked down an alley and ringed by cafés.'},
+ {id:'ChIJVXCLewB1mxQRNKCjgnUtr4Y',n:'Neratze Mosque',c:'sight',lat:35.3691496,lng:24.4744686,r:4.2,rc:16,b:'Church turned mosque with a tall minaret. It now houses a music conservatory, so it is usually one to admire from outside.'},
+ {id:'ChIJV8v6RQB1mxQRBtPo1D1g0dU',n:'Guora Gate',c:'sight',lat:35.367283,lng:24.474367,r:4.4,rc:16,h:H24,b:'The only surviving gate of the Venetian town walls, and the old southern way into the old town.'},
+ {id:'ChIJ_QoKfAB1mxQRLmeu2QC1GsA',n:'Venetian Loggia',c:'sight',lat:35.3698161,lng:24.4757052,r:4.0,rc:1,b:'16th century loggia on Arkadiou where the Venetian nobility met. Arched front, worth a look in passing.'},
+ {id:'ChIJf0hYbgp1mxQRQmKjQXpm00s',n:'Lighthouse',c:'sight',lat:35.3703047,lng:24.4776306,r:4.7,rc:1146,h:H24,b:'Stone lighthouse at the mouth of the Venetian harbour. Lovely at sunset. You cannot go in, and the steps up are narrow.'},
+ {id:'ChIJkeBbQid1mxQRhSrMlB6KNEw',n:'Harbour Breakwater',c:'sight',lat:35.3729741,lng:24.4778653,r:4.6,rc:126,h:H24,b:'The long breakwater past the harbour. A quieter sunset spot.'},
+ {id:'ChIJEyVxD6F1mxQRJQwO8V86Uk4',n:'Archaeological Museum',c:'sight',lat:35.3684268,lng:24.4743613,r:4.4,rc:1213,h:['09:00–17:00',null,'09:00–17:00','09:00–17:00','09:00–17:00','09:00–17:00','09:00–17:00'],b:'Small, well laid out collection in the old Church of St Francis. Half an hour does it.'},
+ {id:'ChIJYVpd06Z1mxQRsIdJZnlMLoc',n:'Historical & Folklore Museum',c:'sight',lat:35.3693771,lng:24.473564,r:4.4,rc:161,h:['10:00–15:00','10:00–15:00','10:00–15:00','10:00–15:00','10:00–15:00','10:00–15:00',null],b:'Old town house full of Cretan crafts and everyday life from the last few centuries.'},
+ {id:'ChIJ62T546B1mxQRC8Z3x8haDNw',n:'Contemporary Art Museum',c:'sight',lat:35.3709568,lng:24.4743541,r:4.4,rc:321,h:[null,'09:00–14:00, 19:00–21:00','09:00–14:00, 19:00–21:00','09:00–14:00, 19:00–21:00','09:00–14:00, 19:00–21:00','10:00–15:00','10:00–15:00'],b:'Changing exhibitions over two floors, and air conditioned. Tickets are often bundled with the Fortezza.'},
+ {id:'ChIJq4BVZqd1mxQR5YwWNgvmmJk',n:'Ecclesiastical Museum',c:'sight',lat:35.3672895,lng:24.4761164,r:4.4,rc:84,h:['09:30–17:00',null,null,null,null,null,null],b:'Church museum on Mitropoleos Square. Listed as open Mondays only.'},
+ {id:'ChIJ7T8uzgh1mxQRj0GOMCF-GVo',n:'Othonas Taverna',c:'food',lat:35.369527,lng:24.4746158,r:4.8,rc:5761,h:[null,'12:00–00:55','12:00–00:55','12:00–00:55','12:00–00:55','12:00–00:55',null],b:'Busy Cretan taverna by the fountain. Get there before about 18:30 or expect a queue. Lamb and grilled octopus get the praise.'},
+ {id:'ChIJyb5Ehu8LmxQRGvAVdPok1qI',n:'Taverna Veggera',c:'food',lat:35.3693911,lng:24.4733317,r:4.8,rc:952,h:[null,'13:00–23:00','13:00–23:30','13:00–23:00','13:00–23:00','13:00–23:00','13:00–22:00'],b:'Rustic garden taverna. People rave about the Veggera salad and the lamb chops.'},
+ {id:'ChIJc4GJ06B1mxQRxlC_SzzOHzA',n:'Kapilio',c:'food',lat:35.369461,lng:24.4741319,r:4.8,rc:1201,h:D('17:30–22:30'),b:'Evenings only. A more refined Greek menu; the signature Kapilio chicken is the one to try.'},
+ {id:'ChIJBRiExqB1mxQRiJZSkLiBe8M',n:'To Parastratima',c:'food',lat:35.3699972,lng:24.4746805,r:4.8,rc:1572,h:['12:00–23:00',null,'12:00–23:00','12:00–23:00','12:00–23:00','12:00–23:00','12:00–23:00'],b:'Family run, creative Cretan plates on a quiet pavement, with a wine tasting option.'},
+ {id:'ChIJsQL516B1mxQRLHmYoGtJlgU',n:'Castelo',c:'food',lat:35.3700942,lng:24.473739,r:4.8,rc:2183,h:D('12:00–00:00'),b:'Old town restaurant with a smart but relaxed feel. Sea bass and steak both well reviewed.'},
+ {id:'ChIJrxpCmqB1mxQR-CCqhsn8Irg',n:"Cavo D'oro",c:'food',lat:35.3705873,lng:24.476109,r:4.7,rc:924,h:['11:00–23:30','11:00–23:30','11:00–23:30','11:00–23:00','11:00–23:30','11:00–23:30','11:00–23:30'],b:'Seafood right on the old harbour. On the pricier side. The fried sea bass and lobster pasta are the talk.'},
+ {id:'ChIJQRzRrjR1mxQR7pC1xk8sCGE',n:'Achinos',c:'food',lat:35.3702408,lng:24.4762399,r:4.6,rc:2319,h:D('12:00–01:00'),b:'Harbour and lighthouse views, seafood and sushi. Try for a balcony seat at sunset.'},
+ {id:'ChIJPa0_6OJ1mxQRWRaORAYy2Pc',n:'Galini',c:'food',lat:35.3711309,lng:24.4757232,r:4.8,rc:1434,h:D('11:30–23:00'),b:'Traditional seafood by the Venetian harbour. The fish platter and stuffed vine leaves come recommended.'},
+ {id:'ChIJpyf0zfx1mxQR3Qg8Hlk28vA',n:'Erotokritos Seaside',c:'food',lat:35.3706633,lng:24.4761279,r:4.6,rc:647,h:D('11:00–23:00'),b:'Harbour terrace by the lighthouse and the boats. Fresh fish and a feta dish people reorder.'},
+ {id:'ChIJPyCsIot1mxQRwJWBYwVyQ7A',n:'Olive Tree Bar-Café',c:'drink',lat:35.3705687,lng:24.4757548,r:4.8,rc:201,h:D('09:30–01:00'),b:'Tables spread along the street, jazz on, good cocktails and pistachio ice cream.'},
+ {id:'ChIJ9R9_bDN1mxQRET_0PDAdEZA',n:'The Old Town Café',c:'drink',lat:35.3686052,lng:24.4758792,r:4.8,rc:65,h:D('07:30–19:00'),b:'Tiny coffee spot in an alley. Early opener, good sandwiches.'},
+ {id:'ChIJiXeczKukoRQRNPd8t7QrXzE',n:'Café Galero',c:'drink',lat:35.3700147,lng:24.4747944,r:4.2,rc:834,h:D('08:00–02:00'),b:'Corner café on the fountain square under a leafy terrace. Prime people watching.'},
+ {id:'ChIJC9ftqqB1mxQR28d1qQQbotQ',n:'Fraoules',c:'drink',lat:35.368921,lng:24.476627,r:4.4,rc:5175,h:D('09:00–03:00'),b:'Café by day, cocktail bar by night. Big brunch portions.'},
+ {id:'ChIJxUzingl1mxQRj4lch5JNQEo',n:'LivingRoom GastroBar',c:'drink',lat:35.3671229,lng:24.4793425,r:4.5,rc:3457,h:D('09:00–03:00'),b:'Seafront gastrobar, brunch through to late cocktails.'}
+];
+const EXTRA=[{"id":"ChIJI_c6WwB1mxQRJh7Q5UsopJA","n":"Zana Restaurant","c":"food","lat":35.369504,"lng":24.4726937,"r":4.9,"rc":1295,"t":"Restaurant","h":["10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00"],"pl":3},{"id":"ChIJ4cR6NKd1mxQRFGp8NCX_y3o","n":"Akri Garden Restaurant","c":"food","lat":35.3689982,"lng":24.4749895,"r":4.5,"rc":891,"t":"Restaurant","h":["10:00–23:45","10:00–23:45","10:00–23:45","10:00–23:45","10:00–23:45","10:00–23:45","10:00–23:45"],"pl":3},{"id":"ChIJT1J95KZ1mxQRfVgO7wpI0bg","n":"Ali Vafi's Garden","c":"food","lat":35.367577,"lng":24.4734371,"r":4.6,"rc":1851,"t":"Restaurant","h":["10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–03:00","10:00–02:00"],"pl":3},{"id":"ChIJHc5YG6F1mxQROtlfc0eU6Sk","n":"The Rinio Tavern","c":"food","lat":35.3712849,"lng":24.4737976,"r":4.6,"rc":510,"t":"Greek restaurant","h":["10:00–00:30","10:00–00:00","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30"],"pl":2},{"id":"ChIJWSF6qKB1mxQRAMx2ow_axCs","n":"Day Night Restaurant","c":"food","lat":35.367653,"lng":24.478067,"r":4.6,"rc":2113,"t":"Restaurant","h":["09:30–23:30","09:30–23:30","09:30–23:30","09:30–23:30","09:30–23:30","09:30–23:30","09:00–23:30"],"pl":3},{"id":"ChIJv-vvSH11mxQR96dUXnVPfvY","n":"Hunky Funky Cocktail Bar","c":"drink","lat":35.3699983,"lng":24.4743868,"r":4.8,"rc":497,"t":"Bar","h":["10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00"],"pl":2},{"id":"ChIJT75EK6d1mxQRiLwp4tfzLHE","n":"Figaro Bar","c":"drink","lat":35.3693982,"lng":24.4738936,"r":4.7,"rc":833,"t":"Bar","h":["10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00"],"pl":2},{"id":"ChIJDSF6qKB1mxQRCzUBIESw6S0","n":"Chaplins","c":"drink","lat":35.3685998,"lng":24.4768552,"r":4.6,"rc":2035,"t":"Bar","h":["09:00–02:00","09:00–02:00","09:00–02:00","09:00–02:00","09:00–02:00","09:00–02:00","09:00–02:00"],"pl":2},{"id":"ChIJ-Xv7Tsx1mxQREpSyYNMC89E","n":"Home Seaside | Cocktail Bar","c":"drink","lat":35.3718449,"lng":24.4742788,"r":4.6,"rc":691,"t":"Bar","h":"24h","pl":2},{"id":"ChIJzcuvqKB1mxQRrvhiFBDuvKA","n":"Store 311","c":"drink","lat":35.3694277,"lng":24.4763589,"r":4.6,"rc":1516,"t":"Bar","h":["09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00"],"pl":2},{"id":"ChIJZU91z6B1mxQRwW9txakhPzY","n":"Cul de Sac Cafe - Bar - Restaurant","c":"drink","lat":35.3698457,"lng":24.4746067,"r":4.6,"rc":1542,"t":"Coffee shop","h":["08:00–02:00","08:00–02:00","08:00–02:00","08:00–02:00","08:00–02:00","08:00–02:00","08:00–02:00"],"pl":2},{"id":"ChIJSXMzqqB1mxQRIdZhFd5MM64","n":"Lux Cafe","c":"drink","lat":35.3691931,"lng":24.4765279,"r":4.5,"rc":3978,"t":"Coffee shop","h":["08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00"],"pl":2},{"id":"ChIJZRcqy6d1mxQR2iVAbjgPY6A","n":"Barrio The Neighbourhood Cafe","c":"drink","lat":35.3653519,"lng":24.4736382,"r":4.8,"rc":3063,"t":"Coffee shop","h":["06:00–23:00","06:00–23:00","06:00–23:00","06:00–23:00","06:00–23:00","06:00–23:00","06:00–23:00"],"pl":2},{"id":"ChIJo7bJx6B1mxQRCvcjsJ56zZw","n":"cafe STRETTO - Coffee espresso bar","c":"drink","lat":35.3698516,"lng":24.4750623,"r":4.8,"rc":210,"t":"Cafe","h":["08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00","09:00–00:00"],"pl":1},{"id":"ChIJ1-HoN5J1mxQRW2bpkxRqU8E","n":"Enjoy Café","c":"drink","lat":35.3670804,"lng":24.4747402,"r":4.8,"rc":110,"t":"Cafe","h":["06:00–21:00","06:00–21:00","06:00–21:00","06:00–21:00","06:00–21:00","06:00–21:00","06:00–21:00"],"pl":1},{"id":"ChIJK4LaK6F1mxQRFjJ7lrlHfng","n":"Taverna Stavros","c":"food","lat":35.3697361,"lng":24.4735585,"r":4.4,"rc":2640,"t":"Greek restaurant","h":["11:01–00:00","11:01–00:00","11:01–00:00","11:01–00:00","11:01–00:00","11:01–00:00","11:01–00:00"],"pl":3},{"id":"ChIJQ14M96B1mxQRUoPC-g6mVso","n":"Taverna Platia","c":"food","lat":35.3718821,"lng":24.474837,"r":4.5,"rc":1226,"t":"Greek restaurant","h":["09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30"],"pl":3},{"id":"ChIJm77iqhV1mxQRseYp5j-zWgM","n":"Taverna Knossos","c":"food","lat":35.3704637,"lng":24.476102,"r":4.7,"rc":1565,"t":"Greek restaurant","h":["13:00–23:00","13:00–22:30","13:00–22:30","13:00–22:30","13:00–22:30","13:00–22:30","13:00–22:30"],"pl":3},{"id":"ChIJDfANaR91mxQRR3dN6honV5Q","n":"Art urbain (Street art)","c":"sight","lat":35.3689962,"lng":24.4738447,"r":3.5,"rc":27,"t":"Attraction"},{"id":"ChIJV7iJOQB1mxQRGdpAN__BbsU","n":"Regenschirm-Gasse","c":"sight","lat":35.3674735,"lng":24.4737951,"r":3.8,"rc":33,"t":"Attraction","h":"24h"},{"id":"ChIJ42y7XwB1mxQRloSbxqClK-I","n":"Umbrella Street","c":"sight","lat":35.3675401,"lng":24.4738946,"r":3.3,"rc":3,"t":"Attraction"},{"id":"ChIJwT_UFwB1mxQRiOj9ENU9fQw","n":"Blue Stairs","c":"sight","lat":35.3714943,"lng":24.473211,"r":3.6,"rc":67,"t":"Attraction","h":"24h"},{"id":"ChIJ4bBNC6d1mxQRDshqDEw5qno","n":"Church of the Four Martyrs","c":"sight","lat":35.3668151,"lng":24.4751274,"r":4.7,"rc":563,"t":"Church","h":["08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00","08:00–14:00, 17:00–20:00"]},{"id":"ChIJ6zkDM6F1mxQRAgGG1Gn4API","n":"Church of Our Lady of the Angels","c":"sight","lat":35.3696035,"lng":24.4729055,"r":4.7,"rc":175,"t":"Church","h":["07:00–19:00","07:00–19:00","07:00–19:00","07:00–19:00","07:00–19:00","07:00–19:00","07:00–19:00"]},{"id":"ChIJY2lL5qB1mxQR_6zuXD_TBnQ","n":"Catholic Church of Saint Anthony of Padua","c":"sight","lat":35.3708104,"lng":24.4745548,"r":4.7,"rc":171,"t":"Attraction","h":["08:00–14:00","08:00–14:00","08:00–14:00","08:00–14:00","08:00–14:00","08:00–13:00","08:00–14:00"]},{"id":"ChIJzcrEQad1mxQRNLvfDWffats","n":"Agia Varvara Church","c":"sight","lat":35.3678437,"lng":24.4752727,"r":4.5,"rc":17,"t":"Church"},{"id":"ChIJ2a9ok6V1mxQRqyDF9vWSX2A","n":"Church of Saint Konstantinos and Eleni","c":"sight","lat":35.3662212,"lng":24.4690904,"r":4.7,"rc":58,"t":"Church"},{"id":"ChIJy1A9B6d1mxQRMR-8n9LwWbE","n":"Niktaris Bakery","c":"drink","lat":35.3668898,"lng":24.4741954,"r":4.6,"rc":409,"t":"Pastry shop","h":["06:30–23:30","06:30–23:30","06:30–23:30","06:30–23:30","06:30–23:30","06:30–23:30","06:30–23:30"]},{"id":"ChIJTbaNLoB1mxQRD_pPE7_TiQc","n":"Handmade Traditional Philo Workshop","c":"drink","lat":35.3693828,"lng":24.4734235,"r":4.9,"rc":465,"t":"Bakery","h":["08:00–21:00","08:00–21:00","08:00–21:00","08:00–21:00","08:00–21:00","09:00–21:00","09:00–20:00"],"pl":1},{"id":"ChIJ9TPqF6d1mxQRJ5klJ2Xvcr0","n":"earth flavors","c":"drink","lat":35.3676845,"lng":24.4745489,"r":4.7,"rc":368,"t":"Pastry shop","h":["07:00–00:00","07:00–00:00","07:00–00:00","07:00–00:00","07:00–00:00","07:00–00:00","07:00–00:00"]},{"id":"ChIJ2VrYMgh1mxQRp_rOuMlbtA0","n":"Xamogeorgakis Bakery & coffee shop","c":"drink","lat":35.3659614,"lng":24.4776868,"r":4.6,"rc":309,"t":"Pastry shop","h":["06:00–22:00","06:00–22:00","06:00–22:00","06:00–22:00","06:00–22:00","06:00–22:00","06:00–22:00"]},{"id":"ChIJ09a_yqd1mxQRYbilsP_Kdoc","n":"Veneti go bakery","c":"drink","lat":35.3653837,"lng":24.4739075,"r":4.5,"rc":1882,"t":"Pastry shop","h":["06:30–22:30","06:30–22:30","06:30–22:30","06:30–22:30","06:30–22:30","06:30–22:00","06:30–22:00"]},{"id":"ChIJl8vY1bB1mxQRlWRCTXiCqs0","n":"Crème De La Crème","c":"drink","lat":35.370658,"lng":24.4742939,"r":4.8,"rc":376,"t":"Gelato","h":["09:00–00:00","09:00–00:00","09:00–00:00","09:00–00:00","09:00–00:00","09:00–00:00","09:00–00:00"]},{"id":"ChIJeYZSgRB1mxQREFH3y79SXCk","n":"Mica's icecream experience","c":"drink","lat":35.3698597,"lng":24.475164,"r":4.9,"rc":69,"t":"Gelato","h":["10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00"]},{"id":"ChIJ6e49R6d1mxQR4fS2bUdY-wc","n":"il gelato del Nonno","c":"drink","lat":35.3693942,"lng":24.474852,"r":4.7,"rc":236,"t":"Gelato","h":["10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00"]},{"id":"ChIJ34fIkAl1mxQR9i2GAcXobf0","n":"Cremeria Vienna","c":"drink","lat":35.3678904,"lng":24.4774385,"r":4.4,"rc":1179,"t":"Gelato","h":["10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:30–00:30","10:00–00:30"]},{"id":"ChIJs0dP4g11mxQRnUOq4Gh8vTQ","n":"Air Balloon","c":"drink","lat":35.3677061,"lng":24.4778107,"r":4.6,"rc":548,"t":"Gelato","h":["09:30–01:30","09:30–01:30","09:30–01:30","09:30–01:30","09:30–01:30","09:30–01:30","09:30–01:30"]},{"id":"ChIJU0tzxqB1mxQRS86AAZaw3wM","n":"Time Out","c":"food","lat":35.3699504,"lng":24.4751841,"r":4.8,"rc":264,"t":"Sandwich shop","h":["09:00–01:30","09:30–04:00","09:30–04:00","09:30–04:00","09:30–04:00","09:30–04:00","09:30–04:00"],"pl":2},{"id":"ChIJ8aHhSJl1mxQRNL4Piaayt7U","n":"Pork to Beef Wild","c":"food","lat":35.3703802,"lng":24.4757705,"r":4.9,"rc":3561,"t":"Fast food","h":["12:00–03:00","12:00–03:00","12:00–03:00","12:00–03:00","12:00–03:00","12:00–04:00","12:00–04:00"],"pl":2},{"id":"ChIJj4XFQz91mxQRFa29-usVvc0","n":"VIBE Smash Burgers & Fried Chicken","c":"food","lat":35.3676431,"lng":24.4744185,"r":4.9,"rc":369,"t":"Burgers","h":["14:00–22:30","14:00–22:30","14:00–22:30","14:00–22:30","14:00–23:00","14:00–23:00",null],"pl":2},{"id":"ChIJm1BxvKB1mxQRZPtyiB0Dd0M","n":"Italian Pizza & Pasta","c":"food","lat":35.369957,"lng":24.4759282,"r":4.5,"rc":2336,"t":"Italian","h":["08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00","08:00–03:00"],"pl":2},{"id":"ChIJscQttqB1mxQRacd0Gp4MBcQ","n":"La Boheme Restaurant","c":"food","lat":35.3696635,"lng":24.4753868,"r":4.7,"rc":1256,"t":"Restaurant","h":["12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–00:00","12:00–23:30","12:00–22:30"],"pl":3},{"id":"ChIJT0-ImaB1mxQRCwa4Q9I_JpI","n":"Zefyros","c":"food","lat":35.3705193,"lng":24.4761049,"r":4.7,"rc":2093,"t":"Seafood","h":["12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00"],"pl":4},{"id":"ChIJl6W01P91mxQR_Crwr7hZQFc","n":"Skala restaurant","c":"food","lat":35.3715501,"lng":24.4731447,"r":5.0,"rc":165,"t":"Restaurant","h":["12:00–22:30","12:00–22:30","12:00–22:30","12:00–22:30","12:00–22:30","12:00–22:30","12:00–22:30"],"pl":3},{"id":"ChIJR4SX3qB1mxQRhZ936ZqtAgw","n":"To Pigadi Restaurant","c":"food","lat":35.3702902,"lng":24.4741111,"r":4.7,"rc":2185,"t":"Mediterranean","h":["00:30–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30"],"pl":3},{"id":"ChIJe5jdzgl1mxQRNLSBB_k8oPE","n":"Armonikon","c":"food","lat":35.3664375,"lng":24.4777857,"r":4.9,"rc":204,"t":"Restaurant","h":["11:30–17:00","11:30–17:00","11:30–17:00","11:30–17:00","11:30–17:00","11:30–17:00",null],"pl":2},{"id":"ChIJ-ex-zqB1mxQR73OIbtW8XxQ","n":"Agrimia Restaurant","c":"food","lat":35.3696034,"lng":24.474627,"r":4.5,"rc":2248,"t":"Restaurant","h":["12:00–00:00","12:00–00:00","12:00–00:00","12:00–00:00","12:00–00:00","12:00–00:00","12:00–00:00"],"pl":3},{"id":"ChIJ92lH9jp1mxQRwAu3YyAgQOg","n":"Queen's Garden Restaurant","c":"food","lat":35.3672443,"lng":24.4790039,"r":4.4,"rc":195,"t":"Restaurant","h":["12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30"],"pl":3},{"id":"ChIJYd6lH5l1mxQRLsZTYRRXecE","n":"YUZU Asian Cuisine","c":"food","lat":35.3670809,"lng":24.4787902,"r":4.4,"rc":127,"t":"Asian","h":["12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30"],"pl":3},{"id":"ChIJUdygqO91mxQRfCy3_8_C3TM","n":"Nopal","c":"food","lat":35.368141,"lng":24.4769732,"r":4.9,"rc":504,"t":"Restaurant","h":["12:00–01:00","12:00–01:00","12:00–01:00","12:00–01:00","12:00–01:00","12:00–01:00","12:00–01:00"],"pl":3},{"id":"ChIJE1cLY3F1mxQRFd-dyzfWQ0k","n":"Στη Μεγάλη Πόρτα - Μεζεδοτεχνείο","c":"food","lat":35.3675002,"lng":24.4741602,"r":5.0,"rc":75,"t":"Restaurant","h":[null,"18:00–00:30","18:00–00:30","18:00–00:30","18:00–00:30","18:00–00:30","18:00–00:30"]},{"id":"ChIJez5NxaB1mxQRYd281rRQZ4Q","n":"Rimondi Restaurant","c":"food","lat":35.3699392,"lng":24.474542,"r":4.5,"rc":124,"t":"Restaurant","h":["10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00"],"pl":2},{"id":"ChIJjVYqcqR1mxQRRETpfhyqOk4","n":"Thalassographia","c":"food","lat":35.3720638,"lng":24.47329,"r":4.5,"rc":1089,"t":"Greek restaurant","h":["10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00"],"pl":3},{"id":"ChIJyTb92Id1mxQRqF45wtLV4y8","n":"Pitsidianos","c":"drink","lat":35.3672677,"lng":24.4745594,"r":4.9,"rc":71,"t":"Coffee shop","h":["08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00","08:00–01:00",null],"pl":1},{"id":"ChIJ7R9gzaB1mxQRdALyPjaP-Qk","n":"Ρακοδικείο / Rakodikio","c":"food","lat":35.3692385,"lng":24.4745661,"r":4.6,"rc":1359,"t":"Restaurant","h":["12:00–02:00","12:00–02:00","12:00–02:00","12:00–02:00","12:00–02:00","12:00–00:00",null],"pl":3},{"id":"ChIJv9WUTrB1mxQRqE-p86bR01k","n":"Farmasea - Great Spirits & Meze","c":"food","lat":35.3677674,"lng":24.4774469,"r":4.9,"rc":282,"t":"Restaurant","h":["17:00–00:30","17:00–00:30","17:00–00:30","17:00–00:30","17:00–00:30","17:00–00:30",null],"pl":3},{"id":"ChIJO0Vl2aB1mxQRzJ9b_TKR4_c","n":"Avli rustic fine dining restaurant","c":"food","lat":35.3702305,"lng":24.4739844,"r":4.5,"rc":1811,"t":"Fine dining","h":["08:30–00:00","08:30–00:00","08:30–00:00","08:30–00:00","08:30–00:00","08:30–00:00","08:30–00:00"],"pl":4},{"id":"ChIJNW3VQQl1mxQRwiyQw7w1rJ4","n":"down town restaurant","c":"food","lat":35.36676,"lng":24.4805087,"r":4.8,"rc":1108,"t":"Restaurant","h":["10:30–23:30","10:30–23:30","10:30–23:30","10:30–23:30","10:30–23:30","10:30–23:30","10:30–23:30"],"pl":3},{"id":"ChIJKWmAwgl1mxQRWfQLGQxaUVM","n":"Σουβλάκι Νίκος","c":"food","lat":35.3672551,"lng":24.4777401,"r":4.5,"rc":1560,"t":"Restaurant","h":["12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00","12:00–23:00",null],"pl":1},{"id":"ChIJW_hsGqd1mxQR51wYKbOvF6E","n":"Delicatessen","c":"food","lat":35.3672911,"lng":24.4743218,"r":4.3,"rc":386,"t":"Gyros & souvlaki","h":["11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00"],"pl":2},{"id":"ChIJe99Izmh1mxQR99SvSDuE66M","n":"Anthos Restaurant","c":"food","lat":35.3670076,"lng":24.4796177,"r":4.7,"rc":2794,"t":"Restaurant","h":["10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00","10:00–00:00"],"pl":3},{"id":"ChIJe-VniaB1mxQRXqaFnDG0GsM","n":"Nafpigio","c":"drink","lat":35.3713126,"lng":24.4757387,"r":4.6,"rc":757,"t":"Cocktail bar","h":["09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–04:00","09:00–04:00","09:00–03:00"],"pl":2},{"id":"ChIJtyJ6qKB1mxQRL_9yhL2VNNc","n":"Bonobo Bar","c":"drink","lat":35.3684422,"lng":24.4769793,"r":4.6,"rc":738,"t":"Bar","h":["09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00","09:00–03:00"],"pl":2},{"id":"ChIJY44xTQh1mxQRysuVD_90qDk","n":"Vivliothiki Café","c":"drink","lat":35.3651798,"lng":24.4808856,"r":4.7,"rc":1399,"t":"Cafe","h":["07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:30–23:00"],"pl":2},{"id":"ChIJZUF73c11mxQRmiB2q8SfKys","n":"Pithia Games","c":"sight","lat":35.365486,"lng":24.4819839,"r":4.9,"rc":14,"t":"Attraction","h":["09:00–21:00","09:00–21:00","09:00–21:00","09:00–21:00","09:00–21:00","09:00–21:00","09:00–21:00"]},{"id":"ChIJxaDONV11mxQR6_q0oftuH6A","n":"Poquito Barra Latina","c":"drink","lat":35.3699751,"lng":24.4740062,"r":4.7,"rc":282,"t":"Cocktail bar","h":["10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00","10:00–02:00"],"pl":2},{"id":"ChIJQ6w1Bad1mxQRtzPgdlFfwIk","n":"Angeli Gelato","c":"drink","lat":35.3673173,"lng":24.4745159,"r":4.6,"rc":284,"t":"Gelato","h":["10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00","10:00–23:00"]},{"id":"ChIJp6Ixmst1mxQReFUvcsq6yX0","n":"Theorist","c":"food","lat":35.3657485,"lng":24.4776099,"r":4.8,"rc":707,"t":"Restaurant","h":["07:15–23:00","07:15–23:00","07:15–23:00","07:15–23:00","07:15–23:00","07:15–23:00","07:15–23:00"],"pl":2},{"id":"ChIJcdiPedN1mxQRHhcmmN2rSdM","n":"Marra Cafe & Snacks","c":"food","lat":35.3675046,"lng":24.4732673,"r":4.8,"rc":88,"t":"Snack bar","h":["09:00–23:00","09:00–23:00","09:00–23:00","09:00–23:00","09:00–23:00","09:00–23:00","09:00–23:00"],"pl":2},{"id":"ChIJnZ_hsit1mxQRfZttKZANe2M","n":"Antika Irish Pub","c":"drink","lat":35.3698881,"lng":24.4736871,"r":4.6,"rc":796,"t":"Irish pub","h":["10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00","10:00–03:00"],"pl":2},{"id":"ChIJK7LddaR1mxQRy0SmmdDA1Fg","n":"Globe","c":"sight","lat":35.3703623,"lng":24.4689764,"r":4.5,"rc":44,"t":"Historic landmark","h":"24h"},{"id":"ChIJI-X7JwB1mxQRUjMyTwknduI","n":"Θέα στο Αιγαίο Πέλαγος","c":"sight","lat":35.3735616,"lng":24.4701331,"r":4.8,"rc":75,"t":"Scenic spot","h":"24h"},{"id":"ChIJeZVj26B1mxQRKl4dxDEz-9Q","n":"Hari’s Creperiê","c":"drink","lat":35.3701899,"lng":24.4743402,"r":4.6,"rc":2565,"t":"Gelato","h":["10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30","10:00–00:30"]},{"id":"ChIJwTJzLAB1mxQRuZnEUKJ6_4Y","n":"Tipsy Flamingo","c":"drink","lat":35.3665778,"lng":24.4824317,"r":4.9,"rc":558,"t":"Bar","h":["10:00–02:30","10:00–02:30","10:00–02:30","10:00–02:30","10:00–02:30","10:00–02:30","10:00–02:30"],"pl":2},{"id":"ChIJyVflRUl1mxQRt8Sk8CU1AoQ","n":"Drink N Roll","c":"drink","lat":35.3699829,"lng":24.4766742,"r":5.0,"rc":406,"t":"Cocktail bar","pl":2},{"id":"ChIJs8Qw6PZ1mxQRNdxyNp6J-LQ","n":"Nook Spritz Lab","c":"drink","lat":35.3693937,"lng":24.4711678,"r":5.0,"rc":25,"t":"Cocktail bar","pl":2},{"id":"ChIJlWnJmHl1mxQRCS0zj1l5Kf0","n":"Art & About Gallery","c":"sight","lat":35.3695369,"lng":24.473463,"r":4.8,"rc":25,"t":"Art gallery","h":["10:30–18:30","10:30–18:30","10:30–18:30","10:30–18:30","10:30–18:30","10:30–18:30",null]},{"id":"ChIJKyAXk711mxQRNG_bvqBWsvU","n":"Θεα Θαλασσα","c":"food","lat":35.3706457,"lng":24.469394,"r":4.8,"rc":1200,"t":"Restaurant","h":["13:00–23:00","13:00–23:00","13:00–23:00","13:00–23:00","13:00–23:00","13:00–23:00","13:00–23:00"],"pl":3},{"id":"ChIJwSzq6-l1mxQRgQJtOOc66xE","n":"Cook Book Pizza & Pasta","c":"food","lat":35.3677408,"lng":24.4754456,"r":4.6,"rc":420,"t":"Italian","h":["12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30","12:00–23:30"],"pl":2},{"id":"ChIJ3zrNVPF1mxQRkWmOiLEzbAI","n":"Piazza di Toscana","c":"food","lat":35.3644821,"lng":24.4787789,"r":4.5,"rc":719,"t":"Italian","h":["13:00–00:30","13:00–00:30","13:00–00:30","13:00–00:30","13:00–00:30","13:00–00:30","13:00–00:30"],"pl":3},{"id":"ChIJf5LryqB1mxQR7TxdG_SisZk","n":"Stella's Kitchen","c":"food","lat":35.3692013,"lng":24.4750905,"r":4.9,"rc":1234,"t":"Restaurant","h":["07:30–20:00","07:30–20:00","07:30–20:00","07:30–20:00","07:30–20:00","07:30–20:00",null],"pl":2},{"id":"ChIJV2AwieZ1mxQRE8CnKnCbR6g","n":"Sella Vineria","c":"drink","lat":35.3675946,"lng":24.473377,"r":5.0,"rc":111,"t":"Wine bar","h":["11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00",null]},{"id":"ChIJeZ0zKYV1mxQRqLdBJq7xGSY","n":"Koo Koo Brunch Cafe","c":"drink","lat":35.3669652,"lng":24.4742779,"r":4.5,"rc":1075,"t":"Cafe","h":["07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00","07:00–23:00"],"pl":2},{"id":"ChIJY-Gap0N1mxQReHe9QxfseUo","n":"Bottega Gelato Cremeria Artigianale","c":"drink","lat":35.3676082,"lng":24.4743829,"r":4.6,"rc":153,"t":"Gelato"},{"id":"ChIJ3XwBlqB1mxQRlP2n-brtDXs","n":"Loggia Taverna","c":"food","lat":35.3701955,"lng":24.4755433,"r":4.6,"rc":1556,"t":"Restaurant","h":["11:30–23:00","11:30–23:00","11:30–23:00","11:30–23:00","11:30–22:00","11:30–23:00","11:30–23:00"],"pl":3},{"id":"ChIJYfUX-wl1mxQR1CtF3AKXenY","n":"Tassos Tavern","c":"food","lat":35.3678777,"lng":24.4772745,"r":4.7,"rc":1239,"t":"Restaurant","pl":3},{"id":"ChIJ-ZDjRaZ1mxQR0gC5PPg9yCw","n":"Le Jardin","c":"drink","lat":35.3660657,"lng":24.4729679,"r":4.5,"rc":1026,"t":"Coffee shop","h":["07:00–22:00","07:00–22:00","07:00–22:00","07:00–22:00","07:00–22:00","07:00–22:00","07:00–22:00"],"pl":2},{"id":"ChIJqbQCWKB1mxQRBmrkQfYZqYw","n":"Fanari","c":"food","lat":35.3718064,"lng":24.4744468,"r":4.8,"rc":2055,"t":"Restaurant","h":["11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00","11:00–00:00"],"pl":3},{"id":"ChIJ0VG2xqB1mxQRotDfYXj1Avo","n":"Kyria Maria","c":"food","lat":35.3700799,"lng":24.4750545,"r":4.1,"rc":589,"t":"Restaurant","h":["09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30","09:00–23:30"],"pl":3},{"id":"ChIJz4A59Al1mxQR8Sli2N98wRY","n":"Rethimnon Beach","c":"sight","lat":35.3683185,"lng":24.4779262,"r":4.4,"rc":220,"t":"Attraction"},{"id":"ChIJfXNJOQB1mxQR_MhG4NGRlB8","n":"Ενετικό Λιμάνι Ρεθύμνου","c":"sight","lat":35.3705806,"lng":24.4768138,"r":4.8,"rc":43,"t":"Historic landmark"}];
+{const seen=new Set(PLACES.map(p=>p.id));for(const e of EXTRA){if(!seen.has(e.id)){PLACES.push(e);seen.add(e.id)}}}
+const CAT={sight:'Sight',food:'Restaurant',drink:'Café & bar',custom:'Your pin'};
+
+const S={pins:{},visits:[],db:null,sel:null,filter:'all',adding:false,draft:null,tab:'map'};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2600)}
+function metres(a,b){const R=6371000,t=Math.PI/180,dl=(b.lat-a.lat)*t,dg=(b.lng-a.lng)*t;const x=Math.sin(dl/2)**2+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dg/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+
+function allPlaces(){
+  const out=PLACES.slice();
+  for(const [id,pin] of Object.entries(S.pins)) if(pin&&pin.custom) out.push({id,n:pin.name||'My pin',c:'custom',lat:pin.lat,lng:pin.lng,b:''});
+  return out;
+}
+const byId=id=>allPlaces().find(p=>p.id===id);
+const status=id=>(S.pins[id]&&S.pins[id].status)||'';
+function here(){
+  if(typeof G!=='undefined'&&G.pos) return {lat:G.pos.lat,lng:G.pos.lng,name:'you',placeId:null,live:true};
+  if(!S.visits.length) return null;
+  const v=S.visits[S.visits.length-1];
+  return Date.now()-new Date(v.at).getTime()>6*3600e3?null:v;
+}
+
+// hours
+const dayIdx=()=>(new Date().getDay()+6)%7;
+const DAYN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const toMin=s=>{const [h,m]=s.split(':').map(Number);return h*60+m};
+function segs(str){if(!str)return[];return str.split(', ').map(x=>{let [a,b]=x.split('–').map(toMin);if(b<=a)b+=1440;return[a,b]})}
+function hoursInfo(p){
+  if(p.h===H24) return {txt:'Open all hours',state:'open'};
+  if(!p.h) return null;
+  const d=dayIdx(),today=p.h[d],now=new Date(),n=now.getHours()*60+now.getMinutes();
+  let open=segs(today).some(([a,b])=>n>=a&&n<b);
+  if(!open&&n<360) open=segs(p.h[(d+6)%7]).some(([a,b])=>n+1440>=a&&n+1440<b);
+  if(!today) return {txt:DAYN[d]+': closed',state:open?'open':'closed-today'};
+  return {txt:DAYN[d]+' '+today,state:open?'open':'shut'};
+}
+function hoursPill(p){
+  const h=hoursInfo(p); if(!h) return '';
+  const lab={open:'Open now',shut:'Closed now','closed-today':'Closed today'}[h.state];
+  return `<span class="pill ${h.state==='open'?'open':'shut'}">${lab}</span><span>${esc(h.txt)}</span>`;
+}
+function distTxt(p,short){
+  const h=here(); if(!h||h.placeId===p.id) return '';
+  const m=metres(h,p), mins=Math.max(1,Math.round(m*1.3/80));
+  const mm=m<1000?Math.round(m/10)*10+' m':(m/1000).toFixed(1)+' km';
+  return short?mm:`${mm} from ${h.name} in a straight line · roughly ${mins} min on foot`;
+}
+
+// storage
+const LS='rethymno-map-v1';
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LS)||'null');if(d){S.pins=d.pins||{};S.visits=d.visits||[]}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({pins:S.pins,visits:S.visits}))}catch(e){}}
+const chains={};
+function queue(path,fn){
+  chains[path]=(chains[path]||Promise.resolve()).then(fn).catch(err=>{
+    if(err&&err.code==='revoked'){S.db=null;setSync('Saving on this phone only')}
+    toast(err&&err.code==='quota_exceeded'?'Storage is full. Remove some old check ins.':'Could not save that. Try again in a moment.');
+  });
+}
+function setSync(t){$('sync').textContent=t}
+function setPin(id,patch){
+  const next={...(S.pins[id]||{}),...patch,updatedAt:new Date().toISOString()};
+  const drop=!next.custom&&!next.status&&!(next.note||'').trim();
+  if(drop) delete S.pins[id]; else S.pins[id]=next;
+  saveLocal(); renderAll();
+  if(S.db){const ref=S.db.doc('pins/'+id);queue('pins/'+id,()=>drop?ref.delete():ref.set(next))}
+}
+function removePin(id){
+  delete S.pins[id]; saveLocal(); if(S.sel===id)S.sel=null; renderAll();
+  if(S.db) queue('pins/'+id,()=>S.db.doc('pins/'+id).delete());
+}
+function checkIn(p){
+  const v={placeId:p.id,name:p.n,lat:p.lat,lng:p.lng,at:new Date().toISOString()};
+  const id='v'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  S.visits.push({id,...v}); saveLocal();
+  if(status(p.id)!=='been') setPin(p.id,{status:'been'}); else renderAll();
+  if(S.db) queue('visits/'+id,()=>S.db.doc('visits/'+id).set(v));
+  toast('Checked in at '+p.n);
+}
+function removeVisit(id){
+  S.visits=S.visits.filter(v=>v.id!==id); saveLocal(); renderAll();
+  if(S.db) queue('visits/'+id,()=>S.db.doc('visits/'+id).delete());
+}
+function initStore(){loadLocal();renderAll();setSync('Saved on this phone')}
+// ---------- map ----------
+const BOUNDS=L.latLngBounds([35.3641,24.4666],[35.3754,24.4829]);
+const map=L.map('map',{zoomControl:false,minZoom:16,maxZoom:20,maxBounds:BOUNDS.pad(0.05),maxBoundsViscosity:0.9,attributionControl:true});
+L.tileLayer('tiles/{z}/{x}/{y}.png',{minZoom:16,maxZoom:20,maxNativeZoom:18,bounds:BOUNDS,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(map);
+map.attributionControl.setPrefix(false);
+const OLD_TOWN=L.latLngBounds([35.3668,24.4696],[35.3740,24.4790]);
+function fit(){map.fitBounds(OLD_TOWN,{padding:[8,8]})}
+fit();
+const markerLayer=L.layerGroup().addTo(map), trailLayer=L.layerGroup().addTo(map);
+let draftMarker=null;
+
+// ---------- walking routes (street grid read from the OpenStreetMap tiles) ----------
+const R={grid:null,w:0,h:0,loading:null,to:null,from:null,picking:false,layer:L.layerGroup().addTo(map),dist:0};
+const GX0=148887*256, GY0=103500*256, WORLD=256*Math.pow(2,18), CELL_M=2*156543.03*Math.cos(35.37*Math.PI/180)/Math.pow(2,18);
+function toCell(lat,lng){const px=(lng+180)/360*WORLD, r=lat*Math.PI/180, py=(1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*WORLD;return [Math.floor((px-GX0)/2),Math.floor((py-GY0)/2)]}
+function toLatLng(cx,cy){const px=GX0+cx*2+1, py=GY0+cy*2+1;return [Math.atan(Math.sinh(Math.PI*(1-2*py/WORLD)))*180/Math.PI, px/WORLD*360-180]}
+function loadGrid(){
+  if(R.loading) return R.loading;
+  R.loading=new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{try{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0);const d=x.getImageData(0,0,img.width,img.height).data;const g=new Uint8Array(img.width*img.height);for(let i=0;i<g.length;i++){const v=d[i*4];g[i]=v>150?2:v>50?1:0}R.grid=g;R.w=img.width;R.h=img.height;res()}catch(e){rej(e)}};
+    img.onerror=rej; img.src='route/grid.png';
+  });
+  return R.loading;
+}
+function snapCell(cx,cy){
+  const {grid,w,h}=R;
+  for(let r=0;r<260;r++){
+    let best=-1,bd=1e9;
+    for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+      if(Math.max(Math.abs(dx),Math.abs(dy))!==r)continue;
+      const x=cx+dx,y=cy+dy; if(x<0||y<0||x>=w||y>=h)continue;
+      if(grid[y*w+x]===1){const dd=dx*dx+dy*dy;if(dd<bd){bd=dd;best=y*w+x}}
+    }
+    if(best>=0) return best;
+  }
+  return -1;
+}
+function astar(s,t){
+  const {grid,w,h}=R, N=w*h, gs=new Float32Array(N).fill(Infinity), came=new Int32Array(N).fill(-1), closed=new Uint8Array(N);
+  const hk=[],hv=[];
+  const push=(k,v)=>{hk.push(k);hv.push(v);let i=hk.length-1;while(i>0){const p=(i-1)>>1;if(hk[p]<=hk[i])break;[hk[p],hk[i]]=[hk[i],hk[p]];[hv[p],hv[i]]=[hv[i],hv[p]];i=p}};
+  const pop=()=>{const v=hv[0],lk=hk.pop(),lv=hv.pop();if(hk.length){hk[0]=lk;hv[0]=lv;let i=0;for(;;){const l=2*i+1,r=l+1;let m=i;if(l<hk.length&&hk[l]<hk[m])m=l;if(r<hk.length&&hk[r]<hk[m])m=r;if(m===i)break;[hk[m],hk[i]]=[hk[i],hk[m]];[hv[m],hv[i]]=[hv[i],hv[m]];i=m}}return v};
+  const tx=t%w,ty=(t/w)|0, H=(i)=>{const dx=Math.abs(i%w-tx),dy=Math.abs(((i/w)|0)-ty);return Math.max(dx,dy)+0.414*Math.min(dx,dy)};
+  const DX=[1,-1,0,0,1,1,-1,-1],DY=[0,0,1,-1,1,-1,1,-1],DD=[1,1,1,1,1.414,1.414,1.414,1.414],COST=[0,1,4];
+  gs[s]=0;push(H(s),s);
+  while(hk.length){
+    const u=pop(); if(closed[u])continue; closed[u]=1; if(u===t)break;
+    const ux=u%w,uy=(u/w)|0;
+    for(let k=0;k<8;k++){
+      const vx=ux+DX[k],vy=uy+DY[k]; if(vx<0||vy<0||vx>=w||vy>=h)continue;
+      const v=vy*w+vx,c=grid[v]; if(!c||closed[v])continue;
+      const ng=gs[u]+DD[k]*COST[c];
+      if(ng<gs[v]){gs[v]=ng;came[v]=u;push(ng+H(v),v)}
+    }
+  }
+  if(!closed[t]) return null;
+  const path=[];for(let i=t;i!==-1;i=came[i])path.push(i);
+  return path.reverse();
+}
+function simplify(pts,tol){
+  if(pts.length<3)return pts;
+  const keep=new Uint8Array(pts.length);keep[0]=keep[pts.length-1]=1;
+  const st=[[0,pts.length-1]];
+  while(st.length){const [a,b]=st.pop();let md=0,mi=-1;const [ax,ay]=pts[a],[bx,by]=pts[b],L2=(bx-ax)**2+(by-ay)**2||1;
+    for(let i=a+1;i<b;i++){const [px,py]=pts[i];const d=Math.abs((by-ay)*px-(bx-ax)*py+bx*ay-by*ax)/Math.sqrt(L2);if(d>md){md=d;mi=i}}
+    if(md>tol){keep[mi]=1;st.push([a,mi],[mi,b])}}
+  return pts.filter((_,i)=>keep[i]);
+}
+function startRoute(p){
+  R.to={lat:p.lat,lng:p.lng,name:p.n,id:p.id};
+  S.sel=null; renderSheet(); drawMap();
+  const h=here();
+  if(h&&h.live){R.from={lat:h.lat,lng:h.lng,name:'your location',live:true};runRoute()}
+  else if(h&&h.placeId!==p.id){R.from={lat:h.lat,lng:h.lng,name:h.name};runRoute()}
+  else askStart();
+}
+function askStart(){
+  R.picking=true; S.sel=null; renderSheet();
+  $('addHint').textContent='Tap where you are now, on the street or on a pin.'; $('addHint').hidden=false; $('map').classList.add('adding');
+  loadGrid().catch(()=>{});
+}
+async function runRoute(quiet){
+  $('addHint').textContent='Tap the map where you want the pin.';
+  if(!quiet) showRouteBar('Working out the route…');
+  R.lastRouteAt={lat:R.from.lat,lng:R.from.lng};
+  try{await loadGrid()}catch(e){showRouteBar('Could not load the street data. Use Open in Google Maps instead.',true);return}
+  const [sx,sy]=toCell(R.from.lat,R.from.lng),[tx,ty]=toCell(R.to.lat,R.to.lng);
+  const s=snapCell(sx,sy),t=snapCell(tx,ty);
+  if(s<0||t<0){showRouteBar('That point is off the map area. Pick a start in the old town.',true);return}
+  await new Promise(r=>setTimeout(r,20));
+  const path=astar(s,t);
+  if(!path){showRouteBar('No walking route found between those points.',true);return}
+  let d=0;for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i];d+=((a%R.w)!==(b%R.w)&&((a/R.w)|0)!==((b/R.w)|0))?1.414:1}
+  R.dist=d*CELL_M;
+  const cells=simplify(path.map(i=>[i%R.w,(i/R.w)|0]),1.2);
+  const ll=cells.map(([x,y])=>toLatLng(x,y));
+  ll.unshift([R.from.lat,R.from.lng]); ll.push([R.to.lat,R.to.lng]);
+  R.layer.clearLayers();
+  L.polyline(ll,{color:'#ffffff',weight:10,opacity:.95,lineJoin:'round',lineCap:'round'}).addTo(R.layer);
+  const line=L.polyline(ll,{color:'#0E8FC7',weight:6,opacity:1,lineJoin:'round',lineCap:'round'}).addTo(R.layer);
+  if(!R.from.live) L.circleMarker([R.from.lat,R.from.lng],{radius:8,color:'#fff',weight:3,fillColor:'#0E8FC7',fillOpacity:1}).addTo(R.layer);
+  L.circleMarker([R.to.lat,R.to.lng],{radius:9,color:'#fff',weight:3,fillColor:'#1B2830',fillOpacity:1}).addTo(R.layer);
+  if(!quiet) map.fitBounds(line.getBounds(),{padding:[70,40],maxZoom:19});
+  showRouteBar();
+}
+function showRouteBar(msg,err){
+  const el=$('routeBar'); el.hidden=false;
+  if(msg){el.innerHTML=`<div class="rb-main"><span class="rb-to">${esc(msg)}</span></div><button class="rb-btn" data-r="end">${err?'Close':'Cancel'}</button>`;return}
+  const m=Math.round(R.dist/10)*10, mins=Math.max(1,Math.round(R.dist/75));
+  el.innerHTML=`<div class="rb-main"><span class="rb-to">To ${esc(R.to.name)}</span><span class="rb-num">${m<1000?m+' m':(m/1000).toFixed(1)+' km'} · ${mins} min walk</span><span class="rb-from">From ${esc(R.from.name)}</span></div>
+    <button class="rb-btn" data-r="start">Change start</button><button class="rb-btn end" data-r="end">End</button>`;
+}
+function endRoute(){R.layer.clearLayers();R.to=R.from=null;R.picking=false;$('routeBar').hidden=true;$('addHint').hidden=true;$('map').classList.remove('adding')}
+$('routeBar').addEventListener('click',e=>{const b=e.target.closest('[data-r]');if(!b)return;if(b.dataset.r==='end')endRoute();else if(R.to)askStart()});
+
+function visible(p){
+  const st=status(p.id),f=S.filter;
+  if(f==='all') return true;
+  if(f==='want'||f==='been') return st===f;
+  if(f==='mine') return p.c==='custom';
+  return p.c===f;
+}
+function todaysTrail(){
+  if(!S.visits.length) return [];
+  const last=new Date(S.visits[S.visits.length-1].at).toDateString();
+  return S.visits.filter(v=>new Date(v.at).toDateString()===last);
+}
+function drawMap(){
+  markerLayer.clearLayers(); trailLayer.clearLayers();
+  const z=map.getZoom();
+  const tv=todaysTrail();
+  if(tv.length>1) L.polyline(tv.map(v=>[v.lat,v.lng]),{color:getComputedStyle(document.documentElement).getPropertyValue('--want').trim()||'#B8246A',weight:4,dashArray:'8 7',opacity:.85}).addTo(trailLayer);
+  const h=here();
+  if(h) L.marker([h.lat,h.lng],{icon:L.divIcon({className:'youdot',html:'<i></i>',iconSize:[24,24]}),interactive:false,keyboard:false,zIndexOffset:-100}).addTo(trailLayer);
+  for(const p of allPlaces()){
+    if(!visible(p)) continue;
+    const st=status(p.id), sel=p.id===S.sel;
+    const showLbl=sel||z>=19||(p.c==='sight'&&z>=18);
+    const glyph=st==='been'?'✓':st==='want'?'♥':'';
+    const html=`<i><span>${glyph}</span></i>${showLbl?`<b>${esc(p.n)}</b>`:''}`;
+    const m=L.marker([p.lat,p.lng],{icon:L.divIcon({className:`mk ${p.c} ${st} ${sel?'sel':''}`,html,iconSize:[30,30]}),title:p.n,alt:p.n,riseOnHover:true,zIndexOffset:sel?1000:(st?200:0)});
+    m.on('click',ev=>{L.DomEvent.stopPropagation(ev);if(R.picking){R.picking=false;$('addHint').hidden=true;$('map').classList.remove('adding');R.from={lat:p.lat,lng:p.lng,name:p.n};runRoute();return}if(S.adding)return;select(p.id)});
+    m.addTo(markerLayer);
+  }
+  if(draftMarker){draftMarker.remove();draftMarker=null}
+  if(S.draft) draftMarker=L.marker([S.draft.lat,S.draft.lng],{icon:L.divIcon({className:'mk custom want sel',html:'<i><span>+</span></i>',iconSize:[30,30]})}).addTo(map);
+}
+map.on('zoomend',drawMap);
+map.on('click',e=>{
+  if(R.picking){R.picking=false;$('addHint').hidden=true;$('map').classList.remove('adding');R.from={lat:e.latlng.lat,lng:e.latlng.lng,name:'your start point'};runRoute();return}
+  if(S.adding){S.draft={lat:e.latlng.lat,lng:e.latlng.lng,name:'',status:'want',checkin:false};setAdding(false);S.sel=null;renderAll();return}
+  if(S.sel||S.draft){S.sel=null;S.draft=null;renderAll()}
+});
+$('zin').onclick=()=>map.zoomIn();
+$('zout').onclick=()=>map.zoomOut();
+$('zfit').onclick=fit;
+function setAdding(on){if(on&&R.picking){R.picking=false}S.adding=on;$('addBtn').classList.toggle('on',on);$('addHint').hidden=!on;$('map').classList.toggle('adding',on);$('legend').hidden=on;if(on){S.sel=null;S.draft=null;renderSheet();drawMap()}}
+$('addBtn').onclick=()=>setAdding(!S.adding);
+for(const id of ['filters','sheet','addHint','herePill','legend','routeBar']){const el=$(id);L.DomEvent.disableClickPropagation(el);L.DomEvent.disableScrollPropagation(el)}
+
+function select(id,centre){
+  S.sel=id; S.draft=null; if(S.adding) setAdding(false);
+  const p=byId(id);
+  if(centre&&p){setTab('map');setTimeout(()=>map.setView([p.lat,p.lng],Math.max(map.getZoom(),18)),30)}
+  else if(p&&!map.getBounds().pad(-0.15).contains([p.lat,p.lng])) map.panTo([p.lat,p.lng]);
+  renderAll();
+}
+
+// ---------- live GPS ----------
+const G={pos:null,acc:0,watch:null,follow:true,track:[],marker:null,circle:null,trackLayer:L.layerGroup().addTo(map)};
+try{G.track=JSON.parse(localStorage.getItem('rethymno-track')||'[]')}catch(e){G.track=[]}
+function todaysTrack(){const d=new Date().toDateString();return G.track.filter(p=>new Date(p.t).toDateString()===d)}
+function drawTrack(){G.trackLayer.clearLayers();const tt=todaysTrack();if(tt.length>1)L.polyline(tt.map(p=>[p.lat,p.lng]),{color:'#B8246A',weight:4,opacity:.7}).addTo(G.trackLayer)}
+function startGPS(){
+  if(!navigator.geolocation){toast('This browser cannot share location.');return}
+  if(G.watch!==null) return;
+  G.watch=navigator.geolocation.watchPosition(onPos,err=>{
+    navigator.geolocation.clearWatch(G.watch);G.watch=null;$('gpsBtn').classList.remove('on','follow');
+    toast(err.code===1?'Location is switched off for this page. Allow it in your browser settings, then tap ◎.':'Still looking for GPS. Tap ◎ to try again.');
+  },{enableHighAccuracy:true,maximumAge:5000,timeout:30000});
+}
+function onPos(p){
+  const ll={lat:p.coords.latitude,lng:p.coords.longitude}, first=!G.pos; G.pos=ll; G.acc=p.coords.accuracy;
+  if(!G.marker){G.marker=L.marker([ll.lat,ll.lng],{icon:L.divIcon({className:'youdot live',html:'<i></i>',iconSize:[24,24]}),interactive:false,keyboard:false,zIndexOffset:3000}).addTo(map);G.circle=L.circle([ll.lat,ll.lng],{radius:G.acc,color:'#0E8FC7',weight:1,fillOpacity:.08,interactive:false}).addTo(map)}
+  else{G.marker.setLatLng([ll.lat,ll.lng]);G.circle.setLatLng([ll.lat,ll.lng]).setRadius(G.acc)}
+  const last=G.track[G.track.length-1];
+  if(G.acc<50&&(!last||metres(last,ll)>12)){G.track.push({lat:+ll.lat.toFixed(6),lng:+ll.lng.toFixed(6),t:Date.now()});if(G.track.length>6000)G.track.splice(0,G.track.length-6000);try{localStorage.setItem('rethymno-track',JSON.stringify(G.track))}catch(e){};drawTrack();if(S.tab==='trail')renderTrail()}
+  $('gpsBtn').classList.add('on');$('gpsBtn').classList.toggle('follow',G.follow);
+  if(G.follow&&BOUNDS.pad(0.2).contains([ll.lat,ll.lng])) map.panTo([ll.lat,ll.lng],{animate:!first});
+  if(first&&!BOUNDS.pad(0.2).contains([ll.lat,ll.lng])) toast("You're outside the old town map area right now.");
+  if(R.to&&R.from&&R.from.live&&(!R.lastRouteAt||metres(R.lastRouteAt,ll)>15)){R.from={lat:ll.lat,lng:ll.lng,name:'your location',live:true};runRoute(true)}
+  if(first) renderAll(); else if(S.sel) renderSheet();
+  const hp=$('herePill');hp.hidden=false;$('hereTxt').textContent='Live location on'+(G.acc>40?' (weak signal, ±'+Math.round(G.acc)+' m)':'');
+}
+$('gpsBtn').onclick=()=>{
+  if(G.watch===null){G.follow=true;startGPS();return}
+  G.follow=true;$('gpsBtn').classList.add('follow');
+  if(G.pos) map.setView([G.pos.lat,G.pos.lng],Math.max(map.getZoom(),18));
+};
+map.on('dragstart',()=>{if(G.follow){G.follow=false;$('gpsBtn').classList.remove('follow')}});
+drawTrack();
+
+// filters
+const FILTERS=[['all','All'],['sight','Sights'],['food','Eat'],['drink','Bars & cafés'],['want','Want to go'],['been','Been'],['mine','My pins']];
+function renderFilters(){
+  $('filters').innerHTML=FILTERS.map(([k,l])=>{
+    let n='';if(k==='want'||k==='been'){const c=allPlaces().filter(p=>status(p.id)===k).length;n=c?' '+c:''}
+    return `<button class="chip" data-f="${k}" aria-pressed="${S.filter===k}">${l}${n}</button>`}).join('');
+}
+$('filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;S.filter=b.dataset.f;renderAll()});
+
+// sheet
+const dirURL=p=>'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+p.lat.toFixed(6)+','+p.lng.toFixed(6)+(p.c!=='custom'?'&destination_place_id='+encodeURIComponent(p.id):'');
+let rmArmed=false;
+function renderSheet(){
+  const el=$('sheet');
+  if(S.draft){
+    const d=S.draft; el.hidden=false;
+    el.innerHTML=`<button class="close" data-a="cancel" aria-label="Cancel">×</button>
+      <span class="eyebrow">New pin</span><h2>Name this spot</h2>
+      <input type="text" id="draftName" placeholder="e.g. Bakery with the blue door" value="${esc(d.name)}" maxlength="60">
+      <div class="seg">
+        <button data-s="want" aria-pressed="${d.status==='want'}">Want to go</button>
+        <button data-s="been" aria-pressed="${d.status==='been'}">Been</button>
+        <button data-s="" aria-pressed="${d.status===''}">Just a marker</button>
+      </div>
+      <label class="check"><input type="checkbox" id="draftHere" ${d.checkin?'checked':''}> I'm here now, add it to my trail</label>
+      <button class="primary" data-a="savedraft">Save pin</button>`;
+    return;
+  }
+  const p=S.sel&&byId(S.sel);
+  if(!p){el.hidden=true;el.innerHTML='';return}
+  const st=status(p.id), pin=S.pins[p.id]||{}, dist=distTxt(p);
+  el.hidden=false;
+  el.innerHTML=`<button class="close" data-a="close" aria-label="Close">×</button>
+    <span class="eyebrow">${esc(p.t||CAT[p.c])}${p.pl?' · '+'€'.repeat(p.pl):''}</span>
+    <h2>${esc(p.n)}</h2>
+    <div class="meta">${p.r?`<span>★ ${p.r} <span style="opacity:.75">(${p.rc.toLocaleString('en-GB')})</span></span>`:''}${hoursPill(p)}</div>
+    ${p.b?`<p class="blurb">${esc(p.b)}</p>`:''}
+    ${dist?`<div class="dist">${esc(dist)}</div>`:''}
+    <div class="actions">
+      <button class="act dir" data-a="route"><b>➜</b>Walk here</button>
+      <button class="act want" data-a="want" aria-pressed="${st==='want'}"><b>♥</b>Want to go</button>
+      <button class="act been" data-a="been" aria-pressed="${st==='been'}"><b>✓</b>Been</button>
+      <button class="act" data-a="checkin"><b>◉</b>I'm here</button>
+    </div>
+    <textarea id="note" rows="2" placeholder="Your note, e.g. book for Thursday, ask for a harbour table">${esc(pin.note||'')}</textarea>
+    <a class="linkbtn" href="${dirURL(p)}" target="_blank" rel="noopener" style="color:var(--ink-2);text-decoration:none">Open in Google Maps ↗</a>
+    ${p.c==='custom'?`<button class="linkbtn" data-a="rmpin">${rmArmed?'Tap again to remove this pin':'Remove this pin'}</button>`:''}`;
+}
+$('sheet').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a],[data-s]'); if(!b)return;
+  if(b.dataset.s!==undefined&&S.draft){S.draft.name=$('draftName').value;S.draft.checkin=$('draftHere').checked;S.draft.status=b.dataset.s;renderSheet();return}
+  const a=b.dataset.a, p=S.sel&&byId(S.sel);
+  if(a==='close'){S.sel=null;renderAll()}
+  else if(a==='cancel'){S.draft=null;renderAll()}
+  else if(a==='savedraft'){
+    const d=S.draft, name=$('draftName').value.trim()||'My pin', ci=$('draftHere').checked;
+    const id='c'+Date.now().toString(36), lat=+d.lat.toFixed(6), lng=+d.lng.toFixed(6);
+    S.draft=null;
+    setPin(id,{custom:true,name,lat,lng,status:d.status,note:''});
+    S.sel=id;
+    if(ci) checkIn({id,n:name,lat,lng});
+    renderAll(); toast('Pin saved');
+  }
+  else if(a==='route'&&p) startRoute(p);
+  else if(a==='want'&&p) setPin(p.id,{status:status(p.id)==='want'?'':'want'});
+  else if(a==='been'&&p) setPin(p.id,{status:status(p.id)==='been'?'':'been'});
+  else if(a==='checkin'&&p) checkIn(p);
+  else if(a==='rmpin'&&p){if(rmArmed){rmArmed=false;removePin(p.id);toast('Pin removed')}else{rmArmed=true;renderSheet();setTimeout(()=>{rmArmed=false},4000)}}
+});
+$('sheet').addEventListener('change',e=>{
+  if(e.target.id==='note'&&S.sel){const v=e.target.value.slice(0,500);if(v!==((S.pins[S.sel]||{}).note||''))setPin(S.sel,{note:v})}
+});
+
+// list
+function renderList(){
+  const ps=allPlaces(), h=here();
+  const groups=[['want','Want to go',ps.filter(p=>status(p.id)==='want')],['been','Been',ps.filter(p=>status(p.id)==='been')],['sight','Sights',ps.filter(p=>p.c==='sight')],['food','Restaurants',ps.filter(p=>p.c==='food')],['drink','Cafés & bars',ps.filter(p=>p.c==='drink')],['custom','My pins',ps.filter(p=>p.c==='custom')]];
+  let html='';
+  for(const [g,title,items] of groups){
+    if(!items.length&&g==='custom')continue;
+    if(!items.length){html+=`<div class="group"><h3>${title}</h3><p class="empty">${g==='want'?'Nothing saved yet. Open any place and tap Want to go.':'Tap I\'m here or Been on a place and it lands here.'}</p></div>`;continue}
+    if(h) items.sort((a,b)=>metres(h,a)-metres(h,b));
+    html+=`<div class="group"><h3>${title}<span>${items.length}</span></h3>`+items.map(p=>{
+      const st=status(p.id), hi=hoursInfo(p), note=(S.pins[p.id]||{}).note;
+      const sub=[CAT[p.c], p.r?'★ '+p.r:'', hi&&hi.state!=='open'?({shut:'closed now','closed-today':'closed today'}[hi.state]):'', note?'“'+note+'”':''].filter(Boolean).join(' · ');
+      return `<button class="row" data-go="${esc(p.id)}"><span class="dot ${st}"></span><span class="nm"><strong>${esc(p.n)}</strong><small>${esc(sub)}</small></span><span class="d">${distTxt(p,true)}</span></button>`}).join('')+'</div>';
+  }
+  html+=`<p class="foot">Ratings and opening hours from Google, pulled 27/09/2026; check before you walk over. Map © OpenStreetMap contributors.</p>`;
+  $('list').innerHTML=html;
+}
+$('list').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)select(b.dataset.go,true)});
+
+// trail
+let armedVisit=null;
+function gpsSummary(){
+  if(typeof G==='undefined') return '';
+  const tt=todaysTrack(); let d=0; for(let i=1;i<tt.length;i++) d+=metres(tt[i-1],tt[i]);
+  if(!tt.length) return `<div class="group"><h3>Walked today</h3><p class="empty">Tap ◎ on the map and your walk is traced automatically while this page is open.</p></div>`;
+  return `<div class="group"><h3>Walked today<span>${(d/1000).toFixed(2)} km by GPS</span></h3><p class="empty">Your route is the pink line on the map. It records while this page is open on your screen.</p><button class="linkbtn" data-cleartrack="1">${clearArmed?'Tap again to clear today\'s track':'Clear today\'s track'}</button></div>`;
+}
+let clearArmed=false;
+function renderTrail(){
+  const gs=gpsSummary();
+  if(!S.visits.length){$('trail').innerHTML=gs+`<div class="group"><h3>My check ins</h3><p class="empty">Each time you tap <strong>I'm here</strong> on a place, it's logged here with the time, and today's stops are joined up on the map.</p></div>`;return}
+  const days={};
+  S.visits.forEach(v=>{const k=new Date(v.at).toDateString();(days[k]=days[k]||[]).push(v)});
+  const keys=Object.keys(days).sort((a,b)=>new Date(b)-new Date(a));
+  $('trail').innerHTML=gs+keys.map(k=>{
+    const vs=days[k]; let dist=0; for(let i=1;i<vs.length;i++) dist+=metres(vs[i-1],vs[i]);
+    const label=new Date(vs[0].at).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    return `<div class="group"><h3>${label}<span>${vs.length} stop${vs.length>1?'s':''}${dist?' · '+(dist/1000).toFixed(1)+' km point to point':''}</span></h3>`+
+      vs.map((v,i)=>`<div class="visit"><span class="num">${i+1}</span><time>${new Date(v.at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</time><span class="n" data-go="${esc(v.placeId)}">${esc(v.name)}</span><button class="rm ${armedVisit===v.id?'confirm':''}" data-rm="${esc(v.id)}">${armedVisit===v.id?'Remove?':'×'}</button></div>`).join('')+'</div>';
+  }).join('');
+}
+$('trail').addEventListener('click',e=>{
+  const ct=e.target.closest('[data-cleartrack]');
+  if(ct){if(clearArmed){clearArmed=false;const d=new Date().toDateString();G.track=G.track.filter(p=>new Date(p.t).toDateString()!==d);try{localStorage.setItem('rethymno-track',JSON.stringify(G.track))}catch(_){};drawTrack();renderTrail()}else{clearArmed=true;renderTrail();setTimeout(()=>{clearArmed=false;renderTrail()},4000)}return}
+  const r=e.target.closest('[data-rm]');
+  if(r){const id=r.dataset.rm;if(armedVisit===id){armedVisit=null;removeVisit(id)}else{armedVisit=id;renderTrail();setTimeout(()=>{if(armedVisit===id){armedVisit=null;renderTrail()}},4000)}return}
+  const g=e.target.closest('[data-go]'); if(g&&byId(g.dataset.go)) select(g.dataset.go,true);
+});
+
+// tabs
+function setTab(t){
+  S.tab=t;
+  ['map','list','trail'].forEach(x=>{$('tab-'+x).setAttribute('aria-selected',x===t);$(x+'View').hidden=x!==t});
+  if(t==='map') setTimeout(()=>map.invalidateSize(),0);
+}
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)setTab(b.dataset.tab)});
+new ResizeObserver(()=>map.invalidateSize()).observe($('map'));
+
+function renderAll(){
+  renderFilters(); drawMap(); renderSheet(); renderList(); renderTrail();
+  const h=here();
+  $('herePill').hidden=!h;
+  if(h&&h.live) $('hereTxt').textContent='Live location on'+(G.acc>40?' (weak signal, ±'+Math.round(G.acc)+' m)':'');
+  else if(h) $('hereTxt').textContent='Last check in: '+h.name+', '+new Date(h.at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+initStore();
+startGPS();
+})();
+</script>
+</body></html>

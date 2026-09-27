@@ -39,6 +39,7 @@ jobs:
           cp index.html manifest.webmanifest sw.js _site/
           cp -r css js icons _site/
           cp dist/survey.html _site/dist/survey.html
+          cp -r rethymno _site/rethymno
           ls -R _site
 
       # Enabling Pages itself needs administration:write, which the Actions
