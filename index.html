@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recipe Box</title>
+  <meta name="theme-color" content="#c2410c" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
-    <h1 class="brand" data-route="#/">Recipe Box</h1>
+    <a href="#/" class="brand">🍲 Recipe Box</a>
     <nav>
       <a href="#/" class="navlink">Recipes</a>
+      <a href="#/tastes" class="navlink">Our tastes</a>
       <a href="#/new" class="navlink">Upload</a>
       <a href="#/basket" class="navlink basket-link">
         Basket <span id="basketCount" class="badge">0</span>
@@ -24,12 +27,20 @@
   <template id="view-list">
     <section class="view">
       <div class="view-header">
-        <h2>Your recipes</h2>
-        <a href="#/new" class="btn btn-primary">+ Upload recipe</a>
+        <div>
+          <h2 id="listGreeting"></h2>
+          <p id="listSummary" class="muted"></p>
+        </div>
+        <button id="surpriseBtn" class="btn btn-primary">🎲 What’s for tea?</button>
       </div>
+      <div class="toolbar">
+        <input id="searchBox" type="search" placeholder="Search recipes or ingredients…" aria-label="Search" />
+        <select id="cuisineFilter" aria-label="Cuisine"></select>
+      </div>
+      <div id="chipRow" class="chips"></div>
       <div id="recipeGrid" class="grid"></div>
       <p id="emptyState" class="empty hidden">
-        No recipes yet. <a href="#/new">Upload your first one</a>.
+        Nothing matches that. Try another filter, or <a href="#/new">add your own recipe</a>.
       </p>
     </section>
   </template>
@@ -86,25 +97,37 @@
     <section class="view detail">
       <a href="#/" class="back">← Back to recipes</a>
       <div class="detail-header">
-        <img id="detailImage" class="detail-image hidden" alt="" />
+        <div id="detailHero" class="detail-hero"></div>
         <div>
+          <div id="detailBadge"></div>
           <h2 id="detailTitle"></h2>
-          <p class="meta">
-            <span id="detailServings"></span> ·
-            <span id="detailTime"></span>
-          </p>
+          <p id="detailBlurb" class="blurb"></p>
+          <p class="meta"><span id="detailTime"></span><br /><span id="detailExtra"></span></p>
           <div class="actions">
-            <button id="cookBtn" class="btn btn-primary">Start cooking mode</button>
+            <button id="cookBtn" class="btn btn-primary">👩‍🍳 Start cooking</button>
             <button id="basketBtn" class="btn"></button>
-            <a id="editBtn" class="btn btn-ghost">Edit</a>
-            <button id="deleteBtn" class="btn btn-danger">Delete</button>
+            <button id="favBtn" class="btn fav-toggle"></button>
+          </div>
+          <div class="actions secondary">
+            <a id="editBtn" class="btn btn-ghost btn-small">Edit</a>
+            <button id="deleteBtn" class="btn btn-ghost btn-small danger-text">Delete</button>
           </div>
         </div>
       </div>
 
+      <div id="detailWhy" class="why"></div>
+      <p id="detailAllergens" class="allergens"></p>
+
       <div class="detail-body">
         <div>
-          <h3>Ingredients</h3>
+          <div class="ing-head">
+            <h3>Ingredients</h3>
+            <div class="servings" aria-label="Servings">
+              <button id="servingsDown" class="round" aria-label="Fewer servings">−</button>
+              <span><strong id="servingsCount"></strong> servings</span>
+              <button id="servingsUp" class="round" aria-label="More servings">+</button>
+            </div>
+          </div>
           <ul id="detailIngredients" class="ingredients"></ul>
         </div>
         <div>
@@ -155,8 +178,18 @@
     </div>
   </div>
 
+  <!-- Building-the-box overlay -->
+  <div id="buildOverlay" class="build-overlay hidden">
+    <div class="build-card">
+      <div class="build-pot">🍲</div>
+      <ul class="build-lines"></ul>
+    </div>
+  </div>
+
   <div id="toast" class="toast hidden"></div>
 
+  <script src="questions.js"></script>
+  <script src="library.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
