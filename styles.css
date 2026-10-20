@@ -412,6 +412,7 @@ body.locked nav { opacity: 0.35; pointer-events: none; }
   margin-bottom: 1.5rem;
 }
 .detail-hero {
+  position: relative;
   aspect-ratio: 4 / 3;
   border-radius: var(--radius);
   overflow: hidden;
@@ -423,7 +424,7 @@ body.locked nav { opacity: 0.35; pointer-events: none; }
     linear-gradient(135deg, color-mix(in srgb, var(--tint, #c2410c) 55%, white), var(--tint, #c2410c));
 }
 .detail-emoji { font-size: 7rem; filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.2)); }
-.detail-image { width: 100%; height: 100%; object-fit: cover; }
+.detail-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .detail-header h2 { margin: 0.5rem 0 0.4rem; font-size: clamp(1.8rem, 4vw, 2.5rem); }
 .blurb { font-size: 1.05rem; margin: 0 0 0.5rem; }
 .meta { color: var(--muted); margin: 0.25rem 0 0.5rem; }

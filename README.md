@@ -21,3 +21,11 @@ it opens the shared link.
 
 `worker/worker.js` is the Cloudflare Worker: it serves the app files from KV and stores each box in D1
 (`worker/schema.sql`).
+
+## Recipe photos
+
+Each library recipe has a photo at `img/<recipe id>.jpg`, served by the Worker from KV. They're AI-generated
+(Cloudflare Workers AI, `@cf/black-forest-labs/flux-2-klein-4b`, 640×480) from the prompt:
+"Professional food photography of {title}. {blurb} Plated and ready to eat, natural window light, 45 degree angle,
+shallow depth of field, appetising, photorealistic, no text, no people." Your own uploaded photo always wins, and
+the emoji shows if a picture fails to load.

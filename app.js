@@ -59,6 +59,8 @@ const CUISINE_TINTS = {
   mediterranean: '#3a8fb7', spanish: '#e2a03f', french: '#6c5ce7', american: '#d35400',
 };
 const tintFor = (r) => CUISINE_TINTS[r.cuisine] || '#c2410c';
+// Your own photo if you uploaded one, otherwise the library's picture (emoji shows if neither loads)
+const photoFor = (r) => r.image || (r.libId ? `img/${r.libId}.jpg` : '');
 
 // ---------- Matching ----------
 const FAN_SCORE = 4;   // score at which a recipe genuinely appeals to someone
@@ -746,7 +748,8 @@ function renderList() {
       card.style.setProperty('--tint', tintFor(r));
       card.innerHTML = `
         <div class="card-hero">
-          ${r.image ? `<img class="card-image" src="${r.image}" alt="">` : `<span class="card-emoji">${esc(r.emoji || '🍲')}</span>`}
+          <span class="card-emoji">${esc(r.emoji || '🍲')}</span>
+          ${photoFor(r) ? `<img class="card-image" src="${photoFor(r)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
           <button class="fav-btn ${fav ? 'on' : ''}" aria-label="Favourite">${fav ? '♥' : '♡'}</button>
           ${matchBadge(r)}
         </div>
@@ -917,11 +920,8 @@ function renderDetail(params) {
 
   const hero = document.getElementById('detailHero');
   hero.style.setProperty('--tint', tintFor(recipe));
-  if (recipe.image) {
-    hero.innerHTML = `<img class="detail-image" src="${recipe.image}" alt="">`;
-  } else {
-    hero.innerHTML = `<span class="detail-emoji">${esc(recipe.emoji || '🍲')}</span>`;
-  }
+  hero.innerHTML = `<span class="detail-emoji">${esc(recipe.emoji || '🍲')}</span>
+    ${photoFor(recipe) ? `<img class="detail-image" src="${photoFor(recipe)}" alt="" onerror="this.remove()">` : ''}`;
 
   // Why it's in the box
   const why = document.getElementById('detailWhy');

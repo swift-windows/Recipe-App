@@ -1,5 +1,5 @@
 // Cloudflare Worker for Recipe Box.
-// Serves the app files from KV (FILES) and keeps each household's shared
+// Serves the app files and recipe photos (img/*.jpg) from KV (FILES) and keeps each household's shared
 // recipe box in D1 (DB), keyed by the code in the ?box= link.
 const TYPES = { html: 'text/html; charset=utf-8', css: 'text/css; charset=utf-8', js: 'text/javascript; charset=utf-8' };
 const FILES = ['index.html', 'styles.css', 'questions.js', 'library.js', 'sync.js', 'app.js'];
@@ -13,6 +13,11 @@ export default {
     if (box) return handleBox(request, env, box[1]);
 
     let key = url.pathname.replace(/^\/+/, '') || 'index.html';
+    if (/^img\/[a-z0-9-]+\.jpg$/.test(key)) {
+      const img = await env.FILES.get(key, { type: 'arrayBuffer', cacheTtl: 3600 });
+      if (img === null) return new Response('Not found', { status: 404 });
+      return new Response(img, { headers: { 'content-type': 'image/jpeg', 'cache-control': 'public, max-age=604800' } });
+    }
     if (!FILES.includes(key)) key = 'index.html';
     const body = await env.FILES.get(key, { cacheTtl: 60 });
     if (body === null) return new Response('Not found', { status: 404 });
