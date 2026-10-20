@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS boxes (
+  id TEXT PRIMARY KEY,
+  data TEXT NOT NULL,
+  updated INTEGER NOT NULL
+);

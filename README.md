@@ -11,3 +11,13 @@ and the app then fills the box from a library of 46 recipes picked to suit you.
 - Change answers or rebuild any time from **Our tastes**. Your own uploaded recipes are never touched by a rebuild.
 
 Open `index.html` in a browser (or serve the folder). Everything is saved in the browser on that device.
+
+## Sharing between phones
+
+Open the app with `?box=<code>` on the end of the link and `sync.js` mirrors everything (answers, recipes,
+favourites, basket) to the Worker, so each person can use their own phone. Answers merge per person, so two
+phones filling in at once never overwrite each other. Answers already on a phone are sent up the first time
+it opens the shared link.
+
+`worker/worker.js` is the Cloudflare Worker: it serves the app files from KV and stores each box in D1
+(`worker/schema.sql`).

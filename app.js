@@ -17,6 +17,7 @@ const load = (key, fallback) => {
 };
 const save = (key, value) => {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage full or blocked */ }
+  if (window.Sync) window.Sync.queue(key, value);
 };
 
 const getRecipes = () => load(STORAGE_KEY, []);
@@ -366,7 +367,11 @@ const router = () => {
 };
 
 window.addEventListener('hashchange', router);
-window.addEventListener('DOMContentLoaded', router);
+window.addEventListener('DOMContentLoaded', async () => {
+  // Pull the shared box down before the first render so both phones agree
+  if (window.Sync) await window.Sync.start(router);
+  router();
+});
 
 const navigate = (hash) => {
   if (location.hash === hash) router();
@@ -441,7 +446,9 @@ function renderStart() {
         </button>
         ${ready && isBuilt() ? '<a href="#/" class="btn btn-ghost">Back to recipes</a>' : ''}
       </div>
-      <p class="fineprint">Each person’s answers are private to this device. Hand the phone over when it’s their turn.</p>
+      <p class="fineprint">${window.Sync?.active
+        ? 'Your answers are shared, so you can each fill these in on your own phone.'
+        : 'Answers are saved on this device. Hand the phone over when it’s their turn.'}</p>
     </section>`);
 
   document.getElementById('buildBtn').addEventListener('click', () => runBuild());
@@ -646,7 +653,7 @@ function renderTastes() {
   document.getElementById('resetBtn').addEventListener('click', () => {
     if (!confirm('Wipe both questionnaires and every suggested recipe? Your own uploaded recipes are kept.')) return;
     setAnswers({});
-    localStorage.removeItem(BUILT_KEY);
+    save(BUILT_KEY, null);
     setHidden([]);
     setRecipes(getRecipes().filter((r) => r.source !== 'library'));
     navigate('#/start');
