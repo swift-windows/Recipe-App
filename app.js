@@ -57,6 +57,7 @@ const CUISINE_TINTS = {
   british: '#7c9cbf', italian: '#d9534f', indian: '#e8a33d', chinese: '#c0392b', thai: '#3fa66b',
   japanese: '#e06c8a', korean: '#b0413e', mexican: '#e67e22', 'middle-eastern': '#c99a3b',
   mediterranean: '#3a8fb7', spanish: '#e2a03f', french: '#6c5ce7', american: '#d35400',
+  caribbean: '#2e9e5b',
 };
 const tintFor = (r) => CUISINE_TINTS[r.cuisine] || '#c2410c';
 // Your own photo if you uploaded one, otherwise the library's picture (emoji shows if neither loads)
@@ -128,7 +129,7 @@ function personFit(r, a) {
     .filter((w) => !FAV_STOPWORDS.has(w));
   const haystack = `${r.title} ${r.cuisine} ${r.protein}`.toLowerCase();
   if (favWords.some((w) => haystack.includes(w))) {
-    const fav = String(a.favourite).trim();
+    const fav = String(a.favourite).trim().split(/\s*\n\s*/).join(', ');
     add('fav', 3, 'named something like this as a favourite', `’s favourite is “${fav}”, and this is in the same spirit`);
   }
 
@@ -150,7 +151,8 @@ function matchRecipe(r, answers) {
     byKey.get(rs.key).people.push(f.person);
   }));
   const reasons = [...byKey.values()]
-    .sort((x, y) => y.people.length - x.people.length)
+    // A favourite-meal match is the most telling reason, so it always goes first
+    .sort((x, y) => (y.key === 'fav') - (x.key === 'fav') || y.people.length - x.people.length)
     .slice(0, 5)
     .map(({ plural, singular, people }) => {
       if (people.length === 1) return `${people[0]}${singular.startsWith('’') ? '' : ' '}${singular}`;
@@ -675,7 +677,7 @@ const spiceIcons = (n) => (n ? '🌶️'.repeat(n) : '');
 const applyFilters = (recipes) => {
   const favs = getFavourites();
   const q = filters.q.trim().toLowerCase();
-  return recipes.filter((r) => {
+  const shown = recipes.filter((r) => {
     if (q && !`${r.title} ${r.blurb || ''} ${r.cuisine || ''} ${r.ingredients.join(' ')}`.toLowerCase().includes(q)) return false;
     if (filters.cuisine && r.cuisine !== filters.cuisine) return false;
     switch (filters.chip) {
@@ -684,9 +686,12 @@ const applyFilters = (recipes) => {
       case 'fav': return favs.includes(r.id);
       case 'mine': return !r.match;
       case 'all': return true;
-      default: return !!r.match?.suits.includes(filters.chip) && !r.match.both;
+      // A person's picks: everything that really appeals to them, best match first
+      default: return (r.match?.scores?.[filters.chip] ?? -1) >= FAN_SCORE;
     }
   });
+  if (!PEOPLE.includes(filters.chip)) return shown;
+  return shown.sort((x, y) => y.match.scores[filters.chip] - x.match.scores[filters.chip]);
 };
 
 function renderList() {

@@ -76,6 +76,7 @@ const QUESTIONS = [
       { value: 'spanish', label: 'Spanish', emoji: '🥘' },
       { value: 'french', label: 'French', emoji: '🥖' },
       { value: 'american', label: 'American & BBQ', emoji: '🍔' },
+      { value: 'caribbean', label: 'Caribbean', emoji: '🌴' },
     ],
   },
   {
