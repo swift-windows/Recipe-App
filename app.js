@@ -171,6 +171,34 @@ function matchRecipe(r, answers) {
   };
 }
 
+const libraryRecipe = (r, m, rank, now) => ({
+  ...r,
+  id: `lib-${r.id}`,
+  libId: r.id,
+  source: 'library',
+  image: '',
+  match: m,
+  rank,
+  createdAt: now,
+});
+
+// Add any always-included library recipes a built box doesn't have yet, so new ones
+// appear without a rebuild. Binned ones and anything with a ticked allergy stay out.
+function topUpBox() {
+  if (!isBuilt()) return;
+  const answers = getAnswers();
+  const blocked = new Set(PEOPLE.flatMap((p) => realValues(answers[p]?.allergies)));
+  const hidden = getHidden();
+  const recipes = getRecipes();
+  const have = new Set(recipes.map((r) => r.libId).filter(Boolean));
+  const missing = LIBRARY.filter((r) => r.always && !have.has(r.id) && !hidden.includes(r.id)
+    && !r.allergens.some((al) => blocked.has(al)));
+  if (!missing.length) return;
+  const now = Date.now();
+  const added = missing.map((r, i) => libraryRecipe(r, matchRecipe(r, answers), recipes.length + i, now));
+  setRecipes([...recipes, ...added]);
+}
+
 // Fill the recipe box from the library using everyone's answers.
 function buildBox() {
   const answers = getAnswers();
@@ -183,10 +211,11 @@ function buildBox() {
     .filter((r) => !r.allergens.some((al) => blocked.has(al)))
     .filter((r) => !hidden.includes(r.id) && !keptLib.has(r.id))
     .map((r) => ({ r, m: matchRecipe(r, answers) }))
-    .filter((x) => x.m.ok);
+    // Sean's dinners (always: true) go in even if the questionnaire would leave them out
+    .filter((x) => x.m.ok || x.r.always);
 
   // In if it appeals to everyone, or someone really loves it and nobody's ruled it out
-  const strong = candidates.filter(({ m }) => m.both || m.best >= STAR_SCORE || m.asked);
+  const strong = candidates.filter(({ m, r }) => r.always || m.both || m.best >= STAR_SCORE || m.asked);
 
   // Never leave the box looking empty: top up with the best of the rest
   let chosen = strong;
@@ -198,16 +227,7 @@ function buildBox() {
   chosen.sort((x, y) => (y.m.both - x.m.both) || (y.m.total - x.m.total));
 
   const now = Date.now();
-  const fresh = chosen.map(({ r, m }, i) => ({
-    ...r,
-    id: `lib-${r.id}`,
-    libId: r.id,
-    source: 'library',
-    image: '',
-    match: m,
-    rank: i,
-    createdAt: now,
-  }));
+  const fresh = chosen.map(({ r, m }, i) => libraryRecipe(r, m, i, now));
 
   setRecipes([...fresh, ...kept]);
   const ids = new Set([...fresh, ...kept].map((r) => r.id));
@@ -374,6 +394,7 @@ window.addEventListener('hashchange', router);
 window.addEventListener('DOMContentLoaded', async () => {
   // Pull the shared box down before the first render so both phones agree
   if (window.Sync) await window.Sync.start(router);
+  topUpBox();
   router();
 });
 
@@ -670,6 +691,7 @@ const filters = { q: '', chip: 'all', cuisine: '' };
 const matchBadge = (r) => {
   if (!r.match) return r.source === 'library' ? '' : '<span class="match-badge mine">📝 Your recipe</span>';
   if (r.match.both) return '<span class="match-badge both">💛 Both of you</span>';
+  if (!r.match.suits.length) return '<span class="match-badge one">⚡ Sean’s dinners</span>';
   return `<span class="match-badge one">⭐ ${esc(r.match.suits.join(' & '))}’s pick</span>`;
 };
 const spiceIcons = (n) => (n ? '🌶️'.repeat(n) : '');
@@ -932,6 +954,7 @@ function renderDetail(params) {
   const why = document.getElementById('detailWhy');
   if (recipe.match) {
     const lines = [...recipe.match.reasons];
+    if (recipe.always) lines.unshift('On Sean’s dinner list');
     recipe.match.notFor.forEach((n) => lines.push(`Not one for ${n.person} (${n.why})`));
     why.innerHTML = `<h4>Why it’s in your box</h4><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`;
   } else {
